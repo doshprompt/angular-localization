@@ -1,0 +1,23 @@
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Linux
+*~
+*.swp
+
+# Generic
+*.lock
+._*
+
+# Misc
+node_modules
+.*
+!.bowerrc
+!.travis.yml
+
+# Others
+lib/

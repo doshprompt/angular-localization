@@ -1,0 +1,40 @@
+{
+  "name": "angular-localization",
+  "version": "1.0.0",
+  "description": "angularjs localization done right.",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/doshprompt/angular-localization.git"
+  },
+  "keywords": [
+    "angularjs"
+  ],
+  "author": "Rahul Doshi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/doshprompt/angular-localization/issues"
+  },
+  "homepage": "https://github.com/doshprompt/angular-localization",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-compress": "^0.9.1",
+    "grunt-contrib-concat": "^0.4.0",
+    "grunt-contrib-copy": "^0.5.0",
+    "grunt-contrib-uglify": "^0.4.0",
+    "grunt-json-replace": "^0.1.2",
+    "grunt-karma": "^0.8.3",
+    "karma-jasmine": "^0.1.5",
+    "karma-junit-reporter": "^0.2.2",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "matchdep": "^0.3.0",
+    "phantomjs": "^1.9.7-8"
+  },
+  "dependencies": {
+    "karma-chrome-launcher": "^0.1.4"
+  }
+}
