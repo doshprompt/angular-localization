@@ -1,0 +1,28 @@
+<div id="footer" data-ng-controller="FootControl">
+    <div class="container">
+        <p
+            class="text-muted pull-left"
+            data-i18n="footer.copyrightString"
+            data-curr-year="{{ currentYear }}"
+            data-full-name="{{ fullName }}">
+        </p>
+        <div class="pull-right">
+            <!-- Single button -->
+            <div class="btn-group dropup">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                  <i ng-class="flagClass"></i>
+                  <span>{{ langDisplayText }}</span>
+                  <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                  <li data-ng-repeat="lang in supportedLang">
+                      <a href="" ng-click="setLocale(lang)">
+                          <i ng-class="localeData[lang].flagClass"></i>
+                          <span>{{ localeData[lang].langDisplayText }}</span>
+                      </a>
+                  </li>
+              </ul>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="container">
+    <p>{{ 'demo.formDataMessage' | i18n }}</p>
+    <form role="form">
+        <div class="form-group">
+            <label for="exampleInputEmail">{{ 'demo.emailAddress' | i18n }}</label>
+            <input type="email" class="form-control" id="exampleInputEmail" data-i18n-attr="{placeholder: 'demo.emailPlaceholder'}">
+          </div>
+          <div class="form-group">
+              <label for="exampleInputPassword">{{ 'demo.password' | i18n }}</label>
+              <input type="password" class="form-control" id="exampleInputPassword" data-i18n-attr="{placeholder: 'demo.password'}">
+          </div>
+          <button type="submit" class="btn btn-default">{{ 'demo.submit' | i18n }}</button>
+    </form>
+</div>

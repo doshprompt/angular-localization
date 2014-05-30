@@ -162,8 +162,8 @@ angular.module('myApp', [
         $scope.$on(localeEvents.resourceUpdates, function () {
             // do something
         });
-        $scope.$on(localeEvents.localeChanges, function (loc) {
-            console.log('new locale chosen: ' + loc);
+        $scope.$on(localeEvents.localeChanges, function (event, data) {
+            console.log('new locale chosen: ' + data);
         });
     }
 ]);
