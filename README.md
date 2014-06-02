@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/doshprompt/angular-localization.png?label=ready&title=Ready)](https://waffle.io/doshprompt/angular-localization)
 # angular-localization
 
 *AngularJS Localization done right.*
