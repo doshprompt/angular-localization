@@ -86,6 +86,11 @@ The easiest way to install the `ngLocalize` module is via [Bower](http://bower.i
 bower install angular-localization --save
 ```
 
+Two other options are available:
+
+- [Download the latest release](https://github.com/doshprompt/angular-localization/archive/master.zip).
+- Clone the repo: `git clone https://github.com/doshprompt/angular-localize.git`.
+
 You can then include `angular-localization` after including its dependencies, [angular](https://github.com/angular/bower-angular) and [angular-cookies](https://github.com/angular/bower-angular-cookies):
 
 ```html
