@@ -267,6 +267,9 @@ The localization key can be defined as the value of the `i18n` attribute:
 
 If the attribute value is not a valid token, then it will itself be used as the element's content.
 
+__NOTE:__ Localizations defined by the `i18n` attribute cannot contain HTML tags, as the translation result will be assigned as text, not as HTML.
+This limitation enables a slightly faster localization, as no sanitization is required.
+
 #### Localize with Dynamic User Data
 
 It is also possible to provide dynamic user data to the translation function.
@@ -281,7 +284,10 @@ Whenever `user.name` is updated, it's indicator in the token `helloWorld` is sub
 
 ### i18nAttr directive
 
-TODO
+The i18n Attribute directive is pretty much the same as the i18n directive except that it expects a json-like object structure represented as a set of key-value pair combinations.
+The key corresponds to the HTML attribute to be localized, and the value is the localization resource string token which will be passed to the service itself.
+
+If you want to pass dynamic values for the string, those should come after the value for each key; the series of additional parameters is expected to be appendeded to the token, prepended with a separator so that the directive will walk through and replace the numbered place holders with their values.
 
 ### locale Service
 
@@ -318,7 +324,7 @@ It is also possible to pass an object or an array with localization arguments or
 <p>{{ errorMessage | i18n:data }}</p>
 ```
 
-The filter also serves a special purpose use-case targeted at maximum compatibilty with other third party plugin modules, directives, components etc. where it is not possible to provide the parameters as a separate argument.
+The filter also serves a special purpose targeted at maximum compatibilty with other third party plugin modules, directives, components etc. where it is not possible to provide the parameters as a separate argument.
 In such a situation, the token is modified to have the substitution text params appended to it like so:
 
 ```js
@@ -337,7 +343,13 @@ The part after the token must be in a valid JSON format as either an array, obje
 
 ### Sample App
 
-TODO
+I've created a sample app that uses this plugin to provide the text for the entire application.
+I registered 'ngLocalize' in my app's dependency list and I then use a combination of
+`ng-bind="'home.title' | i18n"`,
+`{{ 'home.title' | i18n }}`,
+`data-i18n="home.title"` and
+`data-i18n-attr="{placeholder: 'home.title'}`
+to insert the text into the page at run time along with their variously supported use-cases.
 
 ## License
 
