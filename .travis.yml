@@ -5,6 +5,3 @@ node_js:
 
 before_install:
     - npm install -g bower grunt-cli
-
-install:
-    - npm install

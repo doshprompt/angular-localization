@@ -4,7 +4,9 @@
   "description": "angularjs localization done right.",
   "main": "Gruntfile.js",
   "scripts": {
-    "postinstall": "bower install && webdriver-manager update",
+    "postinstall": "bower install",
+
+    "pretest": "webdriver-manager update",
     "test": "grunt test"
   },
   "repository": {
