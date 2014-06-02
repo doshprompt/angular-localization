@@ -5,7 +5,6 @@
   "main": "Gruntfile.js",
   "scripts": {
     "postinstall": "bower install",
-
     "pretest": "webdriver-manager update",
     "test": "grunt test"
   },
@@ -38,6 +37,7 @@
     "karma-junit-reporter": "^0.2.2",
     "karma-phantomjs-launcher": "^0.1.4",
     "load-grunt-tasks": "^0.4.0",
-    "phantomjs": "^1.9.7-8"
+    "phantomjs": "^1.9.7-8",
+    "protractor": "^0.23.1"
   }
 }
