@@ -6,11 +6,11 @@
 [![Bower version](https://badge.fury.io/bo/angular-localization.svg)](http://badge.fury.io/bo/angular-localization)
 [![Dependency Status](https://david-dm.org/doshprompt/angular-localization.svg?theme=shields.io)](https://david-dm.org/doshpromot/angular-localization)
 [![devDependency Status](https://david-dm.org/doshprompt/angular-localization/dev-status.svg?theme=shields.io)](https://david-dm.org/angular-localization#info=devDependencies)
-
-[![Donate to help support angular-localization development](http://img.shields.io/gittip/doshprompt.svg)](https://www.gittip.com/doshprompt/)
-[![Analytics](https://ga-beacon.appspot.com/UA-51468215-1/angular-localization/README.md)](https://github.com/igrigorik/ga-beacon)
 [![Stories in Ready](https://badge.waffle.io/doshprompt/angular-localization.png?label=ready&title=Ready)](https://waffle.io/doshprompt/angular-localization)
+[![Donate to help support angular-localization development](http://img.shields.io/gittip/doshprompt.svg)](https://www.gittip.com/doshprompt/)
+
 [![Gitter chat](https://badges.gitter.im/doshprompt/angular-localization.png)](https://gitter.im/doshprompt/angular-localization)
+[![Analytics](https://ga-beacon.appspot.com/UA-51468215-1/angular-localization/README.md)](https://github.com/igrigorik/ga-beacon)
 
 ___
 
