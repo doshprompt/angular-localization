@@ -289,6 +289,8 @@ The key corresponds to the HTML attribute to be localized, and the value is the 
 
 If you want to pass dynamic values for the string, those should come after the value for each key; the series of additional parameters is expected to be appendeded to the token, prepended with a separator so that the directive will walk through and replace the numbered place holders with their values.
 
+__NOTE:__ They work the same way as the original `i18n` directive, but instead of updating the element content, they update their associated HTML attribute.
+
 ### locale Service
 
 The `locale` service is an equivalent to the `i18n` directive and can be used to generate localized results in situations where the directive cannot be used:
