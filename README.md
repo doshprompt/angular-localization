@@ -63,7 +63,7 @@ which was later updated to include performance improvements [seen here](http://c
 
 ### Build Dependencies
 
-- node.js >= 0.10.x
+- node.js >= v0.10.x
 - npm
 - grunt CLI `npm install -g grunt-cli`
 - bower `npm install -g bower`
