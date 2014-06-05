@@ -77,21 +77,6 @@ module.exports = function (grunt) {
             }
         },
 
-        'json-replace': {
-            options: {
-                replace: {
-                    description: 'angularjs localization, the good parts.'
-                },
-                space: '  '
-            },
-            bwr: {
-                files: [{
-                    src: paths.distDir + '/bower.json',
-                    dest: paths.distDir + '/bower.json'
-                }]
-            }
-        },
-
         connect: {
             options: {
                 port: 9001,
@@ -121,10 +106,22 @@ module.exports = function (grunt) {
                     configFile: "build/protractor.conf.js"
                 }
             }
+        },
+
+        preprocess: {
+            options: {
+                inline: true,
+                context: {
+                    VERSION: 'v<%= pkg.version %>'
+                }
+            },
+            bump: {
+                src: [ paths.distDir + '/angular-localization.js']
+            }
         }
     });
 
-    grunt.registerTask('build', ['clean', 'concat', 'uglify', 'compress', 'copy', 'json-replace']);
+    grunt.registerTask('build', ['clean', 'concat', 'preprocess', 'uglify', 'compress']);
 
     grunt.registerTask('test', ['karma', 'connect:ngTest', 'protractor']);
 };

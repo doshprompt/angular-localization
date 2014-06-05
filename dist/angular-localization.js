@@ -1,5 +1,5 @@
 /**
- * angular-localization :: v1.0.0 :: 2014-05-29
+ * angular-localization :: v1.0.0 :: 2014-06-04
  * web: https://github.com/doshprompt/angular-localization
  *
  * Copyright (c) 2014 | Rahul Doshi
@@ -305,7 +305,7 @@ angular.module('ngLocalize', ['ngCookies', 'ngLocalize.Config', 'ngLocalize.Even
             }
 
             return function (scope, elm, attrs) {
-                var hasObservers = {};
+                var hasObservers;
 
                 attrs.$observe('i18n', function (newVal, oldVal) {
                     if (newVal && newVal != oldVal) {
@@ -316,7 +316,8 @@ angular.module('ngLocalize', ['ngCookies', 'ngLocalize.Config', 'ngLocalize.Even
                 angular.forEach(attrs.$attr, function (attr, normAttr) {
                     if (localeConf.observableAttrs.test(attr)) {
                         attrs.$observe(normAttr, function (newVal, oldVal) {
-                            if ((newVal && newVal != oldVal) || !hasObservers[normAttr]) {
+                            if ((newVal && newVal != oldVal) || !hasObservers || !hasObservers[normAttr]) {
+                                hasObservers = hasObservers || {};
                                 hasObservers[normAttr] = attrs[normAttr];
                                 update(elm, attrs.i18n, hasObservers);
                             }
@@ -387,3 +388,5 @@ angular.module('ngLocalize.InstalledLanguages', [])
     .value('localeFallbacks', {
         'en': 'en-US'
     });
+angular.module('ngLocalize.Version')
+    .constant('localeVer', 'v1.0.0');

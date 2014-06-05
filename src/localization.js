@@ -282,7 +282,7 @@ angular.module('ngLocalize', ['ngCookies', 'ngLocalize.Config', 'ngLocalize.Even
             }
 
             return function (scope, elm, attrs) {
-                var hasObservers = {};
+                var hasObservers;
 
                 attrs.$observe('i18n', function (newVal, oldVal) {
                     if (newVal && newVal != oldVal) {
@@ -293,7 +293,8 @@ angular.module('ngLocalize', ['ngCookies', 'ngLocalize.Config', 'ngLocalize.Even
                 angular.forEach(attrs.$attr, function (attr, normAttr) {
                     if (localeConf.observableAttrs.test(attr)) {
                         attrs.$observe(normAttr, function (newVal, oldVal) {
-                            if ((newVal && newVal != oldVal) || !hasObservers[normAttr]) {
+                            if ((newVal && newVal != oldVal) || !hasObservers || !hasObservers[normAttr]) {
+                                hasObservers = hasObservers || {};
                                 hasObservers[normAttr] = attrs[normAttr];
                                 update(elm, attrs.i18n, hasObservers);
                             }
