@@ -1,0 +1,15 @@
+{
+    "basicExampleText": "exemple de base",
+    "currentVersion": "Actuellement en version %ver",
+    "copyrightString": "© {year} {name}",
+    "dynamicExampleText": "Bonjour {name}",
+    "emailAddress": "Adresse E-mail",
+    "emailPlaceholder": "Entrer Email",
+    "genericErrorMessage": "fichier introuvable :(",
+    "numberPrompt": "S'il vous plaît, entrez un numéro",
+    "password": "Mot de passe",
+    "rememberMe": "Se souvenir de moi",
+    "submit": "Soumettre",
+    "targetedErrorMessage": "%1 pas trouvé — plus un message d'erreur générique :)",
+    "testStatusMessage": "Running {1} tests ... encountered {2} failures!"
+}

@@ -1,0 +1,11 @@
+{
+    "manyPluralized": "Lots of people are watching.",
+    "manyPluralizedNum": "%1 people are watching.",
+    "morePluralizedOfs": "You, %1 and %2 other people are viewing",
+    "onePluralized": "A person is viewing.",
+    "onePluralizedNum": "%1 person is viewing.",
+    "onePluralizedOfs": "You are viewing.",
+    "threePluralizedOfs": "You, %1 and one other person are viewing.",
+    "twoPluralizedOfs": "You and %1 are watching.",
+    "zeroPluralized": "Nobody is viewing."
+}

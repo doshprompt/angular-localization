@@ -1,0 +1,11 @@
+{
+    "manyPluralized": "Tas de gens sont à regarder.",
+    "manyPluralizedNum": "%1 des gens regardent.",
+    "morePluralizedOfs": "Vous,%1 et %2 autres personnes regardez.",
+    "onePluralized": "Une personne consulte.",
+    "onePluralizedNum": "1 personne consulte.",
+    "onePluralizedOfs": "Vous regardez.",
+    "threePluralizedOfs": "Vous, %1 et une autre personne consulte.",
+    "twoPluralizedOfs": "Vous et %1 sont à regarder.",
+    "zeroPluralized": "Personne ne regardez."
+}

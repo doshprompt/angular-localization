@@ -1,1 +1,41 @@
-My GitHub Page
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Sample App">
+        <meta name="author" content="Rahul Doshi">
+
+        <title>My AngularJS App</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/css/docs.min.css" rel="stylesheet">
+        <link href="assets/css/custom.css" rel="stylesheet">
+
+        <link href="assets/css/flags.css" rel="stylesheet">
+    </head>
+
+    <body data-ng-app="ngLocalize.docs">
+        <div data-ng-include="'app/views/navbar.html'"></div>
+        <div data-ng-include="'app/views/mainContent.html'"></div>
+        <div data-ng-include="'app/views/footer.html'"></div>
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/docs.min.js"></script>
+
+        <script src="assets/js/angular.min.js"></script>
+        <script src="assets/js/angular-cookies.min.js"></script>
+        <script src="assets/dist/angular-localization.js"></script>
+
+        <script src="app/declarations.js"></script>
+        <script src="app/controllers/navbar.js"></script>
+        <script src="app/controllers/demo.js"></script>
+        <script src="app/controllers/footer.js"></script>
+    </body>
+</html>

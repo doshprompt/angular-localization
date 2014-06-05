@@ -1,0 +1,33 @@
+<!-- Docs master nav -->
+<header class="navbar navbar-fixed-top bs-docs-nav" id="top" role="banner" data-ng-controller="NavControl">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="#" class="navbar-brand">ngLocalize</a>
+        </div>
+        <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                        <i ng-class="flagClass"></i>
+                        <span>{{ langDisplayText }}</span>
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li data-ng-repeat="lang in supportedLang">
+                            <a href="" ng-click="setLocale(lang)">
+                                <i ng-class="localeData[lang].flagClass"></i>
+                                <span>{{ localeData[lang].langDisplayText }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
