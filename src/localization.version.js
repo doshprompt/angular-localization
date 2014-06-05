@@ -1,2 +1,2 @@
-angular.module('ngLocalize.Version')
+angular.module('ngLocalize.Version', [])
     .constant('localeVer', '/* @echo VERSION */');

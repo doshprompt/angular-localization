@@ -388,5 +388,5 @@ angular.module('ngLocalize.InstalledLanguages', [])
     .value('localeFallbacks', {
         'en': 'en-US'
     });
-angular.module('ngLocalize.Version')
+angular.module('ngLocalize.Version', [])
     .constant('localeVer', 'v1.0.0');
