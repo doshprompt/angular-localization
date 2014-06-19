@@ -1,8 +1,21 @@
-/*A fixed navbar has been added, so make some room
+/* A fixed navbar has been added, make some room
 -------------------------------------------------- */
 
 body {
     padding-top: 50px;
+}
+
+/* customize bs-docs a little bit.
+-------------------------------------------------- */
+
+.bs-docs-masthead {
+    margin-bottom: 40px;    
+}
+
+.bs-docs-masthead .fa {
+    vertical-align: -10%;
+    font-size: 1.25em;
+    line-height: .75em;
 }
 
 /* Workaround/Hack for bs-scrollspy + fixed navbar

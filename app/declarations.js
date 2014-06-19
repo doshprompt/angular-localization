@@ -3,9 +3,13 @@
 
     var myApp = {
         definitions: {
-            'ngLocalize.docs.demo': ['ngLocalize.Config', 'ngLocalize.Version'],
-            'ngLocalize.docs.navbar': ['ngLocalize.Version'],
-            'ngLocalize.docs.footer': []
+            'ngLocalize.docs.demo': [
+                'ngLocalize.Config',
+                'ngLocalize.Version'
+            ],
+            'ngLocalize.docs.navbar': [],
+            'ngLocalize.docs.header': [ 'ngLocalize.Version' ],
+            'ngLocalize.docs.footer': [ 'ngLocalize.Version' ]
         },
         dependencies: [
             'ngLocalize',
