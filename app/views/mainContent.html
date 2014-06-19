@@ -15,6 +15,7 @@
 
 <!-- Docs page layout -->
 <div class="bs-docs-header" id="content">
+    <span id="forkongithub"><a href="https://github.com/doshprompt/angular-localization/fork">Fork me on GitHub</a></span>
     <div class="container">
         <h1>angular-localization</h1>
         <p>A complete AngularJS localization service with core service and accompanying filters, directives etc.</p>
@@ -24,7 +25,7 @@
 
 <div class="container bs-docs-container" data-ng-controller="DemoControl">
     <div class="row">
-        <div class="col-md-12" role="main">
+        <div class="col-md-10" role="main">
             <!-- i18n directive
             ================================================== -->
             <div class="bs-docs-section">
@@ -352,9 +353,13 @@
     <span>{{</span> <span>specials.version<span> <span>}}</span>
 <span class="nt">&lt;/div&gt;</span></code></pre>
                 </div>
+            </div>
 
-                <h3 id="i18nFilter-ngPluralize">Using ngPluralize</h3>
-                <p>Partially compatible with native ngPluralize directive.</p>
+            <!-- Using with ngPluralize
+            ================================================== -->
+            <div class="bs-docs-section">
+                <h1 id="ngLocalize-ngPluralize">Using ngPluralize</h1>
+                <p class="lead">Partially compatible with native ngPluralize directive.</p>
 
                 <div class="bs-example">
                     <div class="form-group">
@@ -402,6 +407,105 @@
                         <ng-pluralize count="pluralization.numCount" offset="2" when="{ '0': '{{ pluralization.getWithOffs() | i18n }}', '1': '{{ pluralization.getWithOffs() | i18n }}', '2': '{{ pluralization.getWithOffs() }}', 'one': '{{ pluralization.getWithOffs() }}', 'other': '{{ pluralization.getWithOffs() }}' }"></ng-pluralize>
                     </div>
                 </div>
+            </div>
+
+            <!-- Events Emitted
+            ================================================== -->
+            <div class="bs-docs-section">
+                <h1 id="events" class="page-header">Events Emitted</h1>
+                <p class="lead">
+                    The base service exposes certain events which may be listened to, captured and acted upon.
+                    There are part of the <code>ngLocalize.Events</code> module
+                    which must first be injected as a dependency either at the application-level or in your controller/services enclosing module.
+                    Since these are emitted by <code>$rootScope</code> they are available to all descendent <code>$scopes</code> in controllers, services and/or directives.
+                </p>
+
+                <h3 id="events-updates">On Resource Updates</h3>
+                <p>You must listen for <code>localeEvents.resourceUpdates</code>.</p>
+
+                <div class="highlight">
+<pre><code class="js"><span class="nx">angular.module</span><span class="p">(</span><span class="nb"><span class="s1">&#39;docs.demo.myModule&#39;</span></span>, <span class="p">[</span><span class="nb"><span class="s1">&#39;ngLocalize.Events&#39;</span></span><span class="p">])</span>
+    <span class="nx">.controller</span><span class="p">(</span><span class="nb"><span class="s1">&#39;demoControl&#39;</span></span>, <span class="p">[</span><span class="nb"><span class="s1">&#39;localeVersion&#39;</span></span>,
+        <span class="nb">function</span><span class="p">() {</span>
+            <span class="nx">$scope.$on</span><span class="p">(</span><span class="nb"><span class="nb">localeEvents.resourceUpdates</span>, <span class="kd">function</span> </span><span class="p">() {</span>
+                <span class="nx">console.info<span class="p">(</span><span class="s1">&#39;ngLocalize: Resource Updated.&#39;</span><span class="p">)</span></span>
+            <span class="p">});</span>
+        <span class="p">}</span>
+    <span class="p">]);</span></code></pre>
+                </div>
+
+                <h3 id="events-changes">On Locale Changes</h3>
+                <p>Triggered by <code>localeEvents.localeChanges</code>.</p>
+
+                <div class="highlight">
+<pre><code class="js"><span class="nx">angular.module</span><span class="p">(</span><span class="nb"><span class="s1">&#39;docs.demo.yetAnotherModule&#39;</span></span>, <span class="p">[</span><span class="nb"><span class="s1">&#39;ngLocalize.Events&#39;</span></span><span class="p">])</span>
+    <span class="nx">.controller</span><span class="p">(</span><span class="nb"><span class="s1">&#39;docsControl&#39;</span></span>, <span class="p">[</span><span class="nb"><span class="s1">&#39;localeVersion&#39;</span></span>,
+        <span class="nb">function</span><span class="p">() {</span>
+            <span class="nx">$scope.$on</span><span class="p">(</span><span class="nb"><span class="nb">localeEvents.localeChanges</span>, <span class="kd">function</span> </span><span class="p">(</span><span class="nb">newLocale</span><span class="p">) {</span>
+                <span class="nx">console.info<span class="p">(</span><span class="s1">&#39;ngLocalize: Locale Changed to &#39;</span> <span class="nx">+ newLocale</span><span class="p">)</span></span>
+            <span class="p">});</span>
+        <span class="p">}</span>
+    <span class="p">]);</span></code></pre>
+                </div>
+            </div>
+
+            <!-- Custom Configuration
+            ================================================== -->
+            <div class="bs-docs-section">
+                <h1 id="config" class="page-header">Custom Configuration</h1>
+                <p class="lead">TODO</p>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="bs-docs-sidebar hidden-print affix-top" role="complementary" data-bs-affix data-bs-scrollspy-list>
+                <ul class="nav bs-docs-sidenav">
+                    <li data-target="#i18nDirective" bs-scrollspy>
+                        <a href="#i18nDirective">i18n Directive</a>
+                        <ul class="nav">
+                            <li data-target="#i18nDirective-basic" bs-scrollspy>
+                                <a href="#i18nDirective-basic">Basic Example</a>
+                            </li>
+                            <li data-target="#i18nDirective-dynamic" bs-scrollspy>
+                                <a href="#i18nDirective-dynamic">Dynamic User Data</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li data-target="#i18nAttrDirective" bs-scrollspy>
+                        <a href="#i18nAttrDirective">i18nAttr Directive</a>
+                        <ul class="nav">
+                            <li data-target="#i18nDirective-inputs" bs-scrollspy>
+                                <a href="#i18nAttrDirective-inputs">Input Placeholders</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li data-target="#localeService" bs-scrollspy>
+                        <a href="#localeService">locale Service</a>
+                    </li>
+                    <li data-target="#i18nFilter" bs-scrollspy>
+                        <a href="#i18nFilter">i18n Filter</a>
+                        <ul class="nav">
+                            <li data-target="#i18nFilter-simple" bs-scrollspy>
+                                <a href="#i18nFilter-simple">Simple Example</a>
+                            </li>
+                            <li data-target="#i18nFilter-args" bs-scrollspy>
+                                <a href="#i18nFilter-args">Parameterized Arguments</a>
+                            </li>
+                            <li data-target="#i18nFilter-special" bs-scrollspy>
+                                <a href="#i18nFilter-special">Special Use-case(s)</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li data-target="#ngLocalize-ngPluralize" bs-scrollspy>
+                        <a href="#ngLocalize-ngPluralize">Using ngPluralize</a>
+                    </li>
+                    <li data-target="#events" bs-scrollspy>
+                        <a href="#events">Emitted Events</a>
+                    </li>
+                    <li data-target="#config" bs-scrollspy>
+                        <a href="#config">Custom Configuration</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

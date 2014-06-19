@@ -4,11 +4,12 @@
     var myApp = {
         definitions: {
             'ngLocalize.docs.demo': ['ngLocalize.Config', 'ngLocalize.Version'],
-            'ngLocalize.docs.navbar': ['ngLocalize.InstalledLanguages', 'ngLocalize.Events'],
+            'ngLocalize.docs.navbar': ['ngLocalize.Version'],
             'ngLocalize.docs.footer': []
         },
         dependencies: [
-            'ngLocalize'
+            'ngLocalize',
+            'mgcrea.ngStrap'
         ],
         appName: 'ngLocalize.docs'
     };

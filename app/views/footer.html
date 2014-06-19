@@ -1,10 +1,37 @@
-<div class="navbar navbar-default navbar-fixed-bottom" data-ng-controller="FootControl">
-  <div class="container">
-      <p
-          class="text-muted pull-left"
-          data-i18n="footer.copyrightString"
-          data-curr-year="{{ currentYear }}"
-          data-full-name="{{ fullName }}">
-      </p>
-  </div>
-</div>
+<footer class="bs-docs-footer" role="contentinfo" data-ng-controller="FootControl">
+    <div class="container">
+        <div class="bs-docs-social">
+            <ul class="bs-docs-social-buttons">
+                <li>
+                    <iframe
+                        title="Star on GitHub" class="github-btn"
+                        src="http://ghbtns.com/github-btn.html?user=doshprompt&amp;repo=angular-localization&amp;type=watch&amp;count=true"
+                        width="100" height="20">
+                    </iframe>
+                </li>
+                <li>
+                    <iframe
+                        title="Fork on GitHub" class="github-btn"
+                        src="http://ghbtns.com/github-btn.html?user=doshprompt&amp;repo=angular-localization&amp;type=fork&amp;count=true"
+                        width="102" height="20">
+                    </iframe>
+                </li>
+            </ul>
+        </div>
+
+        <p>Designed and built with all the love in the world by <a href="http://twitter.com/doshprompt" target="_blank">@doshprompt</a>.</p>
+        <p>
+            Code licensed under <a href="https://github.com/doshprompt/angular-localization/blob/master/LICENSE" target="_blank">MIT</a>,
+            documentation under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.
+        </p>
+        <ul class="bs-docs-footer-links muted">
+            <li>Currently {{ currentVersion }}</li>
+            <li>·</li>
+            <li><a href="https://github.com/doshprompt/angular-localization">GitHub</a></li>
+            <li>·</li>
+            <li><a href="https://github.com/doshprompt/angular-localization/issues?state=open">Issues</a></li>
+            <li>·</li>
+            <li><a href="https://github.com/doshprompt/angular-localization/releases">Releases</a></li>
+        </ul>
+    </div>
+</footer>

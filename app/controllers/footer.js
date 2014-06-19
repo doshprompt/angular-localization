@@ -1,9 +1,8 @@
 angular.module('ngLocalize.docs.footer')
-    .controller('FootControl', ['$scope', 'locale', 'localeSupported', 'localeEvents',
-        function ($scope, locale, localeSupported, localeEvents) {
+    .controller('FootControl', ['$scope', 'localeVer',
+        function ($scope, localeVer) {
             'use strict';
 
-            $scope.currentYear = new Date().getFullYear();
-            $scope.fullName = 'Rahul Doshi';
+            $scope.currentVersion = localeVer;
         }
     ]);
