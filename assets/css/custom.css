@@ -1,8 +1,21 @@
-body,
-.bs-docs-sidebar.affix {
+/*A fixed navbar has been added, so make some room
+-------------------------------------------------- */
+
+body {
     padding-top: 50px;
-    
 }
+
+/* Workaround/Hack for bs-scrollspy + fixed navbar
+-------------------------------------------------- */
+/* http://stackoverflow.com/a/20477243 */
+
+h1[id] {
+    padding-top: 60px;
+    margin-top: -60px;
+}
+
+/* GitHub Ribbon
+-------------------------------------------------- */
 
 #forkongithub a {
     background: #fff;
