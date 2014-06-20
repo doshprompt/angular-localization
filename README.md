@@ -127,7 +127,7 @@ All overridable configuration options are part of `localeConf` within the `ngLoc
 > the locale that your app is initialized with for a new user
 
 ###### sharedDictionary @ `common`
-> commonly occuring words, phrases, strings etc. are stored in this file(it is used to check whether the service itself is ready or not as it is loaded during bootstrap)
+> commonly occuring words, phrases, strings etc. are stored in this file (it is used to check whether the service itself is ready or not as it is loaded during bootstrap)
 
 ###### fileExtension @ `.lang.json`
 > the extension for all resource files spanning across all languages
