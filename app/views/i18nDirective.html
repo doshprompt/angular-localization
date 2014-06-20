@@ -1,0 +1,43 @@
+<h1 id="i18nDirective" class="page-header">i18n Directive</h1>
+<p class="lead">
+    The localization key can be defined as the value of the <code>i18n</code> attribute.
+    If the attribute value is not a valid token, then it will itself be used as the element's content.
+</p>
+
+<div class="bs-callout bs-callout-warning">
+    <h4>Attribute localizations cannot contain HTML tags</h4>
+    <p>
+        Localizations defined by the <code>i18n</code> attribute cannot contain HTML tags, as the translation result will be assigned as text, not as HTML.
+        This limitation enables a slightly faster localization, as no sanitization is required.
+    </p>
+</div>
+
+<h3 id="i18nDirective-basic">Basic example</h3>
+<p>Attach the <code>data-i18n</code> attribute to the element whose text should be localized.</p>
+
+<div class="bs-example">
+    <div class="panel panel-default">
+        <div class="panel-body" data-i18n="demo.basicExampleText"></div>
+    </div>
+</div>
+
+<div class="highlight">
+<pre><code class="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;panel panel-default&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;panel-body&quot;</span> <span class="na">data-i18n=</span><span class="s">&quot;demo.basicExampleText&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre>
+</div>
+
+<h3 id="i18nDirective-dynamic">Dynamic user data</h3>
+<p>The i18n directive observes all non-directive <code>data-*</code> attributes.</p>
+
+<div class="bs-example">
+    <div class="panel panel-default">
+        <div class="panel-body" data-i18n="demo.dynamicExampleText" data-name="{{ user.name }}"></div>
+    </div>
+</div>
+
+<div class="highlight">
+<pre><code class="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;panel panel-default&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;panel-body&quot;</span> <span class="na">data-i18n=</span><span class="s">&quot;demo.dynamicExampleText&quot;</span> <span class="na">data-name=</span><span class="s">&quot;{{ user.name }}&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre>
+</div>

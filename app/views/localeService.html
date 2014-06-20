@@ -1,0 +1,78 @@
+<h1 id="localeService" class="page-header">locale Service</h1>
+<p class="lead">The <code>locale</code> service is equivalent to the <code>i18n</code> directive in all aspects and can be used to generate localized results in situations where the directive cannot be used.</p>
+
+<div class="bs-callout bs-callout-danger">
+    <h4>Race conditions</h4>
+    <p>
+        Always use <code>locale.ready()</code> passing in the filename(s) in which the token(s) exists in that context, 
+        and enclose any other relevant calls to <code>locale.getString()</code> within this promise's callback function block.
+        Failure to do so may cause unexpected (empty) results due to the asynchronous nature of your entire JavaScript application.
+    </p>
+    <p>You may use <code>locale.getPath()</code> to find the filename for any given token.</p>
+</div>
+
+<h3 id="localeService-within">Within locale.ready</h3>
+<p>Wrap in a call to <code>locale.ready()</code> to ensure that the value will be updated if and only if the filepath has been loaded into memory.</p>
+
+<div class="highlight">
+<pre><code class="js"><span class="nx">locale.ready</span><span class="p">(</span><span class="nb"><span class="s1">&#39;common&#39;</span></span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nb">function</span><span class="p">() {</span>
+    <span class="nx">$scope.strings.yes = </span><span class="nx">locale.getString</span><span class="p">(</span><span class="nb"><span class="s1">&#39;common.yes&#39;</span></span><span class="p">);</span>
+<span class="p">});</span></code></pre>
+</div>
+
+<div class="bs-example">
+    <div class="dropdown clearfix">
+        <button class="btn dropdown-toggle sr-only" type="button" id="dropdownMenu1" data-toggle="dropdown">
+            Dropdown
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">{{ strings.yes }}</a></li>
+        </ul>
+    </div>
+</div><!-- /example -->
+
+<div class="highlight">
+<pre><code class="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;dropdown&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;button</span> <span class="na">class=</span><span class="s">&quot;btn dropdown-toggle sr-only&quot;</span> <span class="na">type=</span><span class="s">&quot;button&quot;</span> <span class="na">id=</span><span class="s">&quot;dropdownMenu1&quot;</span> <span class="na">data-toggle=</span><span class="s">&quot;dropdown&quot;</span><span class="nt">&gt;</span>
+Dropdown
+        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;caret&quot;</span><span class="nt">&gt;&lt;/span&gt;</span>
+    <span class="nt">&lt;/button&gt;</span>
+    <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;dropdown-menu&quot;</span> <span class="na">role=</span><span class="s">&quot;menu&quot;</span> <span class="na">aria-labelledby=</span><span class="s">&quot;dropdownMenu1&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">role=</span><span class="s">&quot;presentation&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">role=</span><span class="s">&quot;menuitem&quot;</span> <span class="na">tabindex=</span><span class="s">&quot;-1&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span><span>{{</span> <span>strings.yes</span> <span>}}</span><span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre>
+</div>
+
+<h3 id="localeService-without">Without locale.ready</h3>
+<p>Missing <code>locale.ready()</code> causes the value to be updated immediately, before the service has time to fetch the file.</p>
+
+<div class="highlight">
+<pre><code class="js"><span class="nx">$scope.strings = {</span>
+    <span class="nx">no: locale.getString</span><span class="p">(</span><span class="nb"><span class="s1">&#39;common.no&#39;</span></span><span class="p">)</span>
+<span class="p">};</span></code></pre>
+</div>
+
+<div class="bs-example">
+    <div class="dropdown clearfix">
+        <button class="btn dropdown-toggle sr-only" type="button" id="dropdownMenu2" data-toggle="dropdown">
+            Dropdown
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">{{ strings.no }}</a></li>
+        </ul>
+    </div>
+</div><!-- /example -->
+
+<div class="highlight">
+<pre><code class="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;dropdown&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;button</span> <span class="na">class=</span><span class="s">&quot;btn dropdown-toggle sr-only&quot;</span> <span class="na">type=</span><span class="s">&quot;button&quot;</span> <span class="na">id=</span><span class="s">&quot;dropdownMenu1&quot;</span> <span class="na">data-toggle=</span><span class="s">&quot;dropdown&quot;</span><span class="nt">&gt;</span>
+Dropdown
+        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;caret&quot;</span><span class="nt">&gt;&lt;/span&gt;</span>
+    <span class="nt">&lt;/button&gt;</span>
+    <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;dropdown-menu&quot;</span> <span class="na">role=</span><span class="s">&quot;menu&quot;</span> <span class="na">aria-labelledby=</span><span class="s">&quot;dropdownMenu1&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;li</span> <span class="na">role=</span><span class="s">&quot;presentation&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">role=</span><span class="s">&quot;menuitem&quot;</span> <span class="na">tabindex=</span><span class="s">&quot;-1&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span><span>{{</span> <span>strings.no</span> <span>}}</span><span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre>
+</div>

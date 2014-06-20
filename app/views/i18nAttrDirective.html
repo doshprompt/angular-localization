@@ -1,0 +1,82 @@
+<h1 id="i18nAttrDirective" class="page-header anchor">i18nAttr Directive</h1>
+<p class="lead">
+    It works the same way as the original <code>i18n</code> directive,
+    but instead of updating the element content,
+    it updates their associated HTML attribute(s).
+</p>
+
+<h3 id="i18nAttrDirective-inputs">Input Placeholders</h3>
+<p></p>
+
+<div class="bs-example">
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            <label for="exampleInputEmail" class="col-sm-2 control-label" data-i18n="demo.emailAddress"></label>
+            <div class="col-sm-10">
+                <input type="email" class="form-control" id="exampleInputEmail" data-i18n-attr="{placeholder: 'demo.emailPlaceholder'}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword" class="col-sm-2 control-label" data-i18n="demo.password"></label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" id="exampleInputPassword" data-i18n-attr="{placeholder: 'demo.password'}">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox">
+                        {{ 'demo.rememberMe' | i18n }}
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default" data-i18n="demo.submit"></button>
+            </div>
+        </div>
+    </form>
+</div><!-- /.bs-example -->
+
+<div class="highlight">
+<pre><code class="html"><span class="nt">&lt;form</span> <span class="na">class=</span><span class="s">&quot;form-horizontal&quot;</span> <span class="na">role=</span><span class="s">&quot;form&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;form-group&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">&quot;exampleInputEmail&quot;</span> <span class="na">class=</span><span class="s">&quot;col-sm-2 control-label&quot;</span> <span class="na">data-i18n=</span><span class="s">&quot;demo.emailAddress&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/label&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-sm-10&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;email&quot;</span> <span class="na">class=</span><span class="s">&quot;form-control&quot;</span> <span class="na">id=</span><span class="s">&quot;exampleInputEmail&quot;</span> <span class="na">data-i18n-attr=</span><span class="s">&quot;{placeholder: 'demo.emailPlaceholder'}&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;form-group&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">&quot;exampleInputPassword&quot;</span> <span class="na">class=</span><span class="s">&quot;col-sm-2 control-label&quot;</span> <span class="na">data-i18n=</span><span class="s">&quot;demo.password&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/label&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-sm-10&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;password&quot;</span> <span class="na">class=</span><span class="s">&quot;form-control&quot;</span> <span class="na">id=</span><span class="s">&quot;exampleInputPassword&quot;</span> <span class="na">data-i18n-attr=</span><span class="s">&quot;{placeholder: 'demo.password'}&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;form-group&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-sm-offset-2 col-sm-10&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;checkbox&quot;</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;label&gt;</span>
+                    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;checkbox&quot;</span><span class="nt">&gt;</span>
+                    <span>{{</span> <span>&#39;demo.rememberMe&#39; | i18n</span> <span>}}</span>
+                <span class="nt">&lt;/label&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;form-group&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-sm-offset-2 col-sm-10&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">&quot;submit&quot;</span> <span class="na">class=</span><span class="s">&quot;btn btn-default&quot;</span> <span class="na">data-i18n=</span><span class="s">&quot;demo.submit&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/button&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/form&gt;</span></code></pre>
+</div>
+
+<div class="bs-callout bs-callout-info">
+    <h4>Form data will remain when changing languages</h4>
+    <p>
+        Your form data will remain intact when switching back and forth between languages.
+        The page does not and never will refresh because all changes are handled in place.
+        So what are you waiting for &mdash; go ahead and try it out!
+    </p>
+</div>

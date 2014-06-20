@@ -1,0 +1,104 @@
+<h1 id="i18nFilter" class="page-header">i18n Filter</h1>
+<p class="lead">
+    The <code>i18n</code> filter provides the same functionality as the service.
+    It can be useful in templates where the localization strings are dynamic, e.g. for error messages
+</p>
+
+<h3 id="i18nFilter-simple">Simple Example</h3>
+<p>Pipe a generated error message to be processed.</p>
+
+<div class="bs-example">
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove"></span>
+        {{ messages.generic | i18n }}
+    </div>
+</div>
+
+<div class="highlight">
+<pre><code class="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-danger&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;glyphicon glyphicon-remove&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/span&gt;</span>
+    <span>{{</span> <span>messages.error | i18n<span> <span>}}</span>
+<span class="nt">&lt;/div&gt;</span></code></pre>
+</div>
+
+<h3 id="i18nFilter-args">Parameterized Arguments</h3>
+<p>Give it an array, map (object) or even a single string</p>
+
+<div class="bs-example">
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove"></span>
+        {{ messages.targeted | i18n:'test.json' }}
+    </div>
+    <div class="alert alert-success">
+        <span class="glyphicon glyphicon-ok"></span>
+        {{ messages.tests | i18n:filtArgs.tests }}
+    </div>
+    <div class="alert alert-info">
+        {{ messages.copyright | i18n:filtArgs.copyright }}
+    </div>
+    <div class="alert alert-info">
+        <span class="glyphicon glyphicon-info-sign"></span>
+        {{ messages.version | i18n:filtArgs.version }}
+    </div>
+</div>
+
+<div class="highlight">
+<pre><code class="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-danger&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;glyphicon glyphicon-remove&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/span&gt;</span>
+    <span>{{</span> <span>messages.targeted | i18n:&#39;test.json&#39;<span> <span>}}</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-success&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;glyphicon glyphicon-ok&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/span&gt;</span>
+    <span>{{</span> <span>messages.tests | i18n:filtArgs.tests<span> <span>}}</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-info&quot;</span><span class="nt">&gt;</span>
+    <span>{{</span> <span>messages.copyright | i18n:filtArgs.copyright<span> <span>}}</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-info&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;glyphicon glyphicon-info-sign&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/span&gt;</span>
+    <span>{{</span> <span>messages.version | i18n:filtArgs.version<span> <span>}}</span>
+<span class="nt">&lt;/div&gt;</span></code></pre>
+</div>
+
+<h3 id="i18nFilter-special">Special Use-case</h3>
+<p>
+    Use a delimiter when it is not possible to follow the standardized conventional syntax for passing in additional information.
+    Because of the way that is has been designed, it will not work in markup and must be called programatically i.e. either <code>locale.getString()</code> or <code>$filter('i18n')</code>
+    and the string following the separator has to be valid JSON formatted.
+</p>
+
+<div class="bs-example">
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove"></span>
+        {{ specials.targeted }}
+    </div>
+    <div class="alert alert-success">
+        <span class="glyphicon glyphicon-ok"></span>
+        {{ specials.tests }}
+    </div>
+    <div class="alert alert-info">
+        {{ specials.copyright }}
+    </div>
+    <div class="alert alert-info">
+        <span class="glyphicon glyphicon-info-sign"></span>
+        {{ specials.version }}
+    </div>
+</div>
+
+<div class="highlight">
+<pre><code class="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-danger&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;glyphicon glyphicon-remove&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/span&gt;</span>
+    <span>{{</span> <span>specials.targeted<span> <span>}}</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-success&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;glyphicon glyphicon-ok&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/span&gt;</span>
+    <span>{{</span> <span>specials.tests<span> <span>}}</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-info&quot;</span><span class="nt">&gt;</span>
+    <span>{{</span> <span>specials.copyright<span> <span>}}</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-info&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;glyphicon glyphicon-info-sign&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/span&gt;</span>
+    <span>{{</span> <span>specials.version<span> <span>}}</span>
+<span class="nt">&lt;/div&gt;</span></code></pre>
+</div>

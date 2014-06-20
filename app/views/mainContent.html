@@ -4,338 +4,31 @@
         <div class="col-md-10" role="main">
             <!-- i18n directive
             ================================================== -->
-            <div class="bs-docs-section">
-                <h1 id="i18nDirective" class="page-header">i18n Directive</h1>
-                <p class="lead">
-                    The localization key can be defined as the value of the <code>i18n</code> attribute.
-                    If the attribute value is not a valid token, then it will itself be used as the element's content.
-                </p>
-
-                <div class="bs-callout bs-callout-warning">
-                    <h4>Attribute localizations cannot contain HTML tags</h4>
-                    <p>
-                        Localizations defined by the <code>i18n</code> attribute cannot contain HTML tags, as the translation result will be assigned as text, not as HTML.
-                        This limitation enables a slightly faster localization, as no sanitization is required.
-                    </p>
-                </div>
-
-                <h3 id="i18nDirective-basic">Basic example</h3>
-                <p>Attach the <code>data-i18n</code> attribute to the element whose text should be localized.</p>
-
-                <div class="bs-example">
-                    <div class="panel panel-default">
-                        <div class="panel-body" data-i18n="demo.basicExampleText"></div>
-                    </div>
-                </div>
-
-                <div class="highlight">
-<pre><code class="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;panel panel-default&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;panel-body&quot;</span> <span class="na">data-i18n=</span><span class="s">&quot;demo.basicExampleText&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-</code></pre>
-                </div>
-
-                <h3 id="i18nDirective-dynamic">Dynamic user data</h3>
-                <p>The i18n directive observes all non-directive <code>data-*</code> attributes.</p>
-
-                <div class="bs-example">
-                    <div class="panel panel-default">
-                        <div class="panel-body" data-i18n="demo.dynamicExampleText" data-name="{{ user.name }}"></div>
-                    </div>
-                </div>
-
-                <div class="highlight">
-<pre><code class="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;panel panel-default&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;panel-body&quot;</span> <span class="na">data-i18n=</span><span class="s">&quot;demo.dynamicExampleText&quot;</span> <span class="na">data-name=</span><span class="s">&quot;{{ user.name }}&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-</code></pre>
-                </div>
-            </div>
+            <div class="bs-docs-section" data-ng-include="'app/views/i18nDirective.html'"></div>
 
             <!-- i18nAttr directive
             ================================================== -->
-            <div class="bs-docs-section">
-                <h1 id="i18nAttrDirective" class="page-header anchor">i18nAttr Directive</h1>
-                <p class="lead">
-                    It works the same way as the original <code>i18n</code> directive,
-                    but instead of updating the element content,
-                    it updates their associated HTML attribute(s).
-                </p>
-
-                <h3 id="i18nAttrDirective-inputs">Input Placeholders</h3>
-                <p></p>
-
-                <div class="bs-example">
-                    <form class="form-horizontal" role="form">
-                        <div class="form-group">
-                            <label for="exampleInputEmail" class="col-sm-2 control-label" data-i18n="demo.emailAddress"></label>
-                            <div class="col-sm-10">
-                                <input type="email" class="form-control" id="exampleInputEmail" data-i18n-attr="{placeholder: 'demo.emailPlaceholder'}">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword" class="col-sm-2 control-label" data-i18n="demo.password"></label>
-                            <div class="col-sm-10">
-                                <input type="password" class="form-control" id="exampleInputPassword" data-i18n-attr="{placeholder: 'demo.password'}">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox">
-                                        {{ 'demo.rememberMe' | i18n }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-default" data-i18n="demo.submit"></button>
-                            </div>
-                        </div>
-                    </form>
-                </div><!-- /.bs-example -->
-
-                <div class="highlight">
-<pre><code class="html"><span class="nt">&lt;form</span> <span class="na">class=</span><span class="s">&quot;form-horizontal&quot;</span> <span class="na">role=</span><span class="s">&quot;form&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;form-group&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">&quot;exampleInputEmail&quot;</span> <span class="na">class=</span><span class="s">&quot;col-sm-2 control-label&quot;</span> <span class="na">data-i18n=</span><span class="s">&quot;demo.emailAddress&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/label&gt;</span>
-        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-sm-10&quot;</span><span class="nt">&gt;</span>
-            <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;email&quot;</span> <span class="na">class=</span><span class="s">&quot;form-control&quot;</span> <span class="na">id=</span><span class="s">&quot;exampleInputEmail&quot;</span> <span class="na">data-i18n-attr=</span><span class="s">&quot;{placeholder: 'demo.emailPlaceholder'}&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;form-group&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">&quot;exampleInputPassword&quot;</span> <span class="na">class=</span><span class="s">&quot;col-sm-2 control-label&quot;</span> <span class="na">data-i18n=</span><span class="s">&quot;demo.password&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/label&gt;</span>
-        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-sm-10&quot;</span><span class="nt">&gt;</span>
-            <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;password&quot;</span> <span class="na">class=</span><span class="s">&quot;form-control&quot;</span> <span class="na">id=</span><span class="s">&quot;exampleInputPassword&quot;</span> <span class="na">data-i18n-attr=</span><span class="s">&quot;{placeholder: 'demo.password'}&quot;</span><span class="nt">&gt;</span>
-            <span class="nt">&lt;/div&gt;</span>
-        <span class="nt">&lt;/div&gt;</span>
-        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;form-group&quot;</span><span class="nt">&gt;</span>
-            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-sm-offset-2 col-sm-10&quot;</span><span class="nt">&gt;</span>
-            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;checkbox&quot;</span><span class="nt">&gt;</span>
-                <span class="nt">&lt;label&gt;</span>
-                    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;checkbox&quot;</span><span class="nt">&gt;</span>
-                    <span>{{</span> <span>&#39;demo.rememberMe&#39; | i18n</span> <span>}}</span>
-                <span class="nt">&lt;/label&gt;</span>
-            <span class="nt">&lt;/div&gt;</span>
-        <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;form-group&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-sm-offset-2 col-sm-10&quot;</span><span class="nt">&gt;</span>
-            <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">&quot;submit&quot;</span> <span class="na">class=</span><span class="s">&quot;btn btn-default&quot;</span> <span class="na">data-i18n=</span><span class="s">&quot;demo.submit&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/button&gt;</span>
-        <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/form&gt;</span></code></pre>
-                </div>
-
-                <div class="bs-callout bs-callout-info">
-                    <h4>Form data will remain when changing languages</h4>
-                    <p>
-                        Your form data will remain intact when switching back and forth between languages.
-                        The page does not and never will refresh because all changes are handled in place.
-                        So what are you waiting for &mdash; go ahead and try it out!
-                    </p>
-                </div>
-            </div>
+            <div class="bs-docs-section" data-ng-include="'app/views/i18nAttrDirective.html'"></div>
 
             <!-- locale service
             ================================================== -->
-            <div class="bs-docs-section">
-                <h1 id="localeService" class="page-header">locale Service</h1>
-                <p class="lead">The <code>locale</code> service is equivalent to the <code>i18n</code> directive in all aspects and can be used to generate localized results in situations where the directive cannot be used.</p>
-
-                <div class="bs-callout bs-callout-danger">
-                    <h4>Race conditions</h4>
-                    <p>
-                        Always use <code>locale.ready()</code> passing in the filename(s) in which the token(s) exists in that context, 
-                        and enclose any other relevant calls to <code>locale.getString()</code> within this promise's callback function block.
-                        Failure to do so may cause unexpected (empty) results due to the asynchronous nature of your entire JavaScript application.
-                    </p>
-                    <p>You may use <code>locale.getPath()</code> to find the filename for any given token.</p>
-                </div>
-
-                <h3 id="localeService-within">Within locale.ready</h3>
-                <p>Wrap in a call to <code>locale.ready()</code> to ensure that the value will be updated if and only if the filepath has been loaded into memory.</p>
-
-                <div class="highlight">
-<pre><code class="js"><span class="nx">locale.ready</span><span class="p">(</span><span class="nb"><span class="s1">&#39;common&#39;</span></span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nb">function</span><span class="p">() {</span>
-    <span class="nx">$scope.strings.yes = </span><span class="nx">locale.getString</span><span class="p">(</span><span class="nb"><span class="s1">&#39;common.yes&#39;</span></span><span class="p">);</span>
-<span class="p">});</span></code></pre>
-                </div>
-
-                <div class="bs-example">
-                    <div class="dropdown clearfix">
-                        <button class="btn dropdown-toggle sr-only" type="button" id="dropdownMenu1" data-toggle="dropdown">
-                            Dropdown
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">{{ strings.yes }}</a></li>
-                        </ul>
-                    </div>
-                </div><!-- /example -->
-
-                <div class="highlight">
-<pre><code class="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;dropdown&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;button</span> <span class="na">class=</span><span class="s">&quot;btn dropdown-toggle sr-only&quot;</span> <span class="na">type=</span><span class="s">&quot;button&quot;</span> <span class="na">id=</span><span class="s">&quot;dropdownMenu1&quot;</span> <span class="na">data-toggle=</span><span class="s">&quot;dropdown&quot;</span><span class="nt">&gt;</span>
-        Dropdown
-        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;caret&quot;</span><span class="nt">&gt;&lt;/span&gt;</span>
-    <span class="nt">&lt;/button&gt;</span>
-    <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;dropdown-menu&quot;</span> <span class="na">role=</span><span class="s">&quot;menu&quot;</span> <span class="na">aria-labelledby=</span><span class="s">&quot;dropdownMenu1&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;li</span> <span class="na">role=</span><span class="s">&quot;presentation&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">role=</span><span class="s">&quot;menuitem&quot;</span> <span class="na">tabindex=</span><span class="s">&quot;-1&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span><span>{{</span> <span>strings.yes</span> <span>}}</span><span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;/ul&gt;</span>
-<span class="nt">&lt;/div&gt;</span></code></pre>
-                </div>
-
-                <h3 id="localeService-without">Without locale.ready</h3>
-                <p>Missing <code>locale.ready()</code> causes the value to be updated immediately, before the service has time to fetch the file.</p>
-
-               <div class="highlight">
-<pre><code class="js"><span class="nx">$scope.strings = {</span>
-    <span class="nx">no: locale.getString</span><span class="p">(</span><span class="nb"><span class="s1">&#39;common.no&#39;</span></span><span class="p">)</span>
-<span class="p">};</span></code></pre>
-               </div>
-
-                <div class="bs-example">
-                    <div class="dropdown clearfix">
-                        <button class="btn dropdown-toggle sr-only" type="button" id="dropdownMenu2" data-toggle="dropdown">
-                            Dropdown
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">{{ strings.no }}</a></li>
-                        </ul>
-                    </div>
-                </div><!-- /example -->
-
-                <div class="highlight">
-<pre><code class="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;dropdown&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;button</span> <span class="na">class=</span><span class="s">&quot;btn dropdown-toggle sr-only&quot;</span> <span class="na">type=</span><span class="s">&quot;button&quot;</span> <span class="na">id=</span><span class="s">&quot;dropdownMenu1&quot;</span> <span class="na">data-toggle=</span><span class="s">&quot;dropdown&quot;</span><span class="nt">&gt;</span>
-        Dropdown
-        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;caret&quot;</span><span class="nt">&gt;&lt;/span&gt;</span>
-    <span class="nt">&lt;/button&gt;</span>
-    <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;dropdown-menu&quot;</span> <span class="na">role=</span><span class="s">&quot;menu&quot;</span> <span class="na">aria-labelledby=</span><span class="s">&quot;dropdownMenu1&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;li</span> <span class="na">role=</span><span class="s">&quot;presentation&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">role=</span><span class="s">&quot;menuitem&quot;</span> <span class="na">tabindex=</span><span class="s">&quot;-1&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span><span>{{</span> <span>strings.no</span> <span>}}</span><span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;/ul&gt;</span>
-<span class="nt">&lt;/div&gt;</span></code></pre>
-                </div>
-            </div>
+            <div class="bs-docs-section" data-ng-include="'app/views/localeService.html'"></div>
 
             <!-- i18n filter
             ================================================== -->
-            <div class="bs-docs-section">
-                <h1 id="i18nFilter" class="page-header">i18n Filter</h1>
-                <p class="lead">
-                    The <code>i18n</code> filter provides the same functionality as the service.
-                    It can be useful in templates where the localization strings are dynamic, e.g. for error messages
-                </p>
-
-                <h3 id="i18nFilter-simple">Simple Example</h3>
-                <p>Pipe a generated error message to be processed.</p>
-
-                <div class="bs-example">
-                    <div class="alert alert-danger">
-                        <span class="glyphicon glyphicon-remove"></span>
-                        {{ messages.generic | i18n }}
-                    </div>
-                </div>
-
-                <div class="highlight">
-<pre><code class="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-danger&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;glyphicon glyphicon-remove&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/span&gt;</span>
-    <span>{{</span> <span>messages.error | i18n<span> <span>}}</span>
-<span class="nt">&lt;/div&gt;</span></code></pre>
-                </div>
-
-                <h3 id="i18nFilter-args">Parameterized Arguments</h3>
-                <p>Give it an array, map (object) or even a single string</p>
-
-                <div class="bs-example">
-                    <div class="alert alert-danger">
-                        <span class="glyphicon glyphicon-remove"></span>
-                        {{ messages.targeted | i18n:'test.json' }}
-                    </div>
-                    <div class="alert alert-success">
-                        <span class="glyphicon glyphicon-ok"></span>
-                        {{ messages.tests | i18n:filtArgs.tests }}
-                    </div>
-                    <div class="alert alert-info">
-                        {{ messages.copyright | i18n:filtArgs.copyright }}
-                    </div>
-                    <div class="alert alert-info">
-                        <span class="glyphicon glyphicon-info-sign"></span>
-                        {{ messages.version | i18n:filtArgs.version }}
-                    </div>
-                </div>
-
-                <div class="highlight">
-<pre><code class="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-danger&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;glyphicon glyphicon-remove&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/span&gt;</span>
-    <span>{{</span> <span>messages.targeted | i18n:&#39;test.json&#39;<span> <span>}}</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-success&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;glyphicon glyphicon-ok&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/span&gt;</span>
-    <span>{{</span> <span>messages.tests | i18n:filtArgs.tests<span> <span>}}</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-info&quot;</span><span class="nt">&gt;</span>
-    <span>{{</span> <span>messages.copyright | i18n:filtArgs.copyright<span> <span>}}</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-info&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;glyphicon glyphicon-info-sign&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/span&gt;</span>
-    <span>{{</span> <span>messages.version | i18n:filtArgs.version<span> <span>}}</span>
-<span class="nt">&lt;/div&gt;</span></code></pre>
-                </div>
-
-                <h3 id="i18nFilter-special">Special Use-case</h3>
-                <p>
-                    Use a delimiter when it is not possible to follow the standardized conventional syntax for passing in additional information.
-                    Because of the way that is has been designed, it will not work in markup and must be called programatically i.e. either <code>locale.getString()</code> or <code>$filter('i18n')</code>
-                    and the string following the separator has to be valid JSON formatted.
-                </p>
-
-                <div class="bs-example">
-                    <div class="alert alert-danger">
-                        <span class="glyphicon glyphicon-remove"></span>
-                        {{ specials.targeted }}
-                    </div>
-                    <div class="alert alert-success">
-                        <span class="glyphicon glyphicon-ok"></span>
-                        {{ specials.tests }}
-                    </div>
-                    <div class="alert alert-info">
-                        {{ specials.copyright }}
-                    </div>
-                    <div class="alert alert-info">
-                        <span class="glyphicon glyphicon-info-sign"></span>
-                        {{ specials.version }}
-                    </div>
-                </div>
-
-                <div class="highlight">
-<pre><code class="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-danger&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;glyphicon glyphicon-remove&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/span&gt;</span>
-    <span>{{</span> <span>specials.targeted<span> <span>}}</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-success&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;glyphicon glyphicon-ok&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/span&gt;</span>
-    <span>{{</span> <span>specials.tests<span> <span>}}</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-info&quot;</span><span class="nt">&gt;</span>
-    <span>{{</span> <span>specials.copyright<span> <span>}}</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-info&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;glyphicon glyphicon-info-sign&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/span&gt;</span>
-    <span>{{</span> <span>specials.version<span> <span>}}</span>
-<span class="nt">&lt;/div&gt;</span></code></pre>
-                </div>
-            </div>
+            <div class="bs-docs-section" data-ng-include="'app/views/i18nFIlter.html'"></div>
 
             <!-- Using with ngPluralize
             ================================================== -->
             <div class="bs-docs-section">
                 <h1 id="ngLocalize-ngPluralize">Using ngPluralize</h1>
                 <p class="lead">Partially compatible with native ngPluralize directive.</p>
+
+                <div class="highlight">
+<pre><code class="js"><span class="nx">$scope.pluralization</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">numCount:</span> <span class="s1">1</span>
+<span class="p">};</span></code></pre>
+                </div>
 
                 <div class="bs-example">
                     <div class="form-group">
@@ -345,6 +38,16 @@
                         <span class="glyphicon glyphicon-question-sign"></span>
                         <span data-ng-pluralize data-count="pluralization.numCount" data-when="{ '0': '{{ pluralization.options.zero | i18n }}', '1': '{{ pluralization.options.one | i18n }}', 'other': '{{ pluralization.options.many | i18n }}' }"></span>
                     </div>
+                </div>
+
+                <div class="highlight">
+<pre><code class="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;form-group&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;number&quot;</span> <span class="na">min=</span><span class="s">&quot;0&quot;</span> <span class="na">class=</span><span class="s">&quot;form-control&quot;</span> <span class="na">data-ng-model=</span><span class="s">&quot;pluralization.numCount&quot;</span> <span class="na">data-i18n-attr=</span><span class="s">&quot;{placeholder: 'demo.numberPrompt'}&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-warning&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;glyphicon glyphicon-question-sign&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/span&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">data-ng-pluralize</span> <span class="na">data-count=</span><span class="s">&quot;pluralization.numCount&quot;</span> <span class="na">data-when=</span><span class="s">&quot;{ '0': '<span>{{</span> pluralization.options.zero | i18n <span>}}</span>', '1': '<span>{{</span> pluralization.options.one | i18n <span>}}</span>', 'other': '<span>{{</span> pluralization.options.many | i18n <span>}}</span>' }&quot;</span> <span class="nt">&gt;</span><span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre>
                 </div>
 
                 <div class="bs-callout bs-callout-warning">
@@ -366,6 +69,101 @@
                     <p>Also, strings may not be passed to the <code>i18n</code> filter(s) of the <code>ngPluralize</code> directive as is, in the markup.</p>
                 </div>
 
+                <div class="highlight">
+<pre><code class="js"><span class="nx">$scope.pluralization</span> <span clas="o">=</span> <span class="p">{</span>
+    <span class="nx">numCount:</span> <span class="s1">1</span>
+    <span class="nx">options:</span> <span class="p">{</span>
+        <span class="nx">zero:</span> <span class="s1">'plurals.zeroPluralized'</span>,
+        <span class="nx">one: <span class="s1">'plurals.onePluralized'</span>,
+        <span class="nx">many: <span class="s1">'plurals.manyPluralized'</span>
+    <span class="p">},</span>
+    <span class="nb">getPlural</span><span class="nb">:</span> <span class="kd">function</span> <span class="p">() {</span>
+        <span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="nx">$scope.pluralization.numCount</span> <span class="p">,</span>
+            <span class="nx">s</span><span class="p">;</span>
+        <span class="k">switch</span> <span class="p">(</span><span class="nx">n</span><span class="p">) {</span>
+        <span class="k">case</span> <span class="nb">null</span><span class="p">:</span>
+        <span class="k">case</span> <span class="nb">undefined</span><span class="p">:</span>
+        <span class="k">case</span> <span class="nb">0</span><span class="p">:</span>
+            <span class="nx">s</span> <span class="o">=</span> <span class="nx">$scope.pluralization.options.zero</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="nb">1</span>:
+            <span class="nx">s</span> <span class="o">=</span> <span class="s1">&#39;plurals.onePluralizedNum::&#39;</span> <span class="p">+</span> <span class="nx">n</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">default</span><span class="p">:</span>
+            <span class="nx">s</span> <span class="o">=</span> <span class="s1">&#39;plurals.manyPluralizedNum::&#39;</span> <span class="p">+</span> <span class="nx">n</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="kd">return</span> <span class="nx">s</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="nb">getPlurals</span><span class="nb">:</span> <span class="kd">function</span> <span class="p">() {</span>
+        <span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="nx">$scope.pluralization.numCount</span> <span class="p">,</span>
+            <span class="nx">s</span><span class="p">;</span>
+        <span class="k">switch</span> <span class="p">(</span><span class="nx">n</span><span class="p">) {</span>
+        <span class="k">case</span> <span class="nb">null</span><span class="p">:</span>
+        <span class="k">case</span> <span class="nb">undefined</span><span class="p">:</span>
+            <span class="nx">s</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="nb">0</span>:
+            <span class="nx">s</span> <span class="o">=</span> <span class="nx">$filter</span><span class="p">(<span class="s1">&#39;i18n&#39;</span><span class="p">)</span><span class="p">(<span class="nx">$scope.pluralization.options.zero</span><span class="p">)</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="nb">1</span>:
+            <span class="nx">s</span> <span class="o">=</span> <span class="nx">$filter</span><span class="p">(<span class="s1">&#39;i18n&#39;</span><span class="p">)</span><span class="p">(<span class="s1">&#39;plurals.onePluralizedNum&#39;</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">default</span><span class="p">:</span>
+            <span class="nx">s</span> <span class="o">=</span> <span class="nx">$filter</span><span class="p">(<span class="s1">&#39;i18n&#39;</span><span class="p">)</span><span class="p">(<span class="s1">&#39;plurals.ManyPluralizedNum&#39;</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>   
+        <span class="kd">return</span> <span class="nx">s</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="nb">getWithOffs</span><span class="nb">:</span> <span class="kd">function</span> <span class="p">() {</span>
+        <span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="nx">$scope.pluralization.numCount</span> <span class="p">,</span>
+            <span class="nx">s</span><span class="p">;</span>
+        <span class="k">switch</span> <span class="p">(</span><span class="nx">n</span><span class="p">) {</span>
+        <span class="k">case</span> <span class="nb">0</span>:
+            <span class="nx">s</span> <span class="o">=</span> <span class="nx">$scope.pluralization.options.zero</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="nb">1</span>:
+            <span class="nx">s</span> <span class="o">=</span> <span class="s1">&#39;plurals.onePluralizedOfs&#39;</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="nb">2</span>:
+            <span class="nx">s</span> <span class="o">=</span> <span class="nx">locale.getString</span><span class="p">(</span><span class="s1">&#39;plurals.twoPluralizedOfs&#39;</span><span class="p">,</span> <span class="nx">$scope.user.name</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="nb">3</span>:
+            <span class="nx">s</span> <span class="o">=</span> <span class="nx">locale.getString</span><span class="p">(</span><span class="s1">&#39;plurals.threePluralizedOfs&#39;</span><span class="p">,</span> <span class="nx">$scope.user.name</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">default</span>:
+            <span class="nx">s</span> <span class="o">=</span> <span class="nx">locale.getString</span><span class="p">(</span><span class="s1">&#39;plurals.morePluralizedOfs&#39;</span><span class="p">,</span> <span class="p">[</span><span class="nx">$scope.user.name</span><span class="p">, (</span><span class="nx">n <span class="p">-</span> <span class="nx">2</span><span class="p">)]);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="kd">return</span> <span class="nx">s</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span></code></pre>
+                </div>
+
+
+                getWithOffs: function () {
+                    var n = $scope.pluralization.numCount,
+                        s;
+                    switch(n) {
+                    case 0:
+                        s = $scope.pluralization.options.zero;
+                        break;
+                    case 1:
+                        s = 'plurals.onePluralizedOfs';
+                        break;
+                    case 2:
+                        s = locale.getString('plurals.twoPluralizedOfs', $scope.user.name);
+                        break;
+                    case 3:
+                        s = locale.getString('plurals.threePluralizedOfs', $scope.user.name);
+                        break;
+                    default:
+                        s = locale.getString('plurals.morePluralizedOfs', [$scope.user.name, (n - 2)]);
+                        break;
+                    }
+                    return s;
+                }
+
                 <div class="bs-example">
                     <div class="form-group">
                         <input type="number" min="0" class="form-control" data-ng-model="pluralization.numCount" data-i18n-attr="{placeholder: 'demo.numberPrompt'}">
@@ -380,141 +178,36 @@
                     </div>
                     <div class="alert alert-warning">
                         <span class="glyphicon glyphicon-warning-sign"></span>
-                        <ng-pluralize count="pluralization.numCount" offset="2" when="{ '0': '{{ pluralization.getWithOffs() | i18n }}', '1': '{{ pluralization.getWithOffs() | i18n }}', '2': '{{ pluralization.getWithOffs() }}', 'one': '{{ pluralization.getWithOffs() }}', 'other': '{{ pluralization.getWithOffs() }}' }"></ng-pluralize>
+                        <ng-pluralize data-count="pluralization.numCount" data-offset="2" data-when="{ '0': '{{ pluralization.getWithOffs() | i18n }}', '1': '{{ pluralization.getWithOffs() | i18n }}', '2': '{{ pluralization.getWithOffs() }}', 'one': '{{ pluralization.getWithOffs() }}', 'other': '{{ pluralization.getWithOffs() }}' }"></ng-pluralize>
                     </div>
+                </div>
+
+                <div class="highlight">
+<pre><code class="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;form-group&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;number&quot;</span> <span class="na">min=</span><span class="s">&quot;0&quot;</span> <span class="na">class=</span><span class="s">&quot;form-control&quot;</span> <span class="na">data-ng-model=</span><span class="s">&quot;pluralization.numCount&quot;</span> <span class="na">data-i18n-attr=</span><span class="s">&quot;{placeholder: 'demo.numberPrompt'}&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-warning&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;glyphicon glyphicon-warning-sign&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/span&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">data-i18n=</span><span class="s">&quot;<span>{{</span> pluralization.getPlural() <span>}}</span>&quot;</span><span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-warning&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;glyphicon glyphicon-warning-sign&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/span&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">data-ng-bind=</span><span class="s">&quot;pluralization.getPlurals()&quot;</span><span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-warning&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;glyphicon glyphicon-question-sign&quot;</span><span class="nt">&gt;</span><span class="nt">&lt;/span&gt;</span>
+        <span class="nt">&lt;ng-pluralize</span> <span class="na">data-count=</span><span class="s">&quot;pluralization.numCount&quot;</span> <span class="na">data-offset=</span><span class="s">&quot;2&quot;</span> <span class="na">data-when=</span><span class="s">&quot;{ '0': '<span>{{</span> pluralization.getWithOffs() | i18n <span>}}</span>', '1': '<span>{{</span> pluralization.getWithOffs() | i18n <span>}}</span>', '2': '<span>{{</span> pluralization.getWithOffs() <span>}}</span>', 'one': '<span>{{</span> pluralization.getWithOffs() <span>}}</span>', 'other': '<span>{{</span> pluralization.getWithOffs() <span>}}</span>' }&quot;</span> <span class="nt">&gt;</span><span class="nt">&lt;/ng-pluralize&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre>
                 </div>
             </div>
 
             <!-- Events Emitted
             ================================================== -->
-            <div class="bs-docs-section">
-                <h1 id="events" class="page-header">Events Emitted</h1>
-                <p class="lead">
-                    The base service exposes certain events which may be listened to, captured and acted upon.
-                    There are part of the <code>ngLocalize.Events</code> module
-                    which must first be injected as a dependency either at the application-level or in your controller/services enclosing module.
-                    Since these are emitted by <code>$rootScope</code> they are available to all descendent <code>$scopes</code> in controllers, services and/or directives.
-                </p>
-
-                <h3 id="events-updates">On Resource Updates</h3>
-                <p>You must listen for <code>localeEvents.resourceUpdates</code>.</p>
-
-                <div class="highlight">
-<pre><code class="js"><span class="nx">angular.module</span><span class="p">(</span><span class="nb"><span class="s1">&#39;docs.demo.myModule&#39;</span></span>, <span class="p">[</span><span class="nb"><span class="s1">&#39;ngLocalize.Events&#39;</span></span><span class="p">])</span>
-    <span class="nx">.controller</span><span class="p">(</span><span class="nb"><span class="s1">&#39;demoControl&#39;</span></span>, <span class="p">[</span><span class="nb"><span class="s1">&#39;localeVersion&#39;</span></span>,
-        <span class="nb">function</span><span class="p">() {</span>
-            <span class="nx">$scope.$on</span><span class="p">(</span><span class="nb"><span class="nb">localeEvents.resourceUpdates</span>, <span class="kd">function</span> </span><span class="p">() {</span>
-                <span class="nx">console.info<span class="p">(</span><span class="s1">&#39;ngLocalize: Resource Updated.&#39;</span><span class="p">)</span></span>
-            <span class="p">});</span>
-        <span class="p">}</span>
-    <span class="p">]);</span></code></pre>
-                </div>
-
-                <h3 id="events-changes">On Locale Changes</h3>
-                <p>Triggered by <code>localeEvents.localeChanges</code>.</p>
-
-                <div class="highlight">
-<pre><code class="js"><span class="nx">angular.module</span><span class="p">(</span><span class="nb"><span class="s1">&#39;docs.demo.yetAnotherModule&#39;</span></span>, <span class="p">[</span><span class="nb"><span class="s1">&#39;ngLocalize.Events&#39;</span></span><span class="p">])</span>
-    <span class="nx">.controller</span><span class="p">(</span><span class="nb"><span class="s1">&#39;docsControl&#39;</span></span>, <span class="p">[</span><span class="nb"><span class="s1">&#39;localeVersion&#39;</span></span>,
-        <span class="nb">function</span><span class="p">() {</span>
-            <span class="nx">$scope.$on</span><span class="p">(</span><span class="nb"><span class="nb">localeEvents.localeChanges</span>, <span class="kd">function</span> </span><span class="p">(</span><span class="nb">newLocale</span><span class="p">) {</span>
-                <span class="nx">console.info<span class="p">(</span><span class="s1">&#39;ngLocalize: Locale Changed to &#39;</span> <span class="nx">+ newLocale</span><span class="p">)</span></span>
-            <span class="p">});</span>
-        <span class="p">}</span>
-    <span class="p">]);</span></code></pre>
-                </div>
-            </div>
+            <div class="bs-docs-section" data-ng-include="'app/views/eventsEmitted.html'"></div>
 
             <!-- Custom Configuration
             ================================================== -->
-            <div class="bs-docs-section">
-                <h1 id="config" class="page-header">Custom Configuration</h1>
-                <p class="lead">
-                    All overridable configuration options are part of <code>localeConf</code>
-                    within the <code>ngLocalize.Config</code> module.
-                    This has been done to achieve maximum compatibility and configurability
-                    with all new as well as any existing small-medium-large-scale applications.
-                </p>
-
-                <h3 id="config-basePath">
-                    basePath
-                    <small>languages</small>
-                </h3>
-                <p>
-                    The folder off the root of your wb app where the resource files are located
-                    (it can also be used as a relative path).
-                </p>
-
-                <h3 id="config-defaultLocale">
-                    defaultLocale
-                    <small>en-US</small>
-                </h3>
-                <p>The locale that your app is initialized with for a new user.</p>
-
-                <h3 id="config-sharedDictionary">
-                    sharedDictionary
-                    <small>common</small>
-                </h3>
-                <p>
-                    Commonly occuring words, phrases, strings etc. are stored in this file
-                    (it is used to check whether the service itself is ready or not as it is loaded during bootstrap).
-                </p>
-
-                <h3 id="config-fileExtension">
-                    fileExtension
-                    <small>.lang.json</small>
-                </h3>
-                <p>The extension for all resource files spanning across all languages.</p>
-
-                <h3 id="config-persistSelection">
-                    persistSelection
-                    <small>true</small>
-                </h3>
-                <p>Whether to save the selected language to cookies for retrieval on later uses of the app.</p>
-
-                <h3 id="config-cookieName">
-                    cookieName
-                    <small>COOKIE_LOCALE_LANG</small>
-                </h3>
-                <p>Works in conjuntion with <code>persistSelection</code> and provides the cookie name for storage.</p>
-
-                <h3 id="config-observableAttrs">
-                    observableAttrs
-                    <small>\^data-(?!ng-|i18n)\</small>
-                </h3>
-                <p>
-                    A regular expression which is used to match which custom data attibutes may be watched
-                    by the <code>i18n</code> directive for 2-way bindings to replace in a tokenized string.
-                </p>
-
-                <h3 id="config-delimiter">
-                    delimiter
-                    <small>::</small>
-                </h3>
-                <p>The delimiter to be used when passing params along with the string token to the service, filter etc.</p>
-
-                <div class="highlight">
-<pre><code class="js"><span class="nx">angular.module</span><span class="p">(</span><span class="nb"><span class="s1">&#39;docs.demo&#39;</span></span>, <span class="p">[</span><span class="nb"><span class="s1">&#39;ngLocalize.Config&#39;</span></span><span class="p">])</span>
-    <span class="nx">.value</span><span class="p">(</span><span class="nb"><span class="s1">&#39;localeConf&#39;</span></span>, <span class="p">{</span>
-        <span class="nx">basePath:</span> <span class="s1">&#39;languages&#39;</span>,
-        <span class="nx">defaultLocale:</span> <span class="s1">&#39;languages&#39;</span>,
-        <span class="nx">sharedDictionary:</span> <span class="s1">&#39;common&#39;</span>,
-        <span class="nx">fileExtension:</span> <span class="s1">&#39;.lang.json&#39;</span>,
-        <span class="nx">persistSelection:</span> <span class="nb">true</span>,
-        <span class="nx">cookieName:</span> <span class="s1">&#39;COOKIE_LOCALE_LANG&#39;</span>,
-        <span class="nx">observableAttrs:</span> <span class="nb">new</span> <span class="kd">RegExp</span><span class="p">(</span><span class="s1">&#39;^data-(?!ng-|i18n)&#39;</span><span class="p">)</span>,
-        <span class="nx">delimiter:</span> <span class="s1">&#39;::&#39;</span>,
-    <span class="p">});</span></code></pre>
-                </div>
-
-                <div class="bs-callout bs-callout-warning">
-                    <h4>Overriding defaults</h4>
-                    <p>
-                        If you would like to override at least one particular option,
-                        then you must explicitly set any other options explicitly to their default values.
-                    </p>
-                </div>
-            </div>
+            <div class="bs-docs-section" data-ng-include="'app/views/configurations.html'"></div>
         </div>
 
         <div class="col-md-2 hidden-sm">

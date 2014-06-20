@@ -1,0 +1,86 @@
+<h1 id="config" class="page-header">Custom Configuration</h1>
+<p class="lead">
+    All overridable configuration options are part of <code>localeConf</code>
+    within the <code>ngLocalize.Config</code> module.
+    This has been done to achieve maximum compatibility and configurability
+    with all new as well as any existing small-medium-large-scale applications.
+</p>
+
+<h3 id="config-basePath">
+    basePath
+    <small>languages</small>
+</h3>
+<p>
+    The folder off the root of your wb app where the resource files are located
+    (it can also be used as a relative path).
+</p>
+
+<h3 id="config-defaultLocale">
+    defaultLocale
+    <small>en-US</small>
+</h3>
+<p>The locale that your app is initialized with for a new user.</p>
+
+<h3 id="config-sharedDictionary">
+    sharedDictionary
+    <small>common</small>
+</h3>
+<p>
+    Commonly occuring words, phrases, strings etc. are stored in this file
+    (it is used to check whether the service itself is ready or not as it is loaded during bootstrap).
+</p>
+
+<h3 id="config-fileExtension">
+    fileExtension
+    <small>.lang.json</small>
+</h3>
+<p>The extension for all resource files spanning across all languages.</p>
+
+<h3 id="config-persistSelection">
+    persistSelection
+    <small>true</small>
+</h3>
+<p>Whether to save the selected language to cookies for retrieval on later uses of the app.</p>
+
+<h3 id="config-cookieName">
+    cookieName
+    <small>COOKIE_LOCALE_LANG</small>
+</h3>
+<p>Works in conjuntion with <code>persistSelection</code> and provides the cookie name for storage.</p>
+
+<h3 id="config-observableAttrs">
+    observableAttrs
+    <small>\^data-(?!ng-|i18n)\</small>
+</h3>
+<p>
+    A regular expression which is used to match which custom data attibutes may be watched
+    by the <code>i18n</code> directive for 2-way bindings to replace in a tokenized string.
+</p>
+
+<h3 id="config-delimiter">
+    delimiter
+    <small>::</small>
+</h3>
+<p>The delimiter to be used when passing params along with the string token to the service, filter etc.</p>
+
+<div class="highlight">
+<pre><code class="js"><span class="nx">angular.module</span><span class="p">(</span><span class="nb"><span class="s1">&#39;docs.demo&#39;</span></span>, <span class="p">[</span><span class="nb"><span class="s1">&#39;ngLocalize.Config&#39;</span></span><span class="p">])</span>
+    <span class="nx">.value</span><span class="p">(</span><span class="nb"><span class="s1">&#39;localeConf&#39;</span></span>, <span class="p">{</span>
+    <span class="nx">basePath:</span> <span class="s1">&#39;languages&#39;</span>,
+    <span class="nx">defaultLocale:</span> <span class="s1">&#39;languages&#39;</span>,
+    <span class="nx">sharedDictionary:</span> <span class="s1">&#39;common&#39;</span>,
+    <span class="nx">fileExtension:</span> <span class="s1">&#39;.lang.json&#39;</span>,
+    <span class="nx">persistSelection:</span> <span class="nb">true</span>,
+    <span class="nx">cookieName:</span> <span class="s1">&#39;COOKIE_LOCALE_LANG&#39;</span>,
+    <span class="nx">observableAttrs:</span> <span class="nb">new</span> <span class="kd">RegExp</span><span class="p">(</span><span class="s1">&#39;^data-(?!ng-|i18n)&#39;</span><span class="p">)</span>,
+    <span class="nx">delimiter:</span> <span class="s1">&#39;::&#39;</span>,
+<span class="p">});</span></code></pre>
+</div>
+
+<div class="bs-callout bs-callout-warning">
+    <h4>Overriding defaults</h4>
+    <p>
+        If you would like to override at least one particular option,
+        then you must explicitly set any other options explicitly to their default values.
+    </p>
+</div>
