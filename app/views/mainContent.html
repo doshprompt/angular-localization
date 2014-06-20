@@ -140,30 +140,6 @@
 <span class="p">};</span></code></pre>
                 </div>
 
-
-                getWithOffs: function () {
-                    var n = $scope.pluralization.numCount,
-                        s;
-                    switch(n) {
-                    case 0:
-                        s = $scope.pluralization.options.zero;
-                        break;
-                    case 1:
-                        s = 'plurals.onePluralizedOfs';
-                        break;
-                    case 2:
-                        s = locale.getString('plurals.twoPluralizedOfs', $scope.user.name);
-                        break;
-                    case 3:
-                        s = locale.getString('plurals.threePluralizedOfs', $scope.user.name);
-                        break;
-                    default:
-                        s = locale.getString('plurals.morePluralizedOfs', [$scope.user.name, (n - 2)]);
-                        break;
-                    }
-                    return s;
-                }
-
                 <div class="bs-example">
                     <div class="form-group">
                         <input type="number" min="0" class="form-control" data-ng-model="pluralization.numCount" data-i18n-attr="{placeholder: 'demo.numberPrompt'}">
