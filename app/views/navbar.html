@@ -21,7 +21,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li data-ng-repeat="lang in supportedLang">
-                            <a href="" ng-click="setLocale(lang)">
+                            <a href="" ng-click="setLocale(lang)" data-toggle="collapse" data-target=".bs-navbar-collapse">
                                 <i ng-class="localeData[lang].flagClass"></i>
                                 <span>{{ localeData[lang].langDisplayText }}</span>
                             </a>
