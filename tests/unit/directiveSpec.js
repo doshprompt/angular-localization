@@ -41,6 +41,15 @@ describe('directives', function () {
             $rootScope.$digest();
             expect(element.text()).toEqual('My name is Rahul Doshi');
         }));
+
+        it('should allow non-tokens to passthrough untouched and without errors', inject(function ($compile, $rootScope) {
+            var element = angular.element(
+                '<p data-i18n="notAToken"></p>'
+            );
+            $compile(element)($rootScope);
+            $rootScope.$digest();
+            expect(element.text()).toEqual('notAToken');
+        }));
     });
 
     describe('i18nAttr', function () {

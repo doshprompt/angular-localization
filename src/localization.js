@@ -270,15 +270,20 @@ angular.module('ngLocalize', ['ngCookies', 'ngLocalize.Config', 'ngLocalize.Even
         function (locale, localeEvents, localeConf) {
             'use strict';
 
-            function update(elm, string, optArgs) {
-                var tag = '';
+            function setText(elm, tag) {
+                if (tag !== elm.text()) {
+                    elm.text(tag);
+                }
+            }
 
-                locale.ready(locale.getPath(string)).then(function () {
-                    tag = locale.getString(string, optArgs);
-                    if (tag !== elm.text()) {
-                        elm.text(tag);
-                    }
-                });
+            function update(elm, string, optArgs) {
+                if (locale.isToken(string)) {
+                    locale.ready(locale.getPath(string)).then(function () {
+                        setText(elm, locale.getString(string, optArgs));
+                    });
+                } else {
+                    setText(elm, string);
+                }
             }
 
             return function (scope, elm, attrs) {
