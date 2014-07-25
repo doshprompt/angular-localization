@@ -1,5 +1,5 @@
 /**
- * angular-localization :: v1.0.1 :: 2014-07-24
+ * angular-localization :: v1.0.2 :: 2014-07-24
  * web: https://github.com/doshprompt/angular-localization
  *
  * Copyright (c) 2014 | Rahul Doshi
@@ -388,5 +388,5 @@ angular.module('ngLocalize.InstalledLanguages', [])
         'en': 'en-US'
     });
 angular.module('ngLocalize.Version', [])
-    .constant('localeVer', 'v1.0.1');
+    .constant('localeVer', 'v1.0.2');
 })(window.angular, window, document);
