@@ -48,7 +48,11 @@ module.exports = function (grunt) {
                 options: {
                     banner: '<%= banner %>'
                 },
-                src: [paths.baseDir + '/localization*.js'],
+                src: [
+                    'build/module.prefix',
+                    paths.baseDir + '/localization*.js',
+                    'build/module.suffix',
+                ],
                 dest: paths.distDir + '/angular-localization.js'
             }
         },

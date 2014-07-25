@@ -1,8 +1,6 @@
 angular.module('ngLocalize', ['ngCookies', 'ngLocalize.Config', 'ngLocalize.Events', 'ngLocalize.InstalledLanguages'])
     .service('locale', ['$http', '$q', '$log', '$rootScope', '$window', '$cookieStore', 'localeConf', 'localeEvents', 'localeSupported', 'localeFallbacks',
         function ($http, $q, $log, $rootScope, $window, $cookieStore, localeConf, localeEvents, localeSupported, localeFallbacks) {
-            'use strict';
-
             var currentLocale,
                 deferrences,
                 bundles;
@@ -259,8 +257,6 @@ angular.module('ngLocalize', ['ngCookies', 'ngLocalize.Config', 'ngLocalize.Even
     ])
     .filter('i18n', ['locale',
         function (locale) {
-            'use strict';
-
             return function (input, args) {
                 return locale.getString(input, args);
             };
@@ -268,8 +264,6 @@ angular.module('ngLocalize', ['ngCookies', 'ngLocalize.Config', 'ngLocalize.Even
     ])
     .directive('i18n', ['locale', 'localeEvents', 'localeConf',
         function (locale, localeEvents, localeConf) {
-            'use strict';
-
             function setText(elm, tag) {
                 if (tag !== elm.text()) {
                     elm.text(tag);
@@ -318,8 +312,6 @@ angular.module('ngLocalize', ['ngCookies', 'ngLocalize.Config', 'ngLocalize.Even
     ])
     .directive('i18nAttr', ['locale', 'localeEvents',
         function (locale, localeEvents) {
-            'use strict';
-
             return function (scope, elem, attrs) {
                 var lastValues = {};
 

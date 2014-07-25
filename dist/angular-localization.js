@@ -1,10 +1,12 @@
 /**
- * angular-localization :: v1.0.1 :: 2014-07-03
+ * angular-localization :: v1.0.1 :: 2014-07-24
  * web: https://github.com/doshprompt/angular-localization
  *
  * Copyright (c) 2014 | Rahul Doshi
  * License: MIT
  */
+;(function (angular, window, document, undefined) {
+    'use strict';
 angular.module('ngLocalize.Config', [])
     .value('localeConf', {
         basePath: 'languages',
@@ -24,8 +26,6 @@ angular.module('ngLocalize.Events', [])
 angular.module('ngLocalize', ['ngCookies', 'ngLocalize.Config', 'ngLocalize.Events', 'ngLocalize.InstalledLanguages'])
     .service('locale', ['$http', '$q', '$log', '$rootScope', '$window', '$cookieStore', 'localeConf', 'localeEvents', 'localeSupported', 'localeFallbacks',
         function ($http, $q, $log, $rootScope, $window, $cookieStore, localeConf, localeEvents, localeSupported, localeFallbacks) {
-            'use strict';
-
             var currentLocale,
                 deferrences,
                 bundles;
@@ -282,8 +282,6 @@ angular.module('ngLocalize', ['ngCookies', 'ngLocalize.Config', 'ngLocalize.Even
     ])
     .filter('i18n', ['locale',
         function (locale) {
-            'use strict';
-
             return function (input, args) {
                 return locale.getString(input, args);
             };
@@ -291,8 +289,6 @@ angular.module('ngLocalize', ['ngCookies', 'ngLocalize.Config', 'ngLocalize.Even
     ])
     .directive('i18n', ['locale', 'localeEvents', 'localeConf',
         function (locale, localeEvents, localeConf) {
-            'use strict';
-
             function setText(elm, tag) {
                 if (tag !== elm.text()) {
                     elm.text(tag);
@@ -341,8 +337,6 @@ angular.module('ngLocalize', ['ngCookies', 'ngLocalize.Config', 'ngLocalize.Even
     ])
     .directive('i18nAttr', ['locale', 'localeEvents',
         function (locale, localeEvents) {
-            'use strict';
-
             return function (scope, elem, attrs) {
                 var lastValues = {};
 
@@ -395,3 +389,4 @@ angular.module('ngLocalize.InstalledLanguages', [])
     });
 angular.module('ngLocalize.Version', [])
     .constant('localeVer', 'v1.0.1');
+})(window.angular, window, document);
