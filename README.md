@@ -121,7 +121,7 @@ angular.module('myApp', ['ngLocalize']);
 All overridable configuration options are part of `localeConf` within the `ngLocalize.Config` module that comes bundled along with this plugin and works alongside `ngLocalize`
 
 ###### basePath @ `languages`
-> the folder off the root of your wb app where the resource files are located (it can also be used as a relative path)
+> the folder off the root of your web app where the resource files are located (it can also be used as a relative path)
 
 ###### defaultLocale @ `en-US`
 > the locale that your app is initialized with for a new user
