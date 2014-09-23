@@ -80,7 +80,7 @@ $ npm test
 
 ##### Contributing
 
-In lieu of a formal style guide, pleae take good care to maintain the existing coding style.
+In lieu of a formal style guide, please take good care to maintain the existing coding style.
 Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 Please refer to this [document][commit-message-format] for a detailed explanation of git commit guidelines - source: [AngularJS](https://angualrjs.org)
 [commit-message-format]: https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#
