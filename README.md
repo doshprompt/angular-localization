@@ -22,7 +22,6 @@ ___
     - [Dear Developer](#dear-developer)
 - [Getting Started](#getting-started)
     - [Quick Start](#quick-start)
-    - [RTFM](#rtfm)
     - [Wiring It Up](#wiring-it-up)
     - [Module Setup](#module-setup)
     - [Localization File Formats](#localization-file-formats)
@@ -107,10 +106,6 @@ You can then include `angular-localization` after its dependencies, [angular](ht
 <script src="bower_components/angular-cookies/angular-cookies.js"></script>
 <script src="bower_components/angular-localization/angular-localization.js"></script>
 ```
-
-### RTFM
-
-[Docs](http://doshprompt.github.io/angular-localization)
 
 ### Wiring It Up
 
