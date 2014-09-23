@@ -27,7 +27,7 @@
     "grunt-contrib-compress": "^0.9.1",
     "grunt-contrib-concat": "^0.4.0",
     "grunt-contrib-connect": "^0.7.1",
-    "grunt-contrib-uglify": "^0.4.0",
+    "grunt-contrib-uglify": "^0.4.1",
     "grunt-karma": "^0.8.3",
     "grunt-preprocess": "^4.0.0",
     "grunt-protractor-runner": "^1.1.0",
@@ -36,6 +36,6 @@
     "karma-phantomjs-launcher": "^0.1.4",
     "load-grunt-tasks": "^0.4.0",
     "phantomjs": "^1.9.7-8",
-    "protractor": "^1.0.0"
+    "protractor": "^1.2.0"
   }
 }
