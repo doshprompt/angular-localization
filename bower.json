@@ -1,6 +1,6 @@
 {
   "name": "angular-localization",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "homepage": "https://github.com/doshprompt/angular-localization",
   "description": "angularjs localization done right",
   "main": "angular-localization.js",
