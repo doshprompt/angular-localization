@@ -106,6 +106,7 @@ You can then include `angular-localization` after its dependencies,
 ```html
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 <script src="bower_components/angular-localization/angular-localization.js"></script>
 ```
 

@@ -26,7 +26,8 @@
   ],
   "dependencies": {
     "angular": "*",
-    "angular-cookies": "*"
+    "angular-cookies": "*",
+    "angular-sanitize": "*"
   },
   "devDependencies": {
     "angular-mocks": "*",
