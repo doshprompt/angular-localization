@@ -23,7 +23,7 @@ angular.module('ngLocalize.Events', [])
         resourceUpdates: 'ngLocalizeResourcesUpdated',
         localeChanges: 'ngLocalizeLocaleChanged'
     });
-angular.module('ngLocalize', ['ngCookies', 'ngLocalize.Config', 'ngLocalize.Events', 'ngLocalize.InstalledLanguages'])
+angular.module('ngLocalize', ['ngCookies', 'ngSanitize', 'ngLocalize.Config', 'ngLocalize.Events', 'ngLocalize.InstalledLanguages'])
     .service('locale', ['$http', '$q', '$log', '$rootScope', '$window', '$cookieStore', 'localeConf', 'localeEvents', 'localeSupported', 'localeFallbacks',
         function ($http, $q, $log, $rootScope, $window, $cookieStore, localeConf, localeEvents, localeSupported, localeFallbacks) {
             var currentLocale,
