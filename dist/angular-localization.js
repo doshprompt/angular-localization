@@ -23,12 +23,17 @@ angular.module('ngLocalize.Events', [])
         resourceUpdates: 'ngLocalizeResourcesUpdated',
         localeChanges: 'ngLocalizeLocaleChanged'
     });
-angular.module('ngLocalize', ['ngCookies', 'ngSanitize', 'ngLocalize.Config', 'ngLocalize.Events', 'ngLocalize.InstalledLanguages'])
-    .service('locale', ['$http', '$q', '$log', '$rootScope', '$window', '$cookieStore', 'localeConf', 'localeEvents', 'localeSupported', 'localeFallbacks',
-        function ($http, $q, $log, $rootScope, $window, $cookieStore, localeConf, localeEvents, localeSupported, localeFallbacks) {
+angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Events', 'ngLocalize.InstalledLanguages'])
+    .service('locale', ['$injector', '$http', '$q', '$log', '$rootScope', '$window', 'localeConf', 'localeEvents', 'localeSupported', 'localeFallbacks',
+        function ($injector, $http, $q, $log, $rootScope, $window, localeConf, localeEvents, localeSupported, localeFallbacks) {
             var currentLocale,
                 deferrences,
-                bundles;
+                bundles,
+                cookieStore;
+
+            if (localeConf.persistSelection && $injector.has('$cookieStore')) {
+                cookieStore = $injector.get('$cookieStore');
+            }
 
             function isToken(str) {
                 return (str && str.length && new RegExp('^[\\w\\.-]+\\.[\\w\\.-]+\\w(:.*)?$').test(str));
@@ -257,8 +262,8 @@ angular.module('ngLocalize', ['ngCookies', 'ngSanitize', 'ngLocalize.Config', 'n
                     $rootScope.$broadcast(localeEvents.localeChanges, currentLocale);
                     $rootScope.$broadcast(localeEvents.resourceUpdates);
 
-                    if (localeConf.persistSelection) {
-                        $cookieStore.put(localeConf.cookieName, lang);
+                    if (cookieStore) {
+                        cookieStore.put(localeConf.cookieName, lang);
                     }
                 }
             }
@@ -267,7 +272,7 @@ angular.module('ngLocalize', ['ngCookies', 'ngSanitize', 'ngLocalize.Config', 'n
                 return currentLocale;
             }
 
-            setLocale($cookieStore.get(localeConf.cookieName) || $window.navigator.userLanguage || $window.navigator.language);
+            setLocale((cookieStore ? cookieStore.get(localeConf.cookieName) : localeConf.defaultLocale) || $window.navigator.userLanguage || $window.navigator.language);
 
             return {
                 ready: ready,
