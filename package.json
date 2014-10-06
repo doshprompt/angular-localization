@@ -1,6 +1,6 @@
 {
   "name": "angular-localization",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "angularjs localization done right.",
   "main": "Gruntfile.js",
   "scripts": {

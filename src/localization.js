@@ -262,11 +262,11 @@ angular.module('ngLocalize', ['ngCookies', 'ngLocalize.Config', 'ngLocalize.Even
             };
         }
     ])
-    .directive('i18n', ['locale', 'localeEvents', 'localeConf',
-        function (locale, localeEvents, localeConf) {
+    .directive('i18n', ['$sce', 'locale', 'localeEvents', 'localeConf',
+        function ($sce, locale, localeEvents, localeConf) {
             function setText(elm, tag) {
-                if (tag !== elm.text()) {
-                    elm.text(tag);
+                if (tag !== elm.html()) {
+                    elm.html($sce.getTrustedHtml(tag));
                 }
             }
 

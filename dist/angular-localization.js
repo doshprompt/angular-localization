@@ -1,5 +1,5 @@
 /**
- * angular-localization :: v1.0.2 :: 2014-07-24
+ * angular-localization :: v1.1.0 :: 2014-10-06
  * web: https://github.com/doshprompt/angular-localization
  *
  * Copyright (c) 2014 | Rahul Doshi
@@ -287,11 +287,11 @@ angular.module('ngLocalize', ['ngCookies', 'ngLocalize.Config', 'ngLocalize.Even
             };
         }
     ])
-    .directive('i18n', ['locale', 'localeEvents', 'localeConf',
-        function (locale, localeEvents, localeConf) {
+    .directive('i18n', ['$sce', 'locale', 'localeEvents', 'localeConf',
+        function ($sce, locale, localeEvents, localeConf) {
             function setText(elm, tag) {
-                if (tag !== elm.text()) {
-                    elm.text(tag);
+                if (tag !== elm.html()) {
+                    elm.html($sce.getTrustedHtml(tag));
                 }
             }
 
@@ -388,5 +388,5 @@ angular.module('ngLocalize.InstalledLanguages', [])
         'en': 'en-US'
     });
 angular.module('ngLocalize.Version', [])
-    .constant('localeVer', 'v1.0.2');
+    .constant('localeVer', 'v1.1.0');
 })(window.angular, window, document);

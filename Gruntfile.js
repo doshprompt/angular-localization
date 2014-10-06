@@ -28,21 +28,6 @@ module.exports = function (grunt) {
             ]
         },
 
-        copy: {
-            readme: {
-                src: 'README.md',
-                dest: paths.distDir  + '/'
-            },
-            license: {
-                src: 'LICENSE',
-                dest: paths.distDir + '/'
-            },
-            bower: {
-                src: 'bower.json',
-                dest: paths.distDir + '/'
-            }
-        },
-
         concat: {
             all: {
                 options: {

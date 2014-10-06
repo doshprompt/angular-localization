@@ -13,6 +13,7 @@ describe('directives', function () {
             _httpBackend.whenGET('languages/en-US/common.lang.json').respond({
                 helloWorld: 'Hello World',
                 fullName: 'My name is {firstName} {lastName}',
+                htmlToken: '<b>Hello World!</b>'
             });
 
             // force our service to pull down the required resource file
@@ -49,6 +50,16 @@ describe('directives', function () {
             $compile(element)($rootScope);
             $rootScope.$digest();
             expect(element.text()).toEqual('notAToken');
+        }));
+
+        it('should allow html tags in token string values', inject(function ($compile, $rootScope) {
+            var element = angular.element(
+                '<p data-i18n="common.htmlToken"></p>'
+            );
+            $compile(element)($rootScope);
+            $rootScope.$digest();
+            expect(element.children().prop('tagName').toLowerCase()).toEqual('b');
+            expect(element.text()).toEqual('Hello World!');
         }));
     });
 
