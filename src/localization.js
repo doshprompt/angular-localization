@@ -267,12 +267,14 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
             };
         }
     ])
-    .directive('i18n', ['$sce', 'locale', 'localeEvents', 'localeConf',
-        function ($sce, locale, localeEvents, localeConf) {
+    .directive('i18n', ['$sce', '$rootScope', 'locale', 'localeEvents', 'localeConf',
+        function ($sce, $rootScope, locale, localeEvents, localeConf) {
             function setText(elm, tag) {
                 if (tag !== elm.html()) {
                     elm.html($sce.getTrustedHtml(tag));
                 }
+
+                $rootScope.$broadcast(localeEvents.textUpdates, elm);
             }
 
             function update(elm, string, optArgs) {
@@ -315,8 +317,8 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
             };
         }
     ])
-    .directive('i18nAttr', ['locale', 'localeEvents',
-        function (locale, localeEvents) {
+    .directive('i18nAttr', ['$rootScope', 'locale', 'localeEvents',
+        function ($rootScope, locale, localeEvents) {
             return function (scope, elem, attrs) {
                 var lastValues = {};
 
@@ -342,12 +344,14 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                                 attrs.$set(key, lastValues[key] = value);
                             }
                         }
+
+                        $rootScope.$broadcast(localeEvents.textUpdates, target);
                     });
                 }
 
                 attrs.$observe('i18nAttr', function (newVal, oldVal) {
                     if (newVal && newVal != oldVal) {
-                        updateText(elem, newVal); 
+                        updateText(elem, newVal);
                     }
                 });
 
