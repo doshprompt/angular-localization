@@ -97,7 +97,7 @@ bower install angular-localization --save
 Two other options are available:
 
 - [Download the latest release](https://github.com/doshprompt/angular-localization/archive/master.zip).
-- Clone the repo: `git clone https://github.com/doshprompt/angular-localize.git`.
+- Clone the repo: `git clone https://github.com/doshprompt/angular-localization.git`.
 
 You can then include `angular-localization` after its dependencies,
 [angular](https://github.com/angular/bower-angular) and
