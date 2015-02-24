@@ -107,4 +107,4 @@ gulp.task('build', function () {
     runSequence('clean', 'concat', 'preprocess', 'uglify', 'compress');
 });
 
-gulp.task('test', ['karma', 'protractor']);
+gulp.task('test', ['karma']);
