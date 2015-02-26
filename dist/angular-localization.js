@@ -1,5 +1,5 @@
 /**
- * angular-localization :: v1.1.4 :: 2015-02-25
+ * angular-localization :: v1.1.4 :: 2015-02-26
  * web: https://github.com/doshprompt/angular-localization
  *
  * Copyright (c) 2015 | Rahul Doshi
@@ -252,7 +252,21 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
             }
 
             function setLocale(value) {
-                var lang = localeSupported.indexOf(value) != -1 ? value : localeFallbacks[value.split('-')[0]] || localeConf.defaultLocale;
+                var lang;
+
+                if (angular.isString(value)) {
+                    value = value.trim();
+                    if (localeSupported.indexOf(value) != -1) {
+                        lang = value;
+                    } else {
+                        lang = localeFallbacks[value.split('-')[0]]
+                        if (angular.isUndefined(lang)) {
+                            lang = localeConf.defaultLocale;
+                        }
+                    }
+                } else {
+                    lang = localeConf.defaultLocale;
+                }
 
                 if (lang != currentLocale) {
                     bundles = {};

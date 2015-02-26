@@ -227,7 +227,21 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
             }
 
             function setLocale(value) {
-                var lang = localeSupported.indexOf(value) != -1 ? value : localeFallbacks[value.split('-')[0]] || localeConf.defaultLocale;
+                var lang;
+
+                if (angular.isString(value)) {
+                    value = value.trim();
+                    if (localeSupported.indexOf(value) != -1) {
+                        lang = value;
+                    } else {
+                        lang = localeFallbacks[value.split('-')[0]]
+                        if (angular.isUndefined(lang)) {
+                            lang = localeConf.defaultLocale;
+                        }
+                    }
+                } else {
+                    lang = localeConf.defaultLocale;
+                }
 
                 if (lang != currentLocale) {
                     bundles = {};

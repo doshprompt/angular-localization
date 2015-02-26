@@ -18,5 +18,18 @@ describe('service', function () {
             locale.ready('common');
             $httpBackend.flush();
         }));
+
+        it('should not error on calling setLocale with an invalid value', inject(function(locale) {
+            locale.setLocale();
+            expect(locale.getLocale()).toBe('en-US');
+            locale.setLocale('abc123');
+            expect(locale.getLocale()).toBe('en-US');
+            locale.setLocale({});
+            expect(locale.getLocale()).toBe('en-US');
+            locale.setLocale('');
+            expect(locale.getLocale()).toBe('en-US');
+            locale.setLocale('  ');
+            expect(locale.getLocale()).toBe('en-US');
+        }));
     });
 });
