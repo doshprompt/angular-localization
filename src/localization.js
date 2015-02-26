@@ -247,7 +247,7 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                 return currentLocale;
             }
 
-            setLocale((cookieStore ? cookieStore.get(localeConf.cookieName) : localeConf.defaultLocale) || $window.navigator.userLanguage || $window.navigator.language);
+            setLocale(cookieStore ? cookieStore.get(localeConf.cookieName) : $window.navigator.userLanguage || $window.navigator.language);
 
             return {
                 ready: ready,
