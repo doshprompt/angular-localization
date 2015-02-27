@@ -1,5 +1,5 @@
 /**
- * angular-localization :: v1.1.4 :: 2015-02-26
+ * angular-localization :: v1.1.4 :: 2015-02-27
  * web: https://github.com/doshprompt/angular-localization
  *
  * Copyright (c) 2015 | Rahul Doshi
@@ -26,7 +26,8 @@ angular.module('ngLocalize.Events', [])
 angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Events', 'ngLocalize.InstalledLanguages'])
     .service('locale', ['$injector', '$http', '$q', '$log', '$rootScope', '$window', 'localeConf', 'localeEvents', 'localeSupported', 'localeFallbacks',
         function ($injector, $http, $q, $log, $rootScope, $window, localeConf, localeEvents, localeSupported, localeFallbacks) {
-            var currentLocale,
+            var TOKEN_REGEX = new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$'),
+                currentLocale,
                 deferrences,
                 bundles,
                 cookieStore;
@@ -36,7 +37,7 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
             }
 
             function isToken(str) {
-                return (str && str.length && new RegExp('^[\\w\\.-]+\\.[\\w\\.-]+\\w(:.*)?$').test(str));
+                return (str && str.length && TOKEN_REGEX.test(str));
             }
 
             function getPath(tok) {

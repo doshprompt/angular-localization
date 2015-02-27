@@ -19,7 +19,7 @@ describe('service', function () {
             $httpBackend.flush();
         }));
 
-        it('should not error on calling setLocale with an invalid value', inject(function(locale) {
+        it('should not error on calling setLocale with an invalid value', inject(function (locale) {
             locale.setLocale();
             expect(locale.getLocale()).toBe('en-US');
             locale.setLocale('abc123');
@@ -30,6 +30,10 @@ describe('service', function () {
             expect(locale.getLocale()).toBe('en-US');
             locale.setLocale('  ');
             expect(locale.getLocale()).toBe('en-US');
+        }));
+
+        it('should validate tokens with whitespace', inject(function (locale) {
+            expect(locale.isToken('test.hello world')).toBe(true);
         }));
     });
 });

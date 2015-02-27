@@ -1,7 +1,8 @@
 angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Events', 'ngLocalize.InstalledLanguages'])
     .service('locale', ['$injector', '$http', '$q', '$log', '$rootScope', '$window', 'localeConf', 'localeEvents', 'localeSupported', 'localeFallbacks',
         function ($injector, $http, $q, $log, $rootScope, $window, localeConf, localeEvents, localeSupported, localeFallbacks) {
-            var currentLocale,
+            var TOKEN_REGEX = new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$'),
+                currentLocale,
                 deferrences,
                 bundles,
                 cookieStore;
@@ -11,7 +12,7 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
             }
 
             function isToken(str) {
-                return (str && str.length && new RegExp('^[\\w\\.-]+\\.[\\w\\.-]+\\w(:.*)?$').test(str));
+                return (str && str.length && TOKEN_REGEX.test(str));
             }
 
             function getPath(tok) {
