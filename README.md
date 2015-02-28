@@ -172,6 +172,9 @@ Publicly exposed events may be found as part of `localeEvents` situated within t
 
 - `localeEvents.resourceUpdates`: when a new language file is pulled into memory
 - `localeEvents.localeChanges`: when the user chooses a different locale
+- `localeEvents.textUpdates`: when an element's text is set to its translation
+
+__NOTE:__ The `localeEvents.textUpdates` is only sent for substitutions triggered by the `i18n` and `i18nAttr` directives.
 
 ```js
 angular.module('myApp', [
@@ -184,6 +187,9 @@ angular.module('myApp', [
         });
         $scope.$on(localeEvents.localeChanges, function (event, data) {
             console.log('new locale chosen: ' + data);
+        });
+        $scope.$on(localeEvents.textUpdates, function (event, element) {
+            console.log('translation set for: ' + element);
         });
     }
 ]);
