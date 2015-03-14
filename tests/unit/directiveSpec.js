@@ -14,7 +14,19 @@ describe('directives', function () {
                 helloWorld: 'Hello World',
                 fullName: 'My name is {firstName} {lastName}',
                 htmlToken: '<b>Hello World!</b>',
-                'key with spaces': 'some string value'
+                'key with spaces': 'some string value',
+                fallback1: 'Fallback Default',
+                fallback2: 'Fallback Default',
+                fallback3: 'Fallback Default'
+            });
+
+            _httpBackend.whenGET('languages/aa-XX/common.lang.json').respond({
+                fallback1: 'Fallback XX',
+                fallback2: 'Fallback XX'
+            });
+
+            _httpBackend.whenGET('languages/aa-YY/common.lang.json').respond({
+                fallback1: 'Fallback YY'
             });
 
             // force our service to pull down the required resource file
@@ -29,6 +41,19 @@ describe('directives', function () {
     });
 
     describe('i18n', function () {
+        it('should fallback correctly', inject(function ($compile, $rootScope, locale) {
+            locale.setLocale('aa-YY');
+            var element = $compile('<span data-i18n="common.fallback1"></span>')($rootScope);
+            $rootScope.$digest();
+            expect(element.text()).toEqual('Fallback YY');
+
+//            expect(locale.getString('common.fallback1')).toBe('Fallback YY');
+//            locale.setLocale('aa-YY');
+            //          expect(locale.getString('common.fallback2')).toBe('Fallback XX');
+            //        locale.setLocale('aa-YY');
+            //      expect(locale.getString('common.fallback3')).toBe('Fallback Default');
+        }));
+
         it('should attach the localized version of a string', inject(function ($compile, $rootScope) {
             var element = $compile('<span data-i18n="common.helloWorld"></span>')($rootScope);
             $rootScope.$digest();
@@ -88,5 +113,6 @@ describe('directives', function () {
             $rootScope.$digest();
             expect(element.attr('placeholder')).toEqual('some string value');
         }));
+
     });
 });
