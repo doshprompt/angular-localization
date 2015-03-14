@@ -3,6 +3,7 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
         function ($injector, $http, $q, $log, $rootScope, $window, localeConf, localeEvents, localeSupported, localeFallbacks) {
             var TOKEN_REGEX = new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$'),
                 currentLocale,
+                languageBundles,
                 deferrences,
                 bundles,
                 cookieStore;
@@ -37,13 +38,13 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                 return result;
             }
 
-            function getBundle(tok) {
+            function getBundle(tok, lang) {
                 var result = null,
                     path = tok ? tok.split('.') : [],
                     i;
 
                 if (path.length > 1) {
-                    result = bundles;
+                    result = languageBundles[lang];
 
                     for (i = 0; i < path.length - 1; i++) {
                         if (result[path[i]]) {
@@ -58,10 +59,10 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                 return result;
             }
 
-            function loadBundle(token) {
+            function loadBundle(token, lang) {
                 var path = token ? token.split('.') : '',
-                    root = bundles,
-                    url = localeConf.basePath + '/' + currentLocale,
+                    root = languageBundles[lang],
+                    url = localeConf.basePath + '/' + lang,
                     i;
 
                 if (path.length > 1) {
@@ -117,7 +118,7 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                 path = path || localeConf.langFile;
                 token = path + "._LOOKUP_";
 
-                bundle = getBundle(token);
+                bundle = getBundle(token, currentLocale);
 
                 if (!deferrences[path]) {
                     deferrences[path] = $q.defer();
@@ -127,7 +128,7 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                     deferrences[path].resolve(path);
                 } else {
                     if (!bundle) {
-                        loadBundle(token);
+                        loadBundle(token, currentLocale);
                     }
                 }
 
@@ -186,12 +187,17 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                 return res;
             }
 
-            function getLocalizedString(txt, subs) {
+            function getLocalizedString(txt, subs, locale) {
                 var result = '',
                     bundle,
                     key,
                     A,
                     isValidToken = false;
+
+                var useLocale = currentLocale;
+                if (locale != null) {
+                    useLocale = locale;
+                }
 
                 if (angular.isString(txt) && !subs && txt.indexOf(localeConf.delimiter) != -1) {
                     A = txt.split(localeConf.delimiter);
@@ -205,19 +211,23 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                         subs = [subs];
                     }
 
-                    bundle = getBundle(txt);
+                    bundle = getBundle(txt, useLocale);
                     if (bundle && !bundle._loading) {
                         key = getKey(txt);
 
                         if (bundle[key]) {
                             result = applySubstitutions(bundle[key], subs);
                         } else {
-                            $log.info("[localizationService] Key not found: " + txt);
-                            result = "%%KEY_NOT_FOUND%%";
+                            if (currentLocale != localeConf.defaultLocale && useLocale != localeConf.defaultLocale) {
+                                result = getLocalizedString(txt, subs, localeConf.defaultLocale);
+                            } else {
+                                $log.info("[localizationService] Key not found: " + txt);
+                                result = "%%KEY_NOT_FOUND%%";
+                            }
                         }
                     } else {
                         if (!bundle) {
-                            loadBundle(txt);
+                            loadBundle(txt, useLocale);
                         }
                     }
                 } else {
@@ -229,23 +239,23 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
 
             function setLocale(value) {
                 var lang;
-
-                if (angular.isString(value)) {
-                    value = value.trim();
-                    if (localeSupported[value] != null) {
-                        lang = value;
-                    } else {
-                        lang = localeFallbacks[value.split('-')[0]]
-                        if (angular.isUndefined(lang)) {
-                            lang = localeConf.defaultLocale;
-                        }
-                    }
-                } else {
+                if(!angular.isString(value)) {
                     lang = localeConf.defaultLocale;
+                }
+                else {
+                    value = value.trim();
+                    lang = localeSupported[value] ? value :
+                    localeFallbacks[value.split('-')[0]] || localeConf.defaultLocale;
+                }
+
+                if (languageBundles == null) {
+                    languageBundles = {};
+                    angular.forEach(localeSupported, function(value, key) {
+                        languageBundles[key] = {};
+                    });
                 }
 
                 if (lang != currentLocale) {
-                    bundles = {};
                     deferrences = {};
                     currentLocale = lang;
 
