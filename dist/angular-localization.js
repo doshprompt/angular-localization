@@ -1,5 +1,5 @@
 /**
- * angular-localization :: v1.1.4 :: 2015-02-27
+ * angular-localization :: v1.2.0 :: 2015-03-14
  * web: https://github.com/doshprompt/angular-localization
  *
  * Copyright (c) 2015 | Rahul Doshi
@@ -257,7 +257,7 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
 
                 if (angular.isString(value)) {
                     value = value.trim();
-                    if (localeSupported.indexOf(value) != -1) {
+                    if (localeSupported[value] != null) {
                         lang = value;
                     } else {
                         lang = localeFallbacks[value.split('-')[0]]
@@ -401,12 +401,12 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
         }
     ]);
 angular.module('ngLocalize.InstalledLanguages', [])
-    .value('localeSupported', [
-        'en-US'
-    ])
+    .value('localeSupported', {
+        'en-US': "English (United States)"
+    })
     .value('localeFallbacks', {
         'en': 'en-US'
     });
 angular.module('ngLocalize.Version', [])
-    .constant('localeVer', '1.1.4');
+    .constant('localeVer', '1.2.0');
 })(window.angular, window, document);

@@ -232,7 +232,7 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
 
                 if (angular.isString(value)) {
                     value = value.trim();
-                    if (localeSupported.indexOf(value) != -1) {
+                    if (localeSupported[value] != null) {
                         lang = value;
                     } else {
                         lang = localeFallbacks[value.split('-')[0]]
