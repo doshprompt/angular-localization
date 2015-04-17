@@ -45,6 +45,11 @@ gulp.task('concat', function () {
 
 gulp.task('uglify', function () {
     return gulp.src(paths.distDir + '/angular-localization.js')
+        .pipe($.ngAnnotate({
+            single_quotes: true,
+            add: true,
+            remove: true
+        }))
         .pipe($.uglifyjs('angular-localization.min.js', {
             outSourceMap: 'angular-localization.min.map',
             basePath: 'dist/',
