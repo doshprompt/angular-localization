@@ -1,5 +1,5 @@
 /**
- * angular-localization :: v1.1.4 :: 2015-02-27
+ * angular-localization :: v1.2.1 :: 2015-04-17
  * web: https://github.com/doshprompt/angular-localization
  *
  * Copyright (c) 2015 | Rahul Doshi
@@ -302,9 +302,13 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
     ])
     .filter('i18n', ['locale',
         function (locale) {
-            return function (input, args) {
+            var i18nFilter = function (input, args) {
                 return locale.getString(input, args);
             };
+
+            i18nFilter.$stateful = true;
+
+            return i18nFilter;
         }
     ])
     .directive('i18n', ['$sce', 'locale', 'localeEvents', 'localeConf',
@@ -408,5 +412,5 @@ angular.module('ngLocalize.InstalledLanguages', [])
         'en': 'en-US'
     });
 angular.module('ngLocalize.Version', [])
-    .constant('localeVer', '1.1.4');
+    .constant('localeVer', '1.2.1');
 })(window.angular, window, document);

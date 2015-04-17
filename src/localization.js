@@ -277,9 +277,13 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
     ])
     .filter('i18n', ['locale',
         function (locale) {
-            return function (input, args) {
+            var i18nFilter = function (input, args) {
                 return locale.getString(input, args);
             };
+
+            i18nFilter.$stateful = true;
+
+            return i18nFilter;
         }
     ])
     .directive('i18n', ['$sce', 'locale', 'localeEvents', 'localeConf',
