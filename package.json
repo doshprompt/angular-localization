@@ -28,18 +28,16 @@
     "gulp-exit": "0.0.2",
     "gulp-gzip": "0.0.8",
     "gulp-header": "^1.1.1",
+    "gulp-load-plugins": "^0.10.0",
     "gulp-preprocess": "^1.1.1",
-    "gulp-protractor": "0.0.11",
     "gulp-uglifyjs": "^0.4.4",
     "gulp-using": "0.0.1",
-    "gulp-webserver": "^0.8.3",
     "karma": "^0.12.24",
     "karma-jasmine": "^0.1.5",
     "karma-junit-reporter": "^0.2.2",
     "karma-phantomjs-launcher": "^0.1.4",
     "moment": "^2.8.3",
     "phantomjs": "^1.9.7-8",
-    "protractor": "^1.2.0",
     "run-sequence": "^1.0.1"
   }
 }
