@@ -1,13 +1,12 @@
 angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Events', 'ngLocalize.InstalledLanguages'])
-    .service('locale', [$injector, $http, $q, $log, $rootScope, $window, localeConf, localeEvents, localeSupported, localeFallbacks,
-        function ($injector, $http, $q, $log, $rootScope, $window, localeConf, localeEvents, localeSupported, localeFallbacks) {
-            var TOKEN_REGEX = new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$'),
-                currentLocale,
-                locales = [],
-                languageBundles,
-                deferrences,
-                bundles,
-                cookieStore;
+    .service('locale', function ($injector, $http, $q, $log, $rootScope, $window, localeConf, localeEvents, localeSupported, localeFallbacks) {
+        var TOKEN_REGEX = new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$'),
+            currentLocale,
+            locales = [],
+            languageBundles,
+            deferrences,
+            bundles,
+            cookieStore;
 
         if (localeConf.persistSelection && $injector.has('$cookieStore')) {
             cookieStore = $injector.get('$cookieStore');
@@ -39,13 +38,13 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
             return result;
         }
 
-            function getBundle(tok, lang) {
-                var result = null,
-                    path = tok ? tok.split('.') : [],
-                    i;
+        function getBundle(tok, lang) {
+            var result = null,
+                path = tok ? tok.split('.') : [],
+                i;
 
-                if (path.length > 1) {
-                    result = languageBundles[lang];
+            if (path.length > 1) {
+                result = languageBundles[lang];
 
                 for (i = 0; i < path.length - 1; i++) {
                     if (result[path[i]]) {
@@ -60,11 +59,11 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
             return result;
         }
 
-            function loadBundle(token, lang) {
-                var path = token ? token.split('.') : '',
-                    root = languageBundles[lang],
-                    url = localeConf.basePath + '/' + lang,
-                    i;
+        function loadBundle(token, lang) {
+            var path = token ? token.split('.') : '',
+                root = languageBundles[lang],
+                url = localeConf.basePath + '/' + lang,
+                i;
 
             if (path.length > 1) {
                 for (i = 0; i < path.length - 1; i++) {
@@ -112,9 +111,9 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
             }
         }
 
-            function bundleReady(path, locale) {
-                var bundle,
-                    token;
+        function bundleReady(path, locale) {
+            var bundle,
+                token;
 
             path = path || localeConf.langFile;
             token = path + "._LOOKUP_";
@@ -125,13 +124,13 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                 deferrences[path] = $q.defer();
             }
 
-                if (bundle && !bundle._loading) {
-                    deferrences[path].resolve(path);
-                } else {
-                    if (!bundle) {
-                        loadBundle(token, locale);
-                    }
+            if (bundle && !bundle._loading) {
+                deferrences[path].resolve(path);
+            } else {
+                if (!bundle) {
+                    loadBundle(token, locale);
                 }
+            }
 
             return deferrences[path].promise;
         }
@@ -149,24 +148,24 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                 throw new Error("locale.ready requires either an Array or comma-separated list.");
             }
 
-                outstanding = [];
-                if (paths.length > 1) {
-                    paths.forEach(function (path) {
-                        // Load all bundles that may be required by the fallback hierarchy
-                        for (var i = 0; i < locales.length; i++) {
-                            outstanding.push(bundleReady(path, locales[i]));
-                        }
-                    });
-                } else {
+            outstanding = [];
+            if (paths.length > 1) {
+                paths.forEach(function (path) {
                     // Load all bundles that may be required by the fallback hierarchy
                     for (var i = 0; i < locales.length; i++) {
                         outstanding.push(bundleReady(path, locales[i]));
                     }
+                });
+            } else {
+                // Load all bundles that may be required by the fallback hierarchy
+                for (var i = 0; i < locales.length; i++) {
+                    outstanding.push(bundleReady(path, locales[i]));
                 }
-
-                deferred = $q.all(outstanding);
-                return deferred;
             }
+
+            deferred = $q.all(outstanding);
+            return deferred;
+        }
 
         function applySubstitutions(text, subs) {
             var res = text,
@@ -194,29 +193,29 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
             return res;
         }
 
-            function getLocalizedString(txt, subs) {
-                var bundle,
-                    key,
-                    A,
-                    isValidToken = false;
+        function getLocalizedString(txt, subs) {
+            var bundle,
+                key,
+                A,
+                isValidToken = false;
 
-                for (var i = 0; i < locales.length; i++) {
-                    var result = getStringForLocale(txt, subs, locales[i]);
-                    if(result != null) {
-                        return result;
-                    }
+            for (var i = 0; i < locales.length; i++) {
+                var result = getStringForLocale(txt, subs, locales[i]);
+                if(result != null) {
+                    return result;
                 }
-
-                $log.info("[localizationService] Key not found: " + txt);
-                return "%%KEY_NOT_FOUND%%";
             }
 
-            function getStringForLocale(txt, subs, locale) {
-                var result = null,
-                    bundle,
-                    key,
-                    A,
-                    isValidToken = false;
+            $log.info("[localizationService] Key not found: " + txt);
+            return "%%KEY_NOT_FOUND%%";
+        }
+
+        function getStringForLocale(txt, subs, locale) {
+            var result = null,
+                bundle,
+                key,
+                A,
+                isValidToken = false;
 
             if (angular.isString(txt) && !subs && txt.indexOf(localeConf.delimiter) != -1) {
                 A = txt.split(localeConf.delimiter);
@@ -224,84 +223,84 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                 subs = angular.fromJson(A[1]);
             }
 
-                // If the token isn't valid, then just return it
-                isValidToken = isToken(txt);
-                if (!isValidToken) {
-                    return txt;
-                }
-
-                if (!angular.isObject(subs)) {
-                    subs = [subs];
-                }
-
-                // Load the file
-                bundle = getBundle(txt, locale);
-                if (bundle && !bundle._loading) {
-                    key = getKey(txt);
-
-                    if (bundle[key]) {
-                        return applySubstitutions(bundle[key], subs);
-                    }
-                } else {
-                    if (!bundle) {
-                        loadBundle(txt, locale);
-                    }
-                }
-
-                return null;
+            // If the token isn't valid, then just return it
+            isValidToken = isToken(txt);
+            if (!isValidToken) {
+                return txt;
             }
 
-            function setLocale(value) {
-                var lang;
-                var fall;
+            if (!angular.isObject(subs)) {
+                subs = [subs];
+            }
 
-                if(!angular.isString(value)) {
-                    lang = localeConf.defaultLocale;
+            // Load the file
+            bundle = getBundle(txt, locale);
+            if (bundle && !bundle._loading) {
+                key = getKey(txt);
+
+                if (bundle[key]) {
+                    return applySubstitutions(bundle[key], subs);
+                }
+            } else {
+                if (!bundle) {
+                    loadBundle(txt, locale);
+                }
+            }
+
+            return null;
+        }
+
+        function setLocale(value) {
+            var lang;
+            var fall;
+
+            if(!angular.isString(value)) {
+                lang = localeConf.defaultLocale;
+            }
+            else {
+                value = value.trim();
+
+                // Get the fallback first - if it's not valid, then use the default
+                if(localeSupported[localeFallbacks[value.split('-')[0]]] != null) {
+                    fall = localeFallbacks[value.split('-')[0]];
                 }
                 else {
-                    value = value.trim();
-
-                    // Get the fallback first - if it's not valid, then use the default
-                    if(localeSupported[localeFallbacks[value.split('-')[0]]] != null) {
-                        fall = localeFallbacks[value.split('-')[0]];
-                    }
-                    else {
-                        fall = localeConf.defaultLocale;
-                    }
-
-                    // Check if the requested locale is supported - if not, use the fallback
-                    if(localeSupported[value] != null) {
-                        lang = value;
-                    }
-                    else {
-                        lang = fall;
-                        fall = localeConf.defaultLocale;
-                    }
+                    fall = localeConf.defaultLocale;
                 }
 
-                if (languageBundles == null) {
-                    languageBundles = {};
-                    angular.forEach(localeSupported, function(value, key) {
-                        languageBundles[key] = {};
-                    });
+                // Check if the requested locale is supported - if not, use the fallback
+                if(localeSupported[value] != null) {
+                    lang = value;
                 }
+                else {
+                    lang = fall;
+                    fall = localeConf.defaultLocale;
+                }
+            }
 
-                if (lang != currentLocale) {
-                    deferrences = {};
-                    currentLocale = lang;
+            if (languageBundles == null) {
+                languageBundles = {};
+                angular.forEach(localeSupported, function(value, key) {
+                    languageBundles[key] = {};
+                });
+            }
 
-                    // Create the locales list.
-                    locales = [];
-                    if(lang != localeConf.defaultLocale) {
-                        locales.push(lang);
-                    }
-                    if(fall != localeConf.defaultLocale) {
-                        locales.push(fall);
-                    }
-                    locales.push(localeConf.defaultLocale);
+            if (lang != currentLocale) {
+                deferrences = {};
+                currentLocale = lang;
 
-                    $rootScope.$broadcast(localeEvents.localeChanges, currentLocale);
-                    $rootScope.$broadcast(localeEvents.resourceUpdates);
+                // Create the locales list.
+                locales = [];
+                if(lang != localeConf.defaultLocale) {
+                    locales.push(lang);
+                }
+                if(fall != localeConf.defaultLocale) {
+                    locales.push(fall);
+                }
+                locales.push(localeConf.defaultLocale);
+
+                $rootScope.$broadcast(localeEvents.localeChanges, currentLocale);
+                $rootScope.$broadcast(localeEvents.resourceUpdates);
 
                 if (cookieStore) {
                     cookieStore.put(localeConf.cookieName, lang);
