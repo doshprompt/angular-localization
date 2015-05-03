@@ -1,5 +1,5 @@
 angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Events', 'ngLocalize.InstalledLanguages'])
-    .service('locale', ['$injector', '$http', '$q', '$log', '$rootScope', '$window', 'localeConf', 'localeEvents', 'localeSupported', 'localeFallbacks',
+    .service('locale', [$injector, $http, $q, $log, $rootScope, $window, localeConf, localeEvents, localeSupported, localeFallbacks,
         function ($injector, $http, $q, $log, $rootScope, $window, localeConf, localeEvents, localeSupported, localeFallbacks) {
             var TOKEN_REGEX = new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$'),
                 currentLocale,
@@ -9,35 +9,35 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                 bundles,
                 cookieStore;
 
-            if (localeConf.persistSelection && $injector.has('$cookieStore')) {
-                cookieStore = $injector.get('$cookieStore');
+        if (localeConf.persistSelection && $injector.has('$cookieStore')) {
+            cookieStore = $injector.get('$cookieStore');
+        }
+
+        function isToken(str) {
+            return (str && str.length && TOKEN_REGEX.test(str));
+        }
+
+        function getPath(tok) {
+            var path = tok ? tok.split('.') : '',
+                result = '';
+
+            if (path.length > 1) {
+                result = path.slice(0, -1).join('.');
             }
 
-            function isToken(str) {
-                return (str && str.length && TOKEN_REGEX.test(str));
+            return result;
+        }
+
+        function getKey(tok) {
+            var path = tok ? tok.split('.') : [],
+                result = '';
+
+            if (path.length) {
+                result = path[path.length - 1];
             }
 
-            function getPath(tok) {
-                var path = tok ? tok.split('.') : '',
-                    result = '';
-
-                if (path.length > 1) {
-                    result = path.slice(0, -1).join('.');
-                }
-
-                return result;
-            }
-
-            function getKey(tok) {
-                var path = tok ? tok.split('.') : [],
-                    result = '';
-
-                if (path.length) {
-                    result = path[path.length - 1];
-                }
-
-                return result;
-            }
+            return result;
+        }
 
             function getBundle(tok, lang) {
                 var result = null,
@@ -47,18 +47,18 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                 if (path.length > 1) {
                     result = languageBundles[lang];
 
-                    for (i = 0; i < path.length - 1; i++) {
-                        if (result[path[i]]) {
-                            result = result[path[i]];
-                        } else {
-                            result = null;
-                            break;
-                        }
+                for (i = 0; i < path.length - 1; i++) {
+                    if (result[path[i]]) {
+                        result = result[path[i]];
+                    } else {
+                        result = null;
+                        break;
                     }
                 }
-
-                return result;
             }
+
+            return result;
+        }
 
             function loadBundle(token, lang) {
                 var path = token ? token.split('.') : '',
@@ -66,64 +66,64 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                     url = localeConf.basePath + '/' + lang,
                     i;
 
-                if (path.length > 1) {
-                    for (i = 0; i < path.length - 1; i++) {
-                        if (!root[path[i]]) {
-                            root[path[i]] = {};
-                        }
-                        root = root[path[i]];
-                        url += "/" + path[i];
+            if (path.length > 1) {
+                for (i = 0; i < path.length - 1; i++) {
+                    if (!root[path[i]]) {
+                        root[path[i]] = {};
                     }
+                    root = root[path[i]];
+                    url += "/" + path[i];
+                }
 
-                    if (!root._loading) {
-                        root._loading = true;
+                if (!root._loading) {
+                    root._loading = true;
 
-                        url += localeConf.fileExtension;
+                    url += localeConf.fileExtension;
 
-                        $http.get(url)
-                            .success(function (data) {
-                                var key,
-                                    path = getPath(token);
-                                // Merge the contents of the obtained data into the stored bundle.
-                                for (key in data) {
-                                    if (data.hasOwnProperty(key)) {
-                                        root[key] = data[key];
-                                    }
+                    $http.get(url)
+                        .success(function (data) {
+                            var key,
+                                path = getPath(token);
+                            // Merge the contents of the obtained data into the stored bundle.
+                            for (key in data) {
+                                if (data.hasOwnProperty(key)) {
+                                    root[key] = data[key];
                                 }
+                            }
 
-                                // Mark the bundle as having been "loaded".
-                                delete root._loading;
+                            // Mark the bundle as having been "loaded".
+                            delete root._loading;
 
-                                // Notify anyone who cares to know about this event.
-                                $rootScope.$broadcast(localeEvents.resourceUpdates);
+                            // Notify anyone who cares to know about this event.
+                            $rootScope.$broadcast(localeEvents.resourceUpdates);
 
-                                // If we issued a Promise for this file, resolve it now.
-                                if (deferrences[path]) {
-                                    deferrences[path].resolve(path);
-                                }
-                            })
-                            .error(function (data) {
-                                $log.error("[localizationService] Failed to load: " + url);
+                            // If we issued a Promise for this file, resolve it now.
+                            if (deferrences[path]) {
+                                deferrences[path].resolve(path);
+                            }
+                        })
+                        .error(function (data) {
+                            $log.error("[localizationService] Failed to load: " + url);
 
-                                // We can try it again later.
-                                delete root._loading;
-                            });
-                    }
+                            // We can try it again later.
+                            delete root._loading;
+                        });
                 }
             }
+        }
 
             function bundleReady(path, locale) {
                 var bundle,
                     token;
 
-                path = path || localeConf.langFile;
-                token = path + "._LOOKUP_";
+            path = path || localeConf.langFile;
+            token = path + "._LOOKUP_";
 
                 bundle = getBundle(token, locale);
 
-                if (!deferrences[path]) {
-                    deferrences[path] = $q.defer();
-                }
+            if (!deferrences[path]) {
+                deferrences[path] = $q.defer();
+            }
 
                 if (bundle && !bundle._loading) {
                     deferrences[path].resolve(path);
@@ -133,21 +133,21 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                     }
                 }
 
-                return deferrences[path].promise;
+            return deferrences[path].promise;
+        }
+
+        function ready(path) {
+            var paths,
+                deferred,
+                outstanding;
+
+            if (angular.isString(path)) {
+                paths = path.split(',');
+            } else if (angular.isArray(path)) {
+                paths = path;
+            } else {
+                throw new Error("locale.ready requires either an Array or comma-separated list.");
             }
-
-            function ready(path) {
-                var paths,
-                    deferred,
-                    outstanding;
-
-                if (angular.isString(path)) {
-                    paths = path.split(',');
-                } else if (angular.isArray(path)) {
-                    paths = path;
-                } else {
-                    throw new Error("locale.ready requires either an Array or comma-separated list.");
-                }
 
                 outstanding = [];
                 if (paths.length > 1) {
@@ -168,31 +168,31 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                 return deferred;
             }
 
-            function applySubstitutions(text, subs) {
-                var res = text,
-                    firstOfKind = 0;
+        function applySubstitutions(text, subs) {
+            var res = text,
+                firstOfKind = 0;
 
-                if (subs) {
-                    if (angular.isArray(subs)) {
-                        angular.forEach(subs, function (sub, i) {
-                            res = res.replace('%' + (i + 1), sub);
-                            res = res.replace('{' + (i + 1) + '}', sub);
-                        });
-                    } else {
-                        angular.forEach(subs, function (v, k) {
-                            ++firstOfKind;
+            if (subs) {
+                if (angular.isArray(subs)) {
+                    angular.forEach(subs, function (sub, i) {
+                        res = res.replace('%' + (i + 1), sub);
+                        res = res.replace('{' + (i + 1) + '}', sub);
+                    });
+                } else {
+                    angular.forEach(subs, function (v, k) {
+                        ++firstOfKind;
 
-                            res = res.replace('{' + k + '}', v);
-                            res = res.replace('%' + k, v);
-                            res = res.replace('%' + (firstOfKind), v);
-                            res = res.replace('{' + (firstOfKind) + '}', v);
-                        });
-                    }
+                        res = res.replace('{' + k + '}', v);
+                        res = res.replace('%' + k, v);
+                        res = res.replace('%' + (firstOfKind), v);
+                        res = res.replace('{' + (firstOfKind) + '}', v);
+                    });
                 }
-                res = res.replace(/\n/g, '<br>');
-
-                return res;
             }
+            res = res.replace(/\n/g, '<br>');
+
+            return res;
+        }
 
             function getLocalizedString(txt, subs) {
                 var bundle,
@@ -218,11 +218,11 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                     A,
                     isValidToken = false;
 
-                if (angular.isString(txt) && !subs && txt.indexOf(localeConf.delimiter) != -1) {
-                    A = txt.split(localeConf.delimiter);
-                    txt = A[0];
-                    subs = angular.fromJson(A[1]);
-                }
+            if (angular.isString(txt) && !subs && txt.indexOf(localeConf.delimiter) != -1) {
+                A = txt.split(localeConf.delimiter);
+                txt = A[0];
+                subs = angular.fromJson(A[1]);
+            }
 
                 // If the token isn't valid, then just return it
                 isValidToken = isToken(txt);
@@ -303,126 +303,123 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                     $rootScope.$broadcast(localeEvents.localeChanges, currentLocale);
                     $rootScope.$broadcast(localeEvents.resourceUpdates);
 
-                    if (cookieStore) {
-                        cookieStore.put(localeConf.cookieName, lang);
-                    }
+                if (cookieStore) {
+                    cookieStore.put(localeConf.cookieName, lang);
                 }
             }
+        }
 
-            function getLocale() {
-                return currentLocale;
+        function getLocale() {
+            return currentLocale;
+        }
+
+        setLocale(cookieStore ? cookieStore.get(localeConf.cookieName) : $window.navigator.userLanguage || $window.navigator.language);
+
+        return {
+            ready: ready,
+            isToken: isToken,
+            getPath: getPath,
+            getKey: getKey,
+            setLocale: setLocale,
+            getLocale: getLocale,
+            getString: getLocalizedString
+        };
+    })
+    .filter('i18n', function (locale) {
+        var i18nFilter = function (input, args) {
+            return locale.getString(input, args);
+        };
+
+        i18nFilter.$stateful = true;
+
+        return i18nFilter;
+    })
+    .directive('i18n', function ($sce, locale, localeEvents, localeConf) {
+        function setText(elm, tag) {
+            if (tag !== elm.html()) {
+                elm.html($sce.getTrustedHtml(tag));
             }
-
-            setLocale(cookieStore ? cookieStore.get(localeConf.cookieName) : $window.navigator.userLanguage || $window.navigator.language);
-
-            return {
-                ready: ready,
-                isToken: isToken,
-                getPath: getPath,
-                getKey: getKey,
-                setLocale: setLocale,
-                getLocale: getLocale,
-                getString: getLocalizedString
-            };
         }
-    ])
-    .filter('i18n', ['locale',
-        function (locale) {
-            return function (input, args) {
-                return locale.getString(input, args);
-            };
+
+        function update(elm, string, optArgs) {
+            if (locale.isToken(string)) {
+                locale.ready(locale.getPath(string)).then(function () {
+                    setText(elm, locale.getString(string, optArgs));
+                });
+            } else {
+                setText(elm, string);
+            }
         }
-    ])
-    .directive('i18n', ['$sce', 'locale', 'localeEvents', 'localeConf',
-        function ($sce, locale, localeEvents, localeConf) {
-            function setText(elm, tag) {
-                if (tag !== elm.html()) {
-                    elm.html($sce.getTrustedHtml(tag));
+
+        return function (scope, elm, attrs) {
+            var hasObservers;
+
+            attrs.$observe('i18n', function (newVal, oldVal) {
+                if (newVal && newVal != oldVal) {
+                    update(elm, newVal, hasObservers); 
                 }
-            }
+            });
 
-            function update(elm, string, optArgs) {
-                if (locale.isToken(string)) {
-                    locale.ready(locale.getPath(string)).then(function () {
-                        setText(elm, locale.getString(string, optArgs));
+            angular.forEach(attrs.$attr, function (attr, normAttr) {
+                if (localeConf.observableAttrs.test(attr)) {
+                    attrs.$observe(normAttr, function (newVal, oldVal) {
+                        if ((newVal && newVal != oldVal) || !hasObservers || !hasObservers[normAttr]) {
+                            hasObservers = hasObservers || {};
+                            hasObservers[normAttr] = attrs[normAttr];
+                            update(elm, attrs.i18n, hasObservers);
+                        }
                     });
-                } else {
-                    setText(elm, string);
                 }
-            }
+            });
 
-            return function (scope, elm, attrs) {
-                var hasObservers;
+            scope.$on(localeEvents.resourceUpdates, function () {
+                update(elm, attrs.i18n, hasObservers);
+            });
+            scope.$on(localeEvents.localeChanges, function () {
+                update(elm, attrs.i18n, hasObservers);
+            });
+        };
+    })
+    .directive('i18nAttr', function (locale, localeEvents) {
+        return function (scope, elem, attrs) {
+            var lastValues = {};
 
-                attrs.$observe('i18n', function (newVal, oldVal) {
-                    if (newVal && newVal != oldVal) {
-                        update(elm, newVal, hasObservers); 
+            function updateText(target, attributes) {
+                var values = scope.$eval(attributes),
+                    langFiles = [],
+                    exp;
+
+                for(var key in values) {
+                    exp = values[key];
+                    if (locale.isToken(exp) && langFiles.indexOf(locale.getPath(exp)) == -1) {
+                        langFiles.push(locale.getPath(exp));
                     }
-                });
+                }
 
-                angular.forEach(attrs.$attr, function (attr, normAttr) {
-                    if (localeConf.observableAttrs.test(attr)) {
-                        attrs.$observe(normAttr, function (newVal, oldVal) {
-                            if ((newVal && newVal != oldVal) || !hasObservers || !hasObservers[normAttr]) {
-                                hasObservers = hasObservers || {};
-                                hasObservers[normAttr] = attrs[normAttr];
-                                update(elm, attrs.i18n, hasObservers);
-                            }
-                        });
-                    }
-                });
-
-                scope.$on(localeEvents.resourceUpdates, function () {
-                    update(elm, attrs.i18n, hasObservers);
-                });
-                scope.$on(localeEvents.localeChanges, function () {
-                    update(elm, attrs.i18n, hasObservers);
-                });
-            };
-        }
-    ])
-    .directive('i18nAttr', ['locale', 'localeEvents',
-        function (locale, localeEvents) {
-            return function (scope, elem, attrs) {
-                var lastValues = {};
-
-                function updateText(target, attributes) {
-                    var values = scope.$eval(attributes),
-                        langFiles = [],
-                        exp;
+                locale.ready(langFiles).then(function () {
+                    var value = '';
 
                     for(var key in values) {
                         exp = values[key];
-                        if (locale.isToken(exp) && langFiles.indexOf(locale.getPath(exp)) == -1) {
-                            langFiles.push(locale.getPath(exp));
+                        value = locale.getString(exp);
+                        if (lastValues[key] !== value) {
+                            attrs.$set(key, lastValues[key] = value);
                         }
                     }
+                });
+            }
 
-                    locale.ready(langFiles).then(function () {
-                        var value = '';
-
-                        for(var key in values) {
-                            exp = values[key];
-                            value = locale.getString(exp);
-                            if (lastValues[key] !== value) {
-                                attrs.$set(key, lastValues[key] = value);
-                            }
-                        }
-                    });
+            attrs.$observe('i18nAttr', function (newVal, oldVal) {
+                if (newVal && newVal != oldVal) {
+                    updateText(elem, newVal); 
                 }
+            });
 
-                attrs.$observe('i18nAttr', function (newVal, oldVal) {
-                    if (newVal && newVal != oldVal) {
-                        updateText(elem, newVal); 
-                    }
-                });
-
-                scope.$on(localeEvents.resourceUpdates, function () {
-                    updateText(elem, attrs.i18nAttr);
-                });
-                scope.$on(localeEvents.localeChanges, function () {
-                    updateText(elem, attrs.i18nAttr);
-                });
-            };
-        }
-    ]);
+            scope.$on(localeEvents.resourceUpdates, function () {
+                updateText(elem, attrs.i18nAttr);
+            });
+            scope.$on(localeEvents.localeChanges, function () {
+                updateText(elem, attrs.i18nAttr);
+            });
+        };
+    });
