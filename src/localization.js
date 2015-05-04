@@ -175,7 +175,7 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
             if (angular.isString(path)) {
                 paths = path.split(',');
             } else if (angular.isArray(path)) {
-                paths = [path];
+                paths = path;
             } else {
                 throw new Error("locale.ready requires either an Array or comma-separated list.");
             }

@@ -13,6 +13,13 @@ describe('service', function () {
             expect(locale.getLocale()).toBe('en-US');
         }));
 
+        it('should correctly handle multiple paths in ready', inject(function (locale, $httpBackend) {
+            $httpBackend.expectGET('languages/en-US/common1.lang.json').respond();
+            $httpBackend.expectGET('languages/en-US/common2.lang.json').respond();
+            locale.ready(['common1', 'common2']);
+            $httpBackend.flush();
+        }));
+
         it('should go after the correct file', inject(function (locale, $httpBackend) {
             $httpBackend.expectGET('languages/en-US/common.lang.json').respond();
             locale.ready('common');
