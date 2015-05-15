@@ -1,8 +1,8 @@
 {
   "name": "angular-localization",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "angularjs localization done right.",
-  "main": "src/angular-localization.js",
+  "main": "dist/angular-localization.js",
   "scripts": {
     "postinstall": "bower install",
     "test": "gulp test"

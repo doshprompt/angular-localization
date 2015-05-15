@@ -1,6 +1,6 @@
 {
   "name": "angular-localization",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "homepage": "https://github.com/doshprompt/angular-localization",
   "description": "angularjs localization done right",
   "main": "angular-localization.js",
@@ -22,7 +22,11 @@
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    "src",
+    "app",
+    "build",
+    "gulpfile.js"
   ],
   "dependencies": {
     "angular": ">=1.2 < 2",
