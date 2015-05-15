@@ -1,9 +1,10 @@
 angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Events', 'ngLocalize.InstalledLanguages'])
     .service('locale', function ($injector, $http, $q, $log, $rootScope, $window, localeConf, localeEvents, localeSupported, localeFallbacks) {
         var TOKEN_REGEX = new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$'),
-
             currentLocale,
-            deferrences,
+            locales = [],
+            languageBundles,
+            deferrences = {},
             bundles,
             cookieStore;
 
@@ -37,14 +38,22 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
             return result;
         }
 
-        function getBundle(tok) {
+        /**
+         * Return the bundle for the requested token and language
+         * @param tok The requested token. The token is split between paths using the point
+         * @param lang The requested language
+         * @returns {*} The bundle object if the bundle has been loaded.
+         *              If the bundle is not loaded, returns null
+         */
+        function getBundle(tok, lang) {
             var result = null,
                 path = tok ? tok.split('.') : [],
                 i;
 
             if (path.length > 1) {
-                result = bundles;
+                result = languageBundles[lang];
 
+                // Iterate through the bundle tree to find the requested bundle
                 for (i = 0; i < path.length - 1; i++) {
                     if (result[path[i]]) {
                         result = result[path[i]];
@@ -58,13 +67,23 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
             return result;
         }
 
-        function loadBundle(token) {
+        /**
+         * Loads a language bundle from the server.
+         * @param token The token, including the path and string name (separated by a .)
+         *              Mulitple folders can be separated by a '.' - the last token being the
+         *              filename.
+         * @param lang The requested localization
+         */
+        function loadBundle(token, lang) {
             var path = token ? token.split('.') : '',
-                root = bundles,
-                url = localeConf.basePath + '/' + currentLocale,
+                root = languageBundles[lang],
+                url = localeConf.basePath + '/' + lang,
                 i;
 
+            // If the path is defined...
             if (path.length > 1) {
+                // Concatenate the path together to form the URL
+                // Build a tree object where the bundle information will be loaded
                 for (i = 0; i < path.length - 1; i++) {
                     if (!root[path[i]]) {
                         root[path[i]] = {};
@@ -74,10 +93,12 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                 }
 
                 if (!root._loading) {
+                    // Remember that we're loading this bundle to stop subsequent calls to the server
                     root._loading = true;
 
                     url += localeConf.fileExtension;
 
+                    // Request the data from the server
                     $http.get(url)
                         .success(function (data) {
                             var key,
@@ -96,8 +117,9 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                             $rootScope.$broadcast(localeEvents.resourceUpdates);
 
                             // If we issued a Promise for this file, resolve it now.
-                            if (deferrences[path]) {
-                                deferrences[path].resolve(path);
+                            var localpath = path + "." + lang;
+                            if (deferrences[localpath]) {
+                                deferrences[localpath].resolve(localpath);
                             }
                         })
                         .error(function (data) {
@@ -110,28 +132,39 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
             }
         }
 
-        function bundleReady(path) {
+        /**
+         * Checks if a bundle has been loaded, and if not, loaded it
+         * @param path bundle path
+         * @param locale requested locale
+         * @returns promise. If the bundle is loaded, the promise is already resolved
+         */
+        function bundleReady(path, locale) {
             var bundle,
                 token;
 
             path = path || localeConf.langFile;
             token = path + "._LOOKUP_";
 
-            bundle = getBundle(token);
+            // Get the bundle if it's loaded. Returns null if not loaded
+            bundle = getBundle(token, locale);
 
-            if (!deferrences[path]) {
-                deferrences[path] = $q.defer();
+            var localepath = path + "." + locale;
+
+            // Create a promise for this bundle
+            if (!deferrences[localepath]) {
+                deferrences[localepath] = $q.defer();
             }
 
             if (bundle && !bundle._loading) {
-                deferrences[path].resolve(path);
-            } else {
-                if (!bundle) {
-                    loadBundle(token);
-                }
+                // The bundle has been loaded, so full-fill our promise
+                deferrences[localepath].resolve(localepath);
+            } else if (!bundle) {
+                // The bundle is not loaded, so load it
+                loadBundle(token, locale);
             }
 
-            return deferrences[path].promise;
+            // Return the promise for the bundle we requested
+            return deferrences[localepath].promise;
         }
 
         function ready(path) {
@@ -147,16 +180,15 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                 throw new Error("locale.ready requires either an Array or comma-separated list.");
             }
 
-            if (paths.length > 1) {
-                outstanding = [];
-                paths.forEach(function (path) {
-                    outstanding.push(bundleReady(path));
+            outstanding = [];
+            paths.forEach(function (path) {
+                // Load all bundles that may be required by the fallback hierarchy
+                locales.forEach(function(locale) {
+                    outstanding.push(bundleReady(path, locale));
                 });
-                deferred = $q.all(outstanding);
-            } else {
-                deferred = bundleReady(path);
-            }
+            });
 
+            deferred = $q.all(outstanding);
             return deferred;
         }
 
@@ -187,7 +219,24 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
         }
 
         function getLocalizedString(txt, subs) {
-            var result = '',
+            var bundle,
+                key,
+                A,
+                isValidToken = false;
+
+            for (var i = 0; i < locales.length; i++) {
+                var result = getStringForLocale(txt, subs, locales[i]);
+                if(result != null) {
+                    return result;
+                }
+            }
+
+            $log.info("[localizationService] Key not found: " + txt);
+            return "%%KEY_NOT_FOUND%%";
+        }
+
+        function getStringForLocale(txt, subs, locale) {
+            var result = null,
                 bundle,
                 key,
                 A,
@@ -199,55 +248,84 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                 subs = angular.fromJson(A[1]);
             }
 
+            // If the token isn't valid, then just return it
             isValidToken = isToken(txt);
-            if (isValidToken) {
-                if (!angular.isObject(subs)) {
-                    subs = [subs];
-                }
-
-                bundle = getBundle(txt);
-                if (bundle && !bundle._loading) {
-                    key = getKey(txt);
-
-                    if (bundle[key]) {
-                        result = applySubstitutions(bundle[key], subs);
-                    } else {
-                        $log.info("[localizationService] Key not found: " + txt);
-                        result = "%%KEY_NOT_FOUND%%";
-                    }
-                } else {
-                    if (!bundle) {
-                        loadBundle(txt);
-                    }
-                }
-            } else {
-                result = txt;
+            if (!isValidToken) {
+                return txt;
             }
 
-            return result;
+            if (!angular.isObject(subs)) {
+                subs = [subs];
+            }
+
+            // Load the file
+            bundle = getBundle(txt, locale);
+            if (bundle && !bundle._loading) {
+                key = getKey(txt);
+
+                if (bundle[key]) {
+                    return applySubstitutions(bundle[key], subs);
+                }
+            } else {
+                if (!bundle) {
+                    loadBundle(txt, locale);
+                }
+            }
+
+            return null;
         }
 
         function setLocale(value) {
             var lang;
+            var fall;
 
-            if (angular.isString(value)) {
-                value = value.trim();
-                if (localeSupported.indexOf(value) != -1) {
-                    lang = value;
-                } else {
-                    lang = localeFallbacks[value.split('-')[0]]
-                    if (angular.isUndefined(lang)) {
-                        lang = localeConf.defaultLocale;
-                    }
-                }
-            } else {
+            if(!angular.isString(value)) {
                 lang = localeConf.defaultLocale;
             }
+            else {
+                value = value.trim();
 
+                // Get the fallback first - if it's not valid, then use the default
+                if(localeSupported[localeFallbacks[value.split('-')[0]]] != null) {
+                    fall = localeFallbacks[value.split('-')[0]];
+                }
+                else {
+                    fall = localeConf.defaultLocale;
+                }
+
+                // Check if the requested locale is supported - if not, use the fallback
+                if(localeSupported[value] != null) {
+                    lang = value;
+                }
+                else {
+                    lang = fall;
+                    fall = localeConf.defaultLocale;
+                }
+            }
+
+            if (languageBundles == null) {
+                languageBundles = {};
+                angular.forEach(localeSupported, function(value, key) {
+                    languageBundles[key] = {};
+                });
+            }
+
+            // If the language has changed, then we need to reset the state
+            // so we reload files next time
             if (lang != currentLocale) {
-                bundles = {};
-                deferrences = {};
+                // Note that we don't reset the deferrences array since the array
+                // path includes the language, we don't need to reload all locales
                 currentLocale = lang;
+
+                // Create the locales list.
+                locales = [];
+                if(lang != localeConf.defaultLocale) {
+                    locales.push(lang);
+                }
+                if(fall != localeConf.defaultLocale) {
+                    locales.push(fall);
+                }
+                locales.push(localeConf.defaultLocale);
 
                 $rootScope.$broadcast(localeEvents.localeChanges, currentLocale);
                 $rootScope.$broadcast(localeEvents.resourceUpdates);
