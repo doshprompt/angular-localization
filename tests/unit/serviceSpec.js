@@ -35,5 +35,24 @@ describe('service', function () {
         it('should validate tokens with whitespace', inject(function (locale) {
             expect(locale.isToken('test.hello world')).toBe(true);
         }));
+
+        it('should return a bundle object', inject(function (locale) {
+            inject(function ($injector) {
+                // Set up the mock http service responses
+                var _httpBackend = $injector.get('$httpBackend');
+                // backend definition common for all tests
+                _httpBackend.whenGET('languages/en-US/common.lang.json').respond({
+                    helloWorld: 'Hello World'
+                });
+
+                // force our service to pull down the required resource file
+                $injector.get('locale').ready('common');
+                _httpBackend.flush();
+            });
+
+            locale.ready('common');
+            var o = locale.getBundle('common');
+            expect(o.helloWorld).toEqual('Hello World');
+        }));
     });
 });
