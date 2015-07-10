@@ -1,93 +1,81 @@
-var date = require('moment'),
+var PRESERVE_COMMENT_BLOCK = new RegExp('Copyright'),
+
+    DIST_DIR = 'dist',
+    SRC_FILES = 'src/**/*.js',
+
+    path = require('path'),
+
+    date = require('moment'),
     del = require('del'),
-    runSequence = require('run-sequence');
     karma = require('karma').server,
 
     gulp = require('gulp'),
-    $ = require('gulp-load-plugins')();
+    $ = require('gulp-load-plugins')(),
+    
+    banner = [
+        '/**',
+        ' * <%= package.title || package.name %> :: v<%= package.version %> :: <%= package.todayDate  %>',
+        ' * web: <%= package.homepage %>',
+        ' *',
+        ' * Copyright (c) <%= package.todayYear %> | <%= package.author %>',
+        ' * License: <%= package.license %>',
+        ' */',
+        ''
+        ].join('\n'),
 
-var paths = {
-    baseDir: 'src',
-    distDir: 'dist',
-    tempDir: 'tmp',
-    e2e: 'tests/e2e/*.js'
-};
+    pkg = require('./package.json');
 
-var pkg = require('./package.json');
-    pkg.todayDate = date().format('YYYY-MM-DD')
-    pkg.todayYear = date().format('YYYY')
+pkg.todayDate = date().format('YYYY-MM-DD');
+pkg.todayYear = date().format('YYYY');
 
-var banner = [
-    '/**',
-    ' * <%= pkg.title || pkg.name %> :: v<%= pkg.version %> :: <%= pkg.todayDate  %>',
-    ' * web: <%= pkg.homepage %>',
-    ' *',
-    ' * Copyright (c) <%= pkg.todayYear %> | <%= pkg.author %>',
-    ' * License: <%= pkg.license %>',
-    ' */',
-    ''
-    ].join('\n');
-
-gulp.task('clean', function (cb) {
-    del([paths.distDir, paths.tempDir], cb);
+gulp.task('clean', function(done) {
+    del(DIST_DIR, done);
 });
 
-gulp.task('concat', function () {
-    return gulp.src([
-        'build/module.prefix',                    
-        paths.baseDir + '/localization*.js',
-        'build/module.suffix'
-    ])
-    .pipe($.concat('angular-localization.js'))
-    .pipe($.header(banner, { pkg : pkg } ))
-    .pipe(gulp.dest(paths.distDir))
-});
+gulp.task('default', function() {
+    var filename = pkg.name + '.js';
 
-gulp.task('uglify', function () {
-    return gulp.src(paths.distDir + '/angular-localization.js')
-        .pipe($.ngAnnotate({
-            single_quotes: true,
-            add: true,
-            remove: true
-        }))
-        .pipe($.uglifyjs('angular-localization.min.js', {
-            outSourceMap: 'angular-localization.min.map',
-            basePath: 'dist/',
-            output: { 
-                comments: /Copyright/
+    return gulp.src(SRC_FILES)
+        .pipe($.newer(path.join(DIST_DIR, filename)))
+        .pipe($.angularFilesort())
+        .pipe($.addSrc.prepend('module.prefix'))
+        .pipe($.addSrc.append('module.suffix'))
+        .pipe($.concat(filename))
+        .pipe($.preprocess({
+            context: {
+                VERSION: pkg.version
             }
         }))
-        .pipe(gulp.dest(paths.distDir))
-});
-
-gulp.task('compress', function () {
-    return gulp.src(paths.distDir + '/*.min.js')
-        .pipe($.gzip())
-        .pipe(gulp.dest(paths.distDir))
-});
-
-gulp.task('karma', function (cb) {
-    karma.start({
-        configFile: __dirname + '/build/karma.conf.js'
-    }, cb);
-});
-
-gulp.task('preprocess', function () {
-    return gulp.src(paths.distDir + '/angular-localization.js')
-        .pipe($.preprocess({
-            context: { VERSION: pkg.version }
+        .pipe($.header(banner, {
+            package: pkg
         }))
-        .pipe(gulp.dest(paths.distDir));
+        .pipe(gulp.dest(DIST_DIR))
+        .pipe($.ngAnnotate({
+            add: true,
+            remove: true,
+            single_quotes: true
+        }))
+        .pipe($.sourcemaps.init())
+        .pipe($.uglify({
+            preserveComments: function(node, comment) {
+                return PRESERVE_COMMENT_BLOCK.test(comment.value);
+            }
+        }))
+        .pipe($.rename({
+            suffix: '.min'
+        }))
+        .pipe($.sourcemaps.write('.'))
+        .pipe(gulp.dest(DIST_DIR));
 });
 
-gulp.task('build', function () {
-    runSequence('clean', 'concat', 'preprocess', 'uglify', 'compress');
+gulp.task('test', ['lint'], function(done) {
+    karma.start({
+        configFile: path.join(__dirname, 'karma.conf.js')
+    }, done);
 });
-
-gulp.task('test', ['karma']);
 
 gulp.task('lint', function() {
-    return gulp.src(paths.baseDir + '/localization*.js')
+    return gulp.src(SRC_FILES)
         .pipe($.jshint())
         .pipe($.jshint.reporter('jshint-stylish'))
         .pipe($.jshint.reporter('fail'));

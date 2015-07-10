@@ -2,14 +2,15 @@ module.exports = function (config) {
     'use strict';
 
     config.set({
-        basePath : '../',
-
         files : [
             'lib/angular/angular.js',
             'lib/angular-cookies/angular-cookies.js',
             'lib/angular-sanitize/angular-sanitize.js',
+
             'lib/angular-mocks/angular-mocks.js',
+
             'src/**/*.js',
+
             'tests/unit/**/*.js'
         ],
 

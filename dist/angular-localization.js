@@ -1,27 +1,21 @@
 /**
  * angular-localization :: v1.2.2 :: 2015-07-10
- * web: https://github.com/doshprompt/angular-localization
+ * web: http://doshprompt.github.io/angular-localization
  *
  * Copyright (c) 2015 | Rahul Doshi
  * License: MIT
  */
 ;(function (angular, window, document, undefined) {
     'use strict';
-angular.module('ngLocalize.Config', [])
-    .value('localeConf', {
-        basePath: 'languages',
-        defaultLocale: 'en-US',
-        sharedDictionary: 'common',
-        fileExtension: '.lang.json',
-        persistSelection: true,
-        cookieName: 'COOKIE_LOCALE_LANG',
-        observableAttrs: new RegExp('^data-(?!ng-|i18n)'),
-        delimiter: '::'
-    });
-angular.module('ngLocalize.Events', [])
-    .constant('localeEvents', {
-        resourceUpdates: 'ngLocalizeResourcesUpdated',
-        localeChanges: 'ngLocalizeLocaleChanged'
+
+angular.module('ngLocalize.Version', [])
+    .constant('localeVer', '1.2.2');
+angular.module('ngLocalize.InstalledLanguages', [])
+    .value('localeSupported', [
+        'en-US'
+    ])
+    .value('localeFallbacks', {
+        'en': 'en-US'
     });
 angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Events', 'ngLocalize.InstalledLanguages'])
     .service('locale', function ($injector, $http, $q, $log, $rootScope, $window, localeConf, localeEvents, localeSupported, localeFallbacks) {
@@ -397,13 +391,20 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
             });
         };
     });
-angular.module('ngLocalize.InstalledLanguages', [])
-    .value('localeSupported', [
-        'en-US'
-    ])
-    .value('localeFallbacks', {
-        'en': 'en-US'
+angular.module('ngLocalize.Events', [])
+    .constant('localeEvents', {
+        resourceUpdates: 'ngLocalizeResourcesUpdated',
+        localeChanges: 'ngLocalizeLocaleChanged'
     });
-angular.module('ngLocalize.Version', [])
-    .constant('localeVer', '1.2.2');
-})(window.angular, window, document);
+angular.module('ngLocalize.Config', [])
+    .value('localeConf', {
+        basePath: 'languages',
+        defaultLocale: 'en-US',
+        sharedDictionary: 'common',
+        fileExtension: '.lang.json',
+        persistSelection: true,
+        cookieName: 'COOKIE_LOCALE_LANG',
+        observableAttrs: new RegExp('^data-(?!ng-|i18n)'),
+        delimiter: '::'
+    });
+}(this.angular, this, this.document));
