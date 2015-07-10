@@ -1,7 +1,14 @@
 language: node_js
-
 node_js:
-    - "0.10"
+    - "0.12"
+
+addons:
+  codeclimate:
+    repo_token:
+      secure: fLnxvRsIg6SOlBindOQqckUW7htQN5V8kg0+PNst6b267vSJsvM50//l+yaDhVdIQwA3DePRTXPeQFFt4cZKkWhdmwG463DFQmxDFA2f8gY0/0sAXNIIR+t++OAqDaeUHmnqmS+TnCcuIUx6aHJJEOXRVhyIlo0vWvg9FQSTYyY=
 
 before_install:
     - npm install -g bower gulp
+
+after_success:
+  - ./node_modules/codeclimate-test-reporter/bin/codeclimate.js < coverage/lcov.info

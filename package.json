@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/doshprompt/angular-localization",
   "devDependencies": {
+    "codeclimate-test-reporter": "^0.1.0",
     "del": "^0.1.3",
     "gulp": "^3.8.8",
     "gulp-concat": "^2.4.1",
@@ -35,6 +36,7 @@
     "gulp-using": "0.0.1",
     "jshint-stylish": "^2.0.1",
     "karma": "^0.12.24",
+    "karma-coverage": "^0.4.2",
     "karma-jasmine": "^0.1.5",
     "karma-junit-reporter": "^0.2.2",
     "karma-phantomjs-launcher": "^0.1.4",

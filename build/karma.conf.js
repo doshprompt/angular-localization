@@ -19,14 +19,19 @@ module.exports = function (config) {
 
         browsers : [ 'PhantomJS' ],
 
-        plugins : [
-            'karma-phantomjs-launcher',
-            'karma-jasmine'
+        preprocessors: {
+            'src/**/*.js': [ 'coverage' ]
+        },
+
+        reporters: [
+            'progress',
+            'coverage'
         ],
 
-        junitReporter : {
-            outputFile: 'out/unit.xml',
-            suite: 'unit'
+        coverageReporter: {
+            type: 'lcov',
+            dir: 'coverage',
+            subdir: '.'
         }
   });
 };
