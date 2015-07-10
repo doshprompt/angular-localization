@@ -5,7 +5,7 @@ node_js:
     - "0.12"
 
 addons:
-  codeclimate:
+  code_climate:
     repo_token:
       secure: fLnxvRsIg6SOlBindOQqckUW7htQN5V8kg0+PNst6b267vSJsvM50//l+yaDhVdIQwA3DePRTXPeQFFt4cZKkWhdmwG463DFQmxDFA2f8gY0/0sAXNIIR+t++OAqDaeUHmnqmS+TnCcuIUx6aHJJEOXRVhyIlo0vWvg9FQSTYyY=
 
