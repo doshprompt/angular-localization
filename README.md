@@ -5,7 +5,8 @@
 [![Build Status](https://travis-ci.org/doshprompt/angular-localization.svg?branch=master)](https://travis-ci.org/doshprompt/angular-localization)
 [![Code Climate](https://codeclimate.com/github/doshprompt/angular-localization/badges/gpa.svg)](https://codeclimate.com/github/doshprompt/angular-localization)
 [![Test Coverage](https://codeclimate.com/github/doshprompt/angular-localization/badges/coverage.svg)](https://codeclimate.com/github/doshprompt/angular-localization/coverage)
-[![Bower version](https://badge.fury.io/bo/angular-localization.svg)](http://badge.fury.io/bo/angular-localization)  
+[![Bower version](https://badge.fury.io/bo/angular-localization.svg)](http://badge.fury.io/bo/angular-localization)
+[![GitHub license](https://img.shields.io/github/license/doshprompt/angular-localization.svg)](https://github.com/doshprompt/angular-localization/blob/master/LICENSE)
 
 [![Dependency Status](https://david-dm.org/doshprompt/angular-localization.svg?theme=shields.io)](https://david-dm.org/doshpromot/angular-localization)
 [![devDependency Status](https://david-dm.org/doshprompt/angular-localization/dev-status.svg?theme=shields.io)](https://david-dm.org/angular-localization#info=devDependencies)
