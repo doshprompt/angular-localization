@@ -70,7 +70,7 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                         root[path[i]] = {};
                     }
                     root = root[path[i]];
-                    url += "/" + path[i];
+                    url += '/' + path[i];
                 }
 
                 if (!root._loading) {
@@ -100,8 +100,8 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                                 deferrences[path].resolve(path);
                             }
                         })
-                        .error(function (data) {
-                            $log.error("[localizationService] Failed to load: " + url);
+                        .error(function () {
+                            $log.error('[localizationService] Failed to load: ' + url);
 
                             // We can try it again later.
                             delete root._loading;
@@ -115,7 +115,7 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                 token;
 
             path = path || localeConf.langFile;
-            token = path + "._LOOKUP_";
+            token = path + '._LOOKUP_';
 
             bundle = getBundle(token);
 
@@ -144,7 +144,7 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
             } else if (angular.isArray(path)) {
                 paths = path;
             } else {
-                throw new Error("locale.ready requires either an Array or comma-separated list.");
+                throw new Error('locale.ready requires either an Array or comma-separated list.');
             }
 
             if (paths.length > 1) {
@@ -193,7 +193,7 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                 A,
                 isValidToken = false;
 
-            if (angular.isString(txt) && !subs && txt.indexOf(localeConf.delimiter) != -1) {
+            if (angular.isString(txt) && !subs && txt.indexOf(localeConf.delimiter) !== -1) {
                 A = txt.split(localeConf.delimiter);
                 txt = A[0];
                 subs = angular.fromJson(A[1]);
@@ -212,8 +212,8 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                     if (bundle[key]) {
                         result = applySubstitutions(bundle[key], subs);
                     } else {
-                        $log.info("[localizationService] Key not found: " + txt);
-                        result = "%%KEY_NOT_FOUND%%";
+                        $log.info('[localizationService] Key not found: ' + txt);
+                        result = '%%KEY_NOT_FOUND%%';
                     }
                 } else {
                     if (!bundle) {
@@ -232,10 +232,10 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
 
             if (angular.isString(value)) {
                 value = value.trim();
-                if (localeSupported.indexOf(value) != -1) {
+                if (localeSupported.indexOf(value) !== -1) {
                     lang = value;
                 } else {
-                    lang = localeFallbacks[value.split('-')[0]]
+                    lang = localeFallbacks[value.split('-')[0]];
                     if (angular.isUndefined(lang)) {
                         lang = localeConf.defaultLocale;
                     }
@@ -244,7 +244,7 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                 lang = localeConf.defaultLocale;
             }
 
-            if (lang != currentLocale) {
+            if (lang !== currentLocale) {
                 bundles = {};
                 deferrences = {};
                 currentLocale = lang;
@@ -304,15 +304,15 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
             var hasObservers;
 
             attrs.$observe('i18n', function (newVal, oldVal) {
-                if (newVal && newVal != oldVal) {
+                if (newVal && newVal !== oldVal) {
                     update(elm, newVal, hasObservers); 
                 }
             });
 
             angular.forEach(attrs.$attr, function (attr, normAttr) {
                 if (localeConf.observableAttrs.test(attr)) {
-                    attrs.$observe(normAttr, function (newVal, oldVal) {
-                        if ((newVal && newVal != oldVal) || !hasObservers || !hasObservers[normAttr]) {
+                    attrs.$observe(normAttr, function (newVal) {
+                        if (newVal || !hasObservers || !hasObservers[normAttr]) {
                             hasObservers = hasObservers || {};
                             hasObservers[normAttr] = attrs[normAttr];
                             update(elm, attrs.i18n, hasObservers);
@@ -340,7 +340,7 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
 
                 for(var key in values) {
                     exp = values[key];
-                    if (locale.isToken(exp) && langFiles.indexOf(locale.getPath(exp)) == -1) {
+                    if (locale.isToken(exp) && langFiles.indexOf(locale.getPath(exp)) === -1) {
                         langFiles.push(locale.getPath(exp));
                     }
                 }
@@ -358,8 +358,8 @@ angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Eve
                 });
             }
 
-            attrs.$observe('i18nAttr', function (newVal, oldVal) {
-                if (newVal && newVal != oldVal) {
+            attrs.$observe('i18nAttr', function (newVal) {
+                if (newVal) {
                     updateText(elem, newVal); 
                 }
             });
