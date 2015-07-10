@@ -9,6 +9,7 @@ module.exports = function (config) {
 
             'lib/angular-mocks/angular-mocks.js',
 
+            'src/**/*.module.js',
             'src/**/*.js',
 
             'tests/unit/**/*.js'
