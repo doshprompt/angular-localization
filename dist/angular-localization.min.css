@@ -1,0 +1,78 @@
+/*!
+ * angular-localization :: v1.2.2 :: 2015-07-15
+ * web: http://doshprompt.github.io/angular-localization
+ *
+ * Copyright (c) 2015 | Rahul Doshi
+ * License: MIT
+ */
+*[dir="ltr"] {
+  direction: ltr;
+  unicode-bidi: embed;
+}
+*[dir="rtl"] {
+  direction: rtl;
+  unicode-bidi: embed;
+}
+bdo[dir="ltr"] {
+  direction: ltr;
+  unicode-bidi: bidi-override;
+}
+bdo[dir="rtl"] {
+  direction: rtl;
+  unicode-bidi: bidi-override;
+}
+
+.overflow-ellipsis {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.text-lowercase {
+  text-transform: lowercase;
+}
+.text-uppercase {
+  text-transform: uppercase;
+}
+.text-capitalize {
+  text-transform: capitalize;
+}
+.placeholder-lowercase::-moz-placeholder {
+  text-transform: lowercase;
+}
+.placeholder-uppercase::-moz-placeholder {
+  text-transform: uppercase;
+}
+.placeholder-capitalize::-moz-placeholder {
+  text-transform: capitalize;
+}
+.placeholder-lowercase:-moz-placeholder {
+  text-transform: lowercase;
+}
+.placeholder-uppercase:-moz-placeholder {
+  text-transform: uppercase;
+}
+.placeholder-capitalize:-moz-placeholder {
+  text-transform: capitalize;
+}
+.placeholder-lowercase::-webkit-input-placeholder {
+  text-transform: lowercase;
+}
+.placeholder-uppercase::-webkit-input-placeholder {
+  text-transform: uppercase;
+}
+.placeholder-capitalize::-webkit-input-placeholder {
+  text-transform: capitalize;
+}
+.placeholder-lowercase::-ms-input-placeholder {
+  text-transform: lowercase;
+}
+.placeholder-uppercase::-ms-input-placeholder {
+  text-transform: uppercase;
+}
+.placeholder-capitalize::-ms-input-placeholder {
+  text-transform: capitalize;
+}
+
+/*# sourceMappingURL=angular-localization.min.css.map */
