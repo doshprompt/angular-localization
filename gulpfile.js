@@ -1,6 +1,4 @@
-var PRESERVE_COMMENT_BLOCK = new RegExp('Copyright'),
-
-    DIST_DIR = 'dist',
+var DIST_DIR = 'dist',
     SRC_FILES = 'src/**/*.js',
 
     path = require('path'),
