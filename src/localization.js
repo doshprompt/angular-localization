@@ -262,7 +262,7 @@ angular.module('ngLocalize')
             return currentLocale;
         }
 
-        setLocale(cookieStore ? cookieStore.get(localeConf.cookieName) : $window.navigator.userLanguage || $window.navigator.language);
+        setLocale(cookieStore && cookieStore.get(localeConf.cookieName) ? cookieStore.get(localeConf.cookieName) : $window.navigator.userLanguage || $window.navigator.language);
 
         return {
             ready: ready,
