@@ -258,6 +258,23 @@ angular.module('ngLocalize')
             }
         }
 
+        /**
+         * Returns the localized bundle given the bundle path.
+         * Note that this will not load the bundle if it's not already loaded.
+         * Therefore you should wrap this inside a call to ready
+         * @param path the name of the bundle to retrieve
+         * @returns {*} the bundle
+         */
+        function getLocalizedBundle(path) {
+            var key = path + ".-";
+            var bundle = getBundle(key);
+            if (bundle && !bundle._loading) {
+                return bundle;
+            } else {
+                return null;
+            }
+        }
+
         function getLocale() {
             return currentLocale;
         }
@@ -271,6 +288,7 @@ angular.module('ngLocalize')
             getKey: getKey,
             setLocale: setLocale,
             getLocale: getLocale,
-            getString: getLocalizedString
+            getString: getLocalizedString,
+            getBundle: getLocalizedBundle
         };
     });
