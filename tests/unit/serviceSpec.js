@@ -35,5 +35,10 @@ describe('service', function () {
         it('should validate tokens with whitespace', inject(function (locale) {
             expect(locale.isToken('test.hello world')).toBe(true);
         }));
+
+        it('should update the lang attribute of the html tag', inject(function (locale) {
+            locale.setLocale('en-US');
+            expect(angular.element(document.body).parent().attr('lang')).toBe('en');
+        }));
     });
 });
