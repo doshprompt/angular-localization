@@ -2,6 +2,7 @@ angular.module('ngLocalize')
     .service('locale', function ($injector, $http, $q, $log, $rootScope, $window, localeConf, localeEvents, localeSupported, localeFallbacks) {
         var TOKEN_REGEX = new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$'),
 
+            $html = angular.element(document.body).parent(),
             currentLocale,
             deferrences,
             bundles,
@@ -227,6 +228,12 @@ angular.module('ngLocalize')
             return result;
         }
 
+        function updateHtmlTagLangAttr(lang) {
+            lang = lang.split('-')[0];
+
+            $html.attr('lang', lang);
+        }
+
         function setLocale(value) {
             var lang;
 
@@ -248,6 +255,8 @@ angular.module('ngLocalize')
                 bundles = {};
                 deferrences = {};
                 currentLocale = lang;
+
+                updateHtmlTagLangAttr(lang);
 
                 $rootScope.$broadcast(localeEvents.localeChanges, currentLocale);
                 $rootScope.$broadcast(localeEvents.resourceUpdates);
