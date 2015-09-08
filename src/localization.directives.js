@@ -68,7 +68,7 @@ angular.module('ngLocalize')
                         exp = values[key];
                         value = locale.getString(exp);
                         if (lastValues[key] !== value) {
-                            attrs.$set(key, lastValues[key] = value);
+                            attrs.$set(attrs.$normalize(key), lastValues[key] = value);
                         }
                     }
                 });
