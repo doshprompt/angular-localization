@@ -1,5 +1,5 @@
 /*!
- * angular-localization :: v1.2.2 :: 2015-07-15
+ * angular-localization :: v1.3.0 :: 2015-07-23
  * web: http://doshprompt.github.io/angular-localization
  *
  * Copyright (c) 2015 | Rahul Doshi
@@ -9,7 +9,7 @@
     'use strict';
 
 angular.module('ngLocalize.Version', [])
-    .constant('localeVer', '1.2.2');
+    .constant('localeVer', '1.3.0');
 angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Events', 'ngLocalize.InstalledLanguages']);
 
 angular.module('ngLocalize.InstalledLanguages', [])
@@ -283,7 +283,7 @@ angular.module('ngLocalize')
             return currentLocale;
         }
 
-        setLocale(cookieStore ? cookieStore.get(localeConf.cookieName) : $window.navigator.userLanguage || $window.navigator.language);
+        setLocale(cookieStore && cookieStore.get(localeConf.cookieName) ? cookieStore.get(localeConf.cookieName) : $window.navigator.userLanguage || $window.navigator.language);
 
         return {
             ready: ready,
