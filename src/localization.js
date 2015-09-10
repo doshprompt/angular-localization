@@ -62,7 +62,7 @@ angular.module('ngLocalize')
         function loadBundle(token) {
             var path = token ? token.split('.') : '',
                 root = bundles,
-                url = localeConf.basePath + '/' + currentLocale,
+                url = localeConf.basePath + '/' + currentLocale + localeConf.sharedPrefix,
                 i;
 
             if (path.length > 1) {
