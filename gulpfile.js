@@ -29,7 +29,7 @@ pkg.todayDate = date().format('YYYY-MM-DD');
 pkg.todayYear = date().format('YYYY');
 
 gulp.task('clean', function(done) {
-    del(DIST_DIR, done);
+    del([DIST_DIR, './angular-localization*'], done);
 });
 
 gulp.task('scripts', function() {
@@ -85,8 +85,13 @@ gulp.task('styles', function() {
         .pipe(gulp.dest(DIST_DIR));
 });
 
+gulp.task('copy', function () {
+    return gulp.src(DIST_DIR + "/*")
+      .pipe(gulp.dest('./'));
+});
+
 gulp.task('default', function(done) {
-    runSequence(['scripts', 'styles'], done)
+    runSequence(['scripts', 'styles'], 'copy', done)
 });
 
 gulp.task('test', ['lint'], function(done) {
