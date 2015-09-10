@@ -1,6 +1,6 @@
 {
   "name": "angular-localization",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "angularjs localization done right.",
   "main": "src/angular-localization.js",
   "scripts": {
