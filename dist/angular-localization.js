@@ -1,5 +1,5 @@
 /*!
- * angular-localization :: v1.2.2 :: 2015-07-15
+ * angular-localization :: v1.4.0 :: 2015-09-14
  * web: http://doshprompt.github.io/angular-localization
  *
  * Copyright (c) 2015 | Rahul Doshi
@@ -9,7 +9,7 @@
     'use strict';
 
 angular.module('ngLocalize.Version', [])
-    .constant('localeVer', '1.2.2');
+    .constant('localeVer', '1.4.0');
 angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Events', 'ngLocalize.InstalledLanguages']);
 
 angular.module('ngLocalize.InstalledLanguages', [])
@@ -23,6 +23,7 @@ angular.module('ngLocalize')
     .service('locale', function ($injector, $http, $q, $log, $rootScope, $window, localeConf, localeEvents, localeSupported, localeFallbacks) {
         var TOKEN_REGEX = new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$'),
 
+            $html = angular.element(document.body).parent(),
             currentLocale,
             deferrences,
             bundles,
@@ -248,6 +249,12 @@ angular.module('ngLocalize')
             return result;
         }
 
+        function updateHtmlTagLangAttr(lang) {
+            lang = lang.split('-')[0];
+
+            $html.attr('lang', lang);
+        }
+
         function setLocale(value) {
             var lang;
 
@@ -270,6 +277,8 @@ angular.module('ngLocalize')
                 deferrences = {};
                 currentLocale = lang;
 
+                updateHtmlTagLangAttr(lang);
+
                 $rootScope.$broadcast(localeEvents.localeChanges, currentLocale);
                 $rootScope.$broadcast(localeEvents.resourceUpdates);
 
@@ -283,7 +292,7 @@ angular.module('ngLocalize')
             return currentLocale;
         }
 
-        setLocale(cookieStore ? cookieStore.get(localeConf.cookieName) : $window.navigator.userLanguage || $window.navigator.language);
+        setLocale(cookieStore && cookieStore.get(localeConf.cookieName) ? cookieStore.get(localeConf.cookieName) : $window.navigator.userLanguage || $window.navigator.language);
 
         return {
             ready: ready,
@@ -382,7 +391,7 @@ angular.module('ngLocalize')
                         exp = values[key];
                         value = locale.getString(exp);
                         if (lastValues[key] !== value) {
-                            attrs.$set(key, lastValues[key] = value);
+                            attrs.$set(attrs.$normalize(key), lastValues[key] = value);
                         }
                     }
                 });
