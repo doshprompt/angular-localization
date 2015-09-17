@@ -29,7 +29,7 @@ var banner = [
     ].join('\n');
 
 gulp.task('clean', function (cb) {
-    del([paths.distDir, paths.tempDir], cb);
+    del([paths.distDir, paths.tempDir, './angular-localization*' ], cb);
 });
 
 gulp.task('concat', function () {
@@ -80,8 +80,13 @@ gulp.task('preprocess', function () {
         .pipe(gulp.dest(paths.distDir));
 });
 
+gulp.task('copy', function () {
+    return gulp.src(paths.distDir + "/*")
+      .pipe(gulp.dest('./'));
+});
+
 gulp.task('build', function () {
-    runSequence('clean', 'concat', 'preprocess', 'uglify', 'compress');
+    runSequence('clean', 'concat', 'preprocess', 'uglify', 'compress', 'copy');
 });
 
 gulp.task('test', ['karma']);
