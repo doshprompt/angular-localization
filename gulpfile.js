@@ -36,7 +36,6 @@ gulp.task('scripts', function() {
     var filename = pkg.name + '.js';
 
     return gulp.src(SRC_FILES)
-        .pipe($.newer(path.join(DIST_DIR, filename)))
         .pipe($.angularFilesort())
         .pipe($.addSrc.prepend('module.prefix'))
         .pipe($.addSrc.append('module.suffix'))
@@ -70,7 +69,6 @@ gulp.task('styles', function() {
     var filename = pkg.name + '.css';
 
     return gulp.src('src/**/*.less')
-        .pipe($.newer(path.join(DIST_DIR, filename)))
         .pipe($.sourcemaps.init())
         .pipe($.less())
         .pipe($.concat(filename))
