@@ -92,7 +92,9 @@ gulp.task('default', function(done) {
 gulp.task('test', ['lint'], function(done) {
     karma.start({
         configFile: path.join(__dirname, 'karma.conf.js')
-    }, done);
+    }, function() {
+        done();
+    });
 });
 
 gulp.task('lint', function() {
