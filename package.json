@@ -40,6 +40,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-uglify": "^1.2.0",
+    "gulp-webserver": "^0.9.1",
     "jshint-stylish": "^2.0.1",
     "karma": "^0.12.24",
     "karma-coverage": "^0.4.2",
