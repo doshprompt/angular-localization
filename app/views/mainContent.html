@@ -2,6 +2,10 @@
 <div class="container bs-docs-container" data-ng-controller="DemoControl">
     <div class="row">
         <div class="col-md-10" role="main">
+            <!-- Quickstart
+            ================================================== -->
+            <div class="bs-docs-section" data-ng-include="'app/views/quickstart.html'"></div>
+
             <!-- i18n directive
             ================================================== -->
             <div class="bs-docs-section" data-ng-include="'app/views/i18nDirective.html'"></div>
@@ -112,7 +116,7 @@
         <span class="k">default</span><span class="p">:</span>
             <span class="nx">s</span> <span class="o">=</span> <span class="nx">$filter</span><span class="p">(<span class="s1">&#39;i18n&#39;</span><span class="p">)</span><span class="p">(<span class="s1">&#39;plurals.ManyPluralizedNum&#39;</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span><span class="p">;</span>
             <span class="k">break</span><span class="p">;</span>
-        <span class="p">}</span>   
+        <span class="p">}</span>
         <span class="kd">return</span> <span class="nx">s</span><span class="p">;</span>
     <span class="p">},</span>
     <span class="nb">getWithOffs</span><span class="nb">:</span> <span class="kd">function</span> <span class="p">() {</span>
