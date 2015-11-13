@@ -1,10 +1,12 @@
 angular.module('ngLocalize')
-    .filter('i18n', function (locale) {
-        var i18nFilter = function (input, args) {
-            return locale.getString(input, args);
-        };
+    .filter('i18n', ['locale',
+        function (locale) {
+            var i18nFilter = function (input, args) {
+                return locale.getString(input, args);
+            };
 
-        i18nFilter.$stateful = true;
+            i18nFilter.$stateful = true;
 
-        return i18nFilter;
-    });
+            return i18nFilter;
+        }
+    ]);
