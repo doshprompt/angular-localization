@@ -1,5 +1,5 @@
 /*!
- * angular-localization :: v1.4.0 :: 2015-09-14
+ * angular-localization :: v1.4.1 :: 2015-11-13
  * web: http://doshprompt.github.io/angular-localization
  *
  * Copyright (c) 2015 | Rahul Doshi
@@ -9,7 +9,7 @@
     'use strict';
 
 angular.module('ngLocalize.Version', [])
-    .constant('localeVer', '1.4.0');
+    .constant('localeVer', '1.4.1');
 angular.module('ngLocalize', ['ngSanitize', 'ngLocalize.Config', 'ngLocalize.Events', 'ngLocalize.InstalledLanguages']);
 
 angular.module('ngLocalize.InstalledLanguages', [])
@@ -20,7 +20,7 @@ angular.module('ngLocalize.InstalledLanguages', [])
         'en': 'en-US'
     });
 angular.module('ngLocalize')
-    .service('locale', function ($injector, $http, $q, $log, $rootScope, $window, localeConf, localeEvents, localeSupported, localeFallbacks) {
+    .service('locale', ['$injector', '$http', '$q', '$log', '$rootScope', '$window', 'localeConf', 'localeEvents', 'localeSupported', 'localeFallbacks', function ($injector, $http, $q, $log, $rootScope, $window, localeConf, localeEvents, localeSupported, localeFallbacks) {
         var TOKEN_REGEX = new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$'),
 
             $html = angular.element(document.body).parent(),
@@ -303,10 +303,10 @@ angular.module('ngLocalize')
             getLocale: getLocale,
             getString: getLocalizedString
         };
-    });
+    }]);
 
 angular.module('ngLocalize')
-    .filter('i18n', function (locale) {
+    .filter('i18n', ['locale', function (locale) {
         var i18nFilter = function (input, args) {
             return locale.getString(input, args);
         };
@@ -314,7 +314,7 @@ angular.module('ngLocalize')
         i18nFilter.$stateful = true;
 
         return i18nFilter;
-    });
+    }]);
 
 angular.module('ngLocalize.Events', [])
     .constant('localeEvents', {
@@ -322,7 +322,7 @@ angular.module('ngLocalize.Events', [])
         localeChanges: 'ngLocalizeLocaleChanged'
     });
 angular.module('ngLocalize')
-    .directive('i18n', function ($sce, locale, localeEvents, localeConf) {
+    .directive('i18n', ['$sce', 'locale', 'localeEvents', 'localeConf', function ($sce, locale, localeEvents, localeConf) {
         function setText(elm, tag) {
             if (tag !== elm.html()) {
                 elm.html($sce.getTrustedHtml(tag));
@@ -367,8 +367,8 @@ angular.module('ngLocalize')
                 update(elm, attrs.i18n, hasObservers);
             });
         };
-    })
-    .directive('i18nAttr', function (locale, localeEvents) {
+    }])
+    .directive('i18nAttr', ['locale', 'localeEvents', function (locale, localeEvents) {
         return function (scope, elem, attrs) {
             var lastValues = {};
 
@@ -410,7 +410,7 @@ angular.module('ngLocalize')
                 updateText(elem, attrs.i18nAttr);
             });
         };
-    });
+    }]);
 
 angular.module('ngLocalize.Config', [])
     .value('localeConf', {

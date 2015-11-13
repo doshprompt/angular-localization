@@ -48,12 +48,12 @@ gulp.task('scripts', function() {
         .pipe($.header(banner, {
             package: pkg
         }))
-        .pipe(gulp.dest(DIST_DIR))
         .pipe($.ngAnnotate({
             add: true,
             remove: true,
             single_quotes: true
         }))
+        .pipe(gulp.dest(DIST_DIR))
         .pipe($.sourcemaps.init())
         .pipe($.uglify({
             preserveComments: 'some'
