@@ -101,11 +101,18 @@ angular.module('ngLocalize')
                                 deferrences[path].resolve(path);
                             }
                         })
-                        .error(function () {
+                        .error(function (err) {
+                            var path = getPath(token);
+
                             $log.error('[localizationService] Failed to load: ' + url);
 
                             // We can try it again later.
                             delete root._loading;
+
+                            // If we issued a Promise for this file, reject it now.
+                            if (deferrences[path]) {
+                                deferrences[path].reject(err);
+                            }
                         });
                 }
             }
