@@ -102,6 +102,8 @@ angular.module('ngLocalize')
                             }
                         })
                         .error(function (err) {
+                            var path = getPath(token);
+
                             $log.error('[localizationService] Failed to load: ' + url);
 
                             // We can try it again later.
