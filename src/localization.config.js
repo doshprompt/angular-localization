@@ -2,6 +2,7 @@ angular.module('ngLocalize.Config', [])
     .value('localeConf', {
         basePath: 'languages',
         defaultLocale: 'en-US',
+        sharedPrefix: '',
         sharedDictionary: 'common',
         fileExtension: '.lang.json',
         persistSelection: true,
