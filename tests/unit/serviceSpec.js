@@ -74,5 +74,21 @@ describe('service', function () {
             });
             $httpBackend.flush();
         }));
+
+        it('should freeze bundle', inject(function (locale, $httpBackend) {
+            var resp = 'lang file not found';
+            $httpBackend.expectGET('languages/en-US/common.lang.json').respond(200, {
+                "yes": "Yes"
+            });
+            locale.$$bundleReady('common').then(function (bundle) {
+                try {
+                    bundle.yes = "try override";
+                } catch (e) {
+                    // noop
+                }
+                expect(bundle.yes).toBe("Yes");
+            });
+            $httpBackend.flush();
+        }));
     });
 });

@@ -59,21 +59,42 @@ angular.module('ngLocalize')
             return result;
         }
 
+        function isFrozen (obj) {
+            return (Object.isFrozen || function (obj) {
+                return obj && obj.$$frozen;
+            })(obj);
+        }
+
+        function freeze (obj) {
+            return (Object.freeze || function (obj) {
+                if (obj) {
+                    obj.$$frozen = true;
+                }
+            })(obj);
+        }
+
         function loadBundle(token) {
             var path = token ? token.split('.') : '',
                 root = bundles,
+                parent,
                 url = localeConf.basePath + '/' + currentLocale,
+                ref,
                 i;
 
             if (path.length > 1) {
                 for (i = 0; i < path.length - 1; i++) {
-                    if (!root[path[i]]) {
-                        root[path[i]] = {};
+                    ref = path[i];
+                    if (!root[ref]) {
+                        root[ref] = {};
                     }
-                    root = root[path[i]];
-                    url += '/' + path[i];
+                    parent = root;
+                    root = root[ref];
+                    url += '/' + ref;
                 }
 
+                if (isFrozen(root)) {
+                    root = angular.extend({}, root);
+                }
                 if (!root._loading) {
                     root._loading = true;
 
@@ -92,9 +113,11 @@ angular.module('ngLocalize')
 
                             // Mark the bundle as having been "loaded".
                             delete root._loading;
+                            parent[ref] = freeze(root);
+                            root = null;
 
                             // Notify anyone who cares to know about this event.
-                            $rootScope.$broadcast(localeEvents.resourceUpdates);
+                            $rootScope.$broadcast(localeEvents.resourceUpdates, parent[ref]);
 
                             // If we issued a Promise for this file, resolve it now.
                             if (deferrences[path]) {
@@ -287,6 +310,11 @@ angular.module('ngLocalize')
             getKey: getKey,
             setLocale: setLocale,
             getLocale: getLocale,
-            getString: getLocalizedString
+            getString: getLocalizedString,
+            $$bundleReady: function (path) {
+                return bundleReady(path).then(function () {
+                    return getBundle(path + '._LOOKUP_');
+                });
+            },
         };
     });
