@@ -322,7 +322,7 @@ angular.module('myApp', ['ngLocalize'])
 
 As you can see, The `locale` service expects the localization key as the first argument and an optional {Object|Array|String} with user data as the second argument.
 
-The promise returns the object containing the localization key & values: 
+The promise returns the object containing the localization keys & values: 
 
 ```js
 angular.module('myApp', ['ngLocalize'])
