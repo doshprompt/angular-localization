@@ -119,7 +119,7 @@ angular.module('ngLocalize')
 
                             // If we issued a Promise for this file, resolve it now.
                             if (deferrences[path]) {
-                                deferrences[path].resolve([path, data]);
+                                deferrences[path].resolve(data);
                             }
                         })
                         .error(function () {
@@ -146,7 +146,7 @@ angular.module('ngLocalize')
             }
 
             if (bundle && !bundle._loading) {
-                deferrences[path].resolve([path, bundle]);
+                deferrences[path].resolve(bundle);
             } else {
                 if (!bundle) {
                     loadBundle(token);
