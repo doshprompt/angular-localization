@@ -322,15 +322,14 @@ angular.module('myApp', ['ngLocalize'])
 
 As you can see, The `locale` service expects the localization key as the first argument and an optional {Object|Array|String} with user data as the second argument.
 
-The promise returns an array where the first variable is the string given, and the 2nd argument is the data object: 
+The promise returns the object containing the localization key & values: 
 
 ```js
 angular.module('myApp', ['ngLocalize'])
     .controller('exampleCtrl', ['$scope', 'locale',
         function ($scope, locale) {
             locale.ready('common').then(function (res) {
-                //res[0] --> common
-                //res[1] --> { "helloWorld" : "Hello World!", ... }
+                //res --> { "helloWorld" : "Hello World!", ... }
             });
         }
     ]);
