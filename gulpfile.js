@@ -1,110 +1,103 @@
-var gulp = require('gulp'),
-    del = require('del'),
-    header = require('gulp-header'),
-    concat = require('gulp-concat'),
-    uglify = require('gulp-uglifyjs'),
-    using = require('gulp-using')
+var DIST_DIR = 'dist',
+    SRC_FILES = 'src/**/*.js',
+
+    path = require('path'),
+
     date = require('moment'),
-    gzip = require('gulp-gzip'),
+    del = require('del'),
     karma = require('karma').server,
-    webserver = require('gulp-webserver'),
-    protractor = require('gulp-protractor').protractor,
-    webdriver_update = require('gulp-protractor').webdriver_update,
-    exit = require('gulp-exit'),
-    preprocess = require('gulp-preprocess'),
-    runSequence = require('run-sequence');
 
-var paths = {
-    baseDir: 'src',
-    distDir: 'dist',
-    tempDir: 'tmp',
-    e2e: 'tests/e2e/*.js'
-};
+    runSequence = require('run-sequence'),
 
-var pkg = require('./package.json');
-    pkg.todayDate = date().format('YYYY-MM-DD')
-    pkg.todayYear = date().format('YYYY')
+    gulp = require('gulp'),
+    $ = require('gulp-load-plugins')(),
+    
+    banner = [
+        '/*!',
+        ' * <%= package.title || package.name %> :: v<%= package.version %> :: <%= package.todayDate  %>',
+        ' * web: <%= package.homepage %>',
+        ' *',
+        ' * Copyright (c) <%= package.todayYear %> | <%= package.author %>',
+        ' * License: <%= package.license %>',
+        ' */',
+        ''
+        ].join('\n'),
 
-var banner = [
-    '/**',
-    ' * <%= pkg.title || pkg.name %> :: v<%= pkg.version %> :: <%= pkg.todayDate  %>',
-    ' * web: <%= pkg.homepage %>',
-    ' *',
-    ' * Copyright (c) <%= pkg.todayYear %> | <%= pkg.author %>',
-    ' * License: <%= pkg.license %>',
-    ' */',
-    ''
-    ].join('\n');
+    pkg = require('./package.json');
 
-gulp.task('clean', function (cb) {
-    del([paths.distDir, paths.tempDir], cb);
+pkg.todayDate = date().format('YYYY-MM-DD');
+pkg.todayYear = date().format('YYYY');
+
+gulp.task('clean', function(done) {
+    del(DIST_DIR, done);
 });
 
-gulp.task('concat', function () {
-    return gulp.src([
-        'build/module.prefix',                    
-        paths.baseDir + '/localization*.js',
-        'build/module.suffix'
-    ])
-        .pipe(concat('angular-localization.js'))
-        .pipe(header(banner, { pkg : pkg } ))
-        .pipe(gulp.dest(paths.distDir))
-});
+gulp.task('scripts', function() {
+    var filename = pkg.name + '.js';
 
-gulp.task('uglify', function () {
-    return gulp.src(paths.distDir + '/angular-localization.js')
-        .pipe(uglify('angular-localization.min.js', {
-            outSourceMap: 'angular-localization.min.map',
-            basePath: 'dist/',
-            output: { 
-                comments: /Copyright/
+    return gulp.src(SRC_FILES)
+        .pipe($.angularFilesort())
+        .pipe($.addSrc.prepend('module.prefix'))
+        .pipe($.addSrc.append('module.suffix'))
+        .pipe($.concat(filename))
+        .pipe($.preprocess({
+            context: {
+                VERSION: pkg.version
             }
         }))
-        .pipe(gulp.dest(paths.distDir))
+        .pipe($.header(banner, {
+            package: pkg
+        }))
+        .pipe($.ngAnnotate({
+            add: true,
+            remove: true,
+            single_quotes: true
+        }))
+        .pipe(gulp.dest(DIST_DIR))
+        .pipe($.sourcemaps.init())
+        .pipe($.uglify({
+            preserveComments: 'some'
+        }))
+        .pipe($.rename({
+            suffix: '.min'
+        }))
+        .pipe($.sourcemaps.write('.'))
+        .pipe(gulp.dest(DIST_DIR));
 });
 
-gulp.task('compress', function () {
-    return gulp.src(paths.distDir + '/*.min.js')
-        .pipe(gzip())
-        .pipe(gulp.dest(paths.distDir))
+gulp.task('styles', function() {
+    var filename = pkg.name + '.css';
+
+    return gulp.src('src/**/*.less')
+        .pipe($.sourcemaps.init())
+        .pipe($.less())
+        .pipe($.concat(filename))
+        .pipe($.header(banner, {
+            package: pkg
+        }))
+        .pipe(gulp.dest(DIST_DIR))
+        .pipe($.rename({
+            suffix: '.min'
+        }))
+        .pipe($.sourcemaps.write('.'))
+        .pipe(gulp.dest(DIST_DIR));
 });
 
-gulp.task('karma', function (cb) {
+gulp.task('default', function(done) {
+    runSequence(['scripts', 'styles'], done)
+});
+
+gulp.task('test', ['lint'], function(done) {
     karma.start({
-        configFile: __dirname + '/build/karma.conf.js'
-    }, cb);
+        configFile: path.join(__dirname, 'karma.conf.js')
+    }, function() {
+        done();
+    });
 });
 
-// use this helper task to update webdriver to the latest version
-gulp.task('webdriver-update', webdriver_update);
-
-gulp.task('connect', function () {
-    gulp.src('.')
-        .pipe(webserver({
-            port: 9001
-        }));
+gulp.task('lint', function() {
+    return gulp.src(SRC_FILES)
+        .pipe($.jshint())
+        .pipe($.jshint.reporter('jshint-stylish'))
+        .pipe($.jshint.reporter('fail'));
 });
-
-gulp.task('preprocess', function () {
-    return gulp.src(paths.distDir + '/angular-localization.js')
-        .pipe(preprocess({
-            context: { VERSION: pkg.version }
-        }))
-        .pipe(gulp.dest(paths.distDir));
-});
-
-gulp.task('protractor', ['webdriver-update', 'connect'], function () {
-    gulp.src(paths.e2e)
-        .pipe((protractor({
-            configFile: 'build/protractor.conf.js'
-        })).on('error', function (e) {
-            throw e;
-        }))
-        .pipe(exit());
-});
-
-gulp.task('build', function () {
-    runSequence('clean', 'concat', 'preprocess', 'uglify', 'compress');
-});
-
-gulp.task('test', ['karma', 'protractor']);

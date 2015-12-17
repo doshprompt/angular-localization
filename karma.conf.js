@@ -2,14 +2,16 @@ module.exports = function (config) {
     'use strict';
 
     config.set({
-        basePath : '../',
-
         files : [
             'lib/angular/angular.js',
             'lib/angular-cookies/angular-cookies.js',
             'lib/angular-sanitize/angular-sanitize.js',
+
             'lib/angular-mocks/angular-mocks.js',
+
+            'src/**/*.module.js',
             'src/**/*.js',
+
             'tests/unit/**/*.js'
         ],
 
@@ -19,14 +21,19 @@ module.exports = function (config) {
 
         browsers : [ 'PhantomJS' ],
 
-        plugins : [
-            'karma-phantomjs-launcher',
-            'karma-jasmine'
+        preprocessors: {
+            'src/**/*.js': [ 'coverage' ]
+        },
+
+        reporters: [
+            'progress',
+            'coverage'
         ],
 
-        junitReporter : {
-            outputFile: 'out/unit.xml',
-            suite: 'unit'
+        coverageReporter: {
+            type: 'lcov',
+            dir: 'coverage',
+            subdir: '.'
         }
   });
 };

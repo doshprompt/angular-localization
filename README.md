@@ -1,16 +1,17 @@
-# angular-localization
+# angular-localization 
 
 *AngularJS Localization done right.*
 
 [![Build Status](https://travis-ci.org/doshprompt/angular-localization.svg?branch=master)](https://travis-ci.org/doshprompt/angular-localization)
+[![Code Climate](https://codeclimate.com/github/doshprompt/angular-localization/badges/gpa.svg)](https://codeclimate.com/github/doshprompt/angular-localization)
+[![Test Coverage](https://codeclimate.com/github/doshprompt/angular-localization/badges/coverage.svg)](https://codeclimate.com/github/doshprompt/angular-localization/coverage)
 [![Bower version](https://badge.fury.io/bo/angular-localization.svg)](http://badge.fury.io/bo/angular-localization)
+[![GitHub license](https://img.shields.io/github/license/doshprompt/angular-localization.svg)](https://github.com/doshprompt/angular-localization/blob/master/LICENSE)
+
 [![Dependency Status](https://david-dm.org/doshprompt/angular-localization.svg?theme=shields.io)](https://david-dm.org/doshpromot/angular-localization)
 [![devDependency Status](https://david-dm.org/doshprompt/angular-localization/dev-status.svg?theme=shields.io)](https://david-dm.org/angular-localization#info=devDependencies)
-[![Stories in Ready](https://badge.waffle.io/doshprompt/angular-localization.png?label=ready&title=Ready)](https://waffle.io/doshprompt/angular-localization)
-
 [![Gitter chat](https://badges.gitter.im/doshprompt/angular-localization.png)](https://gitter.im/doshprompt/angular-localization)
-[![Build Status](https://drone.io/github.com/doshprompt/angular-localization/status.png)](https://drone.io/github.com/doshprompt/angular-localization/latest)
-[![Analytics](https://ga-beacon.appspot.com/UA-51468215-1/angular-localization/README.md)](https://github.com/igrigorik/ga-beacon)
+[![Stories in Ready](https://badge.waffle.io/doshprompt/angular-localization.png?label=ready&title=Ready)](https://waffle.io/doshprompt/angular-localization)
 [![Donate to help support angular-localization development](http://img.shields.io/gittip/doshprompt.svg)](https://www.gittip.com/doshprompt/)
 
 ___
@@ -97,7 +98,7 @@ bower install angular-localization --save
 Two other options are available:
 
 - [Download the latest release](https://github.com/doshprompt/angular-localization/archive/master.zip).
-- Clone the repo: `git clone https://github.com/doshprompt/angular-localize.git`.
+- Clone the repo: `git clone https://github.com/doshprompt/angular-localization.git`.
 
 You can then include `angular-localization` after its dependencies,
 [angular](https://github.com/angular/bower-angular) and
@@ -124,7 +125,7 @@ angular.module('myApp', ['ngLocalize']);
 All overridable configuration options are part of `localeConf` within the `ngLocalize.Config` module that comes bundled along with this plugin and works alongside `ngLocalize`
 
 ###### basePath @ `languages`
-> the folder off the root of your web app where the resource files are located (it can also be used as a relative path)
+> the folder off the root of your web app where the resource files are located (it can also be used as a relative path starting from the folder where your `index.html` file is located).
 
 ###### defaultLocale @ `en-US`
 > the locale that your app is initialized with for a new user
@@ -386,3 +387,8 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+[![Analytics](https://ga-beacon.appspot.com/UA-51468215-1/angular-localization/README.md)](https://github.com/igrigorik/ga-beacon)
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/doshprompt/angular-localization/trend.png)](https://bitdeli.com/free "Bitdeli Badge")

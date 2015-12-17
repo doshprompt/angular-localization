@@ -15,7 +15,8 @@ describe('filter', function () {
                 version: 'v%1',
                 fullName: 'My name is {firstName} {lastName}',
                 versionAlt: 'v%major.%minor.%patch',
-                fullNameAlt: 'My name is {1} {2}'
+                fullNameAlt: 'My name is {1} {2}',
+                'key with whitespace': 'valuewithoutwhitespace'
             });
         });
     });
@@ -64,6 +65,10 @@ describe('filter', function () {
 
         it('should handle the special case', inject(function (i18nFilter) {
             expect(i18nFilter('common.version::1')).toEqual('v1');
+        }));
+
+        it('should allow tokens with whitespace', inject(function (i18nFilter) {
+            expect(i18nFilter('common.key with whitespace')).toEqual('valuewithoutwhitespace');
         }));
     });
 });

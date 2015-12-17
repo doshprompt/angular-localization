@@ -13,7 +13,8 @@ describe('directives', function () {
             _httpBackend.whenGET('languages/en-US/common.lang.json').respond({
                 helloWorld: 'Hello World',
                 fullName: 'My name is {firstName} {lastName}',
-                htmlToken: '<b>Hello World!</b>'
+                htmlToken: '<b>Hello World!</b>',
+                'key with spaces': 'some string value'
             });
 
             // force our service to pull down the required resource file
@@ -61,6 +62,12 @@ describe('directives', function () {
             expect(element.children().prop('tagName').toLowerCase()).toEqual('b');
             expect(element.text()).toEqual('Hello World!');
         }));
+
+        it('should pass through tokens that contain whitespace', inject(function ($compile, $rootScope) {
+            var element = $compile('<span data-i18n="common.key with spaces"></span>')($rootScope);
+            $rootScope.$digest();
+            expect(element.text()).toEqual('some string value');
+        }));
     });
 
     describe('i18nAttr', function () {
@@ -71,6 +78,15 @@ describe('directives', function () {
             $compile(element)($rootScope);
             $rootScope.$digest();
             expect(element.attr('placeholder')).toEqual('Hello World');
+        }));
+
+        it ('should pass through tokens that contain whitespace', inject(function ($compile, $rootScope) {
+            var element = angular.element(
+                '<input data-i18n-attr="{ placeholder: \'common.key with spaces\'}"></input>'
+            );
+            $compile(element)($rootScope);
+            $rootScope.$digest();
+            expect(element.attr('placeholder')).toEqual('some string value');
         }));
     });
 });
