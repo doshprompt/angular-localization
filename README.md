@@ -148,6 +148,9 @@ All overridable configuration options are part of `localeConf` within the `ngLoc
 ###### delimiter @ `::`
 > the delimiter to be used when passing params along with the string token to the service, filter etc.
 
+###### validTokens @ `\^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$\`
+> a regular expression which is used to match the names of the keys, so that they do not contain invalid characters. If you want to support an extended character set for the key names you need to change this.
+
 ```js
 angular.module('myApp', [
     'ngLocalize',
@@ -160,7 +163,8 @@ angular.module('myApp', [
     persistSelection: true,
     cookieName: 'COOKIE_LOCALE_LANG',
     observableAttrs: new RegExp('^data-(?!ng-|i18n)'),
-    delimiter: '::'
+    delimiter: '::',
+    validTokens: new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$')
 });
 ```
 

@@ -1,5 +1,5 @@
 /*!
- * angular-localization :: v1.4.1 :: 2015-12-17
+ * angular-localization :: v1.4.1 :: 2015-12-18
  * web: http://doshprompt.github.io/angular-localization
  *
  * Copyright (c) 2015 | Rahul Doshi
@@ -21,8 +21,8 @@ angular.module('ngLocalize.InstalledLanguages', [])
     });
 angular.module('ngLocalize')
     .service('locale', ['$injector', '$http', '$q', '$log', '$rootScope', '$window', 'localeConf', 'localeEvents', 'localeSupported', 'localeFallbacks', function ($injector, $http, $q, $log, $rootScope, $window, localeConf, localeEvents, localeSupported, localeFallbacks) {
-        var TOKEN_REGEX = localeConf.tokenRegEx ?
-                new RegExp(localeConf.tokenRegEx) :
+        var TOKEN_REGEX = localeConf.validTokens ?
+                new RegExp(localeConf.validTokens) :
                 new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$'),
 
             $html = angular.element(document.body).parent(),
@@ -353,7 +353,7 @@ angular.module('ngLocalize')
 
             attrs.$observe('i18n', function (newVal, oldVal) {
                 if (newVal && newVal !== oldVal) {
-                    update(elm, newVal, hasObservers);
+                    update(elm, newVal, hasObservers); 
                 }
             });
 
@@ -408,7 +408,7 @@ angular.module('ngLocalize')
 
             attrs.$observe('i18nAttr', function (newVal) {
                 if (newVal) {
-                    updateText(elem, newVal);
+                    updateText(elem, newVal); 
                 }
             });
 
@@ -431,7 +431,7 @@ angular.module('ngLocalize.Config', [])
         cookieName: 'COOKIE_LOCALE_LANG',
         observableAttrs: new RegExp('^data-(?!ng-|i18n)'),
         delimiter: '::',
-        tokenRegEx: new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$')
+        validTokens: new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$')
     });
 
 }(this.angular, this, this.document));

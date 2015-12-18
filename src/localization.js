@@ -1,7 +1,7 @@
 angular.module('ngLocalize')
     .service('locale', function ($injector, $http, $q, $log, $rootScope, $window, localeConf, localeEvents, localeSupported, localeFallbacks) {
-        var TOKEN_REGEX = localeConf.tokenRegEx ?
-                new RegExp(localeConf.tokenRegEx) :
+        var TOKEN_REGEX = localeConf.validTokens ?
+                new RegExp(localeConf.validTokens) :
                 new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$'),
 
             $html = angular.element(document.body).parent(),
