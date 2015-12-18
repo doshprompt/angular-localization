@@ -75,18 +75,20 @@ describe('service', function () {
             $httpBackend.flush();
         }));
 
-        it('should freeze bundle', inject(function (locale, $httpBackend) {
-            var resp = 'lang file not found';
+        it('should freeze bundle', inject(function (locale, localeEvents, $httpBackend) {
             $httpBackend.expectGET('languages/en-US/common.lang.json').respond(200, {
                 "yes": "Yes"
             });
-            locale.$$bundleReady('common').then(function (bundle) {
-                try {
-                    bundle.yes = "try override";
-                } catch (e) {
-                    // noop
-                }
-                expect(bundle.yes).toBe("Yes");
+
+            $rootScope.$on(localeEvents.resourceUpdates, function (ev, data) {
+                expect(data.path).toBe('common');
+                expect(data.locale).toBe('en-US');
+                expect(Object.isFrozen(data.bundle)).toBe(true);
+            });
+            locale.ready('common').then(function () {
+                // noop
+            }, function ()  {
+                throw "Should not fail";
             });
             $httpBackend.flush();
         }));
