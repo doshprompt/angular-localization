@@ -180,8 +180,16 @@ angular.module('myApp', [
     'ngLocalize.Events'
 ]).controller('myAppControl', ['$scope', 'localeEvents',
     function ($scope, localeEvents) {
-        $scope.$on(localeEvents.resourceUpdates, function () {
-            // do something
+        $scope.$on(localeEvents.resourceUpdates, function (data) {
+            // Example data parameter for fr-FR common.lang.json bundle:
+            // {
+            //     locale: 'fr-FR',
+            //     path: 'common',
+            //     bundle: {
+            //         "yes": "Oui",
+            //         "no": "Aucun"
+            //     }
+            // }
         });
         $scope.$on(localeEvents.localeChanges, function (event, data) {
             console.log('new locale chosen: ' + data);
