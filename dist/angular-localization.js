@@ -1,5 +1,5 @@
 /*!
- * angular-localization :: v1.4.1 :: 2015-11-13
+ * angular-localization :: v1.4.1 :: 2015-12-21
  * web: http://doshprompt.github.io/angular-localization
  *
  * Copyright (c) 2015 | Rahul Doshi
@@ -21,8 +21,7 @@ angular.module('ngLocalize.InstalledLanguages', [])
     });
 angular.module('ngLocalize')
     .service('locale', ['$injector', '$http', '$q', '$log', '$rootScope', '$window', 'localeConf', 'localeEvents', 'localeSupported', 'localeFallbacks', function ($injector, $http, $q, $log, $rootScope, $window, localeConf, localeEvents, localeSupported, localeFallbacks) {
-        var TOKEN_REGEX = new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$'),
-
+        var TOKEN_REGEX = localeConf.validTokens || new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$'),
             $html = angular.element(document.body).parent(),
             currentLocale,
             deferrences,
@@ -122,11 +121,18 @@ angular.module('ngLocalize')
                                 deferrences[path].resolve(data);
                             }
                         })
-                        .error(function () {
+                        .error(function (err) {
+                            var path = getPath(token);
+
                             $log.error('[localizationService] Failed to load: ' + url);
 
                             // We can try it again later.
                             delete root._loading;
+
+                            // If we issued a Promise for this file, reject it now.
+                            if (deferrences[path]) {
+                                deferrences[path].reject(err);
+                            }
                         });
                 }
             }
@@ -421,6 +427,8 @@ angular.module('ngLocalize.Config', [])
         persistSelection: true,
         cookieName: 'COOKIE_LOCALE_LANG',
         observableAttrs: new RegExp('^data-(?!ng-|i18n)'),
-        delimiter: '::'
+        delimiter: '::',
+        validTokens: new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$')
     });
+
 }(this.angular, this, this.document));
