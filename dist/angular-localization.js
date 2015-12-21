@@ -1,5 +1,5 @@
 /*!
- * angular-localization :: v1.4.1 :: 2015-12-20
+ * angular-localization :: v1.4.1 :: 2015-12-21
  * web: http://doshprompt.github.io/angular-localization
  *
  * Copyright (c) 2015 | Rahul Doshi
@@ -21,7 +21,7 @@ angular.module('ngLocalize.InstalledLanguages', [])
     });
 angular.module('ngLocalize')
     .service('locale', ['$injector', '$http', '$q', '$log', '$rootScope', '$window', 'localeConf', 'localeEvents', 'localeSupported', 'localeFallbacks', function ($injector, $http, $q, $log, $rootScope, $window, localeConf, localeEvents, localeSupported, localeFallbacks) {
-        var TOKEN_REGEX = (localeConf.validTokens | new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$')),
+        var TOKEN_REGEX = localeConf.validTokens || new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$'),
             $html = angular.element(document.body).parent(),
             currentLocale,
             deferrences,
