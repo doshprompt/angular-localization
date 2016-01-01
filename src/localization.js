@@ -4,11 +4,62 @@ angular.module('ngLocalize')
             $html = angular.element(document.body).parent(),
             currentLocale,
             deferrences,
-            bundles,
-            cookieStore;
+            currentStorage,
+            bundles;
 
-        if (localeConf.persistSelection && $injector.has('$cookieStore')) {
-            cookieStore = $injector.get('$cookieStore');
+        function bind (fn, ctx) {
+            if (fn.bind) {
+                return fn.bind(ctx);
+            }
+
+            return function () {
+                return fn.apply(ctx, arguments);
+            };
+        }
+
+        function storage () {
+            var store,
+                mod;
+            if (currentStorage && currentStorage.type === localeConf.storageType) {
+                return currentStorage;
+            }
+
+            if (localeConf.persistSelection) {
+                if (localeConf.storageType !== 'cookie' && $injector.has('localeStorage')) {
+                    store = $injector.get('localeStorage');
+                }
+                // fallback to cookies
+                if (!store || !store.module || !store.get || !store.set) {
+                    store = {
+                        module: '$cookies',
+                        set: function (key, val) {
+                            if (this.put) {
+                                this.put(key, val);
+                            } else {
+                                this[key] = val;
+                            }
+                        },
+                        get: function (key) {
+                            return this.get ? this.get(key) : this[key];
+                        }
+                    };
+                }
+                if (store && $injector.has(store.module)) {
+                    mod = $injector.get(store.module);
+                    currentStorage = {
+                        type: localeConf.storageType,
+                        get: bind(store.get, mod),
+                        set: bind(store.set, mod)
+                    };
+                    return currentStorage;
+                }
+            }
+            currentStorage = {
+                type: 'noop',
+                get: angular.noop,
+                set: angular.noop
+            };
+            return currentStorage;
         }
 
         function isToken(str) {
@@ -294,9 +345,7 @@ angular.module('ngLocalize')
 
                 $rootScope.$broadcast(localeEvents.localeChanges, currentLocale);
 
-                if (cookieStore) {
-                    cookieStore.put(localeConf.cookieName, lang);
-                }
+                storage().set(localeConf.storageKey, lang);
             }
         }
 
@@ -304,7 +353,7 @@ angular.module('ngLocalize')
             return currentLocale;
         }
 
-        setLocale(cookieStore && cookieStore.get(localeConf.cookieName) ? cookieStore.get(localeConf.cookieName) : $window.navigator.userLanguage || $window.navigator.language);
+        setLocale(storage().get(localeConf.storageKey) ? storage().get(localeConf.storageKey) : $window.navigator.userLanguage || $window.navigator.language);
 
         return {
             ready: ready,
