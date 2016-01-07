@@ -7,16 +7,6 @@ angular.module('ngLocalize')
             currentStorage,
             bundles;
 
-        function bind (fn, ctx) {
-            if (fn.bind) {
-                return fn.bind(ctx);
-            }
-
-            return function () {
-                return fn.apply(ctx, arguments);
-            };
-        }
-
         function storage () {
             var store,
                 mod;
@@ -48,8 +38,8 @@ angular.module('ngLocalize')
                     mod = $injector.get(store.module);
                     currentStorage = {
                         type: localeConf.storageType,
-                        get: bind(store.get, mod),
-                        set: bind(store.set, mod)
+                        get: store.get.bind(mod),
+                        set: store.set.bind(mod)
                     };
                     return currentStorage;
                 }
