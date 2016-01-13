@@ -1,5 +1,7 @@
 angular.module('ngLocalize')
-    .directive('i18n', function ($sce, locale, localeEvents, localeConf) {
+    .directive('i18n', function ($sce, locale) {
+        var localeConf = locale.getConfig(),
+            localeEvents = localeConf.events;
         function setText(elm, tag) {
             if (tag !== elm.html()) {
                 elm.html($sce.getTrustedHtml(tag));
@@ -45,7 +47,10 @@ angular.module('ngLocalize')
             });
         };
     })
-    .directive('i18nAttr', function ($rootScope, locale, localeEvents) {
+    .directive('i18nAttr', function ($rootScope, locale) {
+        var localeConf = locale.getConfig(),
+            localeEvents = localeConf.events;
+
         function setAttr ($attrs, key, value) {
             $attrs.$set($attrs.$normalize(key), value);
         }

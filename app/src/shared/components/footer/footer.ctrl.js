@@ -1,7 +1,9 @@
 angular.module('myApp.shared.components.footer')
-    .controller('FootControl', ['$scope', 'locale', 'localeSupported', 'localeEvents',
-        function ($scope, locale, localeSupported, localeEvents) {
+    .controller('FootControl', ['$scope', 'locale',
+        function ($scope, locale) {
             'use strict';
+            var localeSupported = locale.getSupportedLocales(),
+                localeEvents = locale.getEvents();
 
             $scope.supportedLang = localeSupported;
             $scope.localeData = {

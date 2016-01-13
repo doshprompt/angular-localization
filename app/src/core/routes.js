@@ -1,6 +1,6 @@
 angular.module('myApp.core.router')
-    .config(['$routeProvider',
-        function ($routeProvider) {
+    .config(['$routeProvider', 'localeProvider',
+        function ($routeProvider, localeProvider) {
             'use strict';
 
             $routeProvider.
@@ -11,9 +11,12 @@ angular.module('myApp.core.router')
                 otherwise({
                     redirectTo: '/home'
                 });
+
+            localeProvider.init({
+                supported: [
+                    'en-US',
+                    'fr-FR',
+                ]
+            });
         }
-    ])
-    .value('localeSupported', [
-        'en-US',
-        'fr-FR'
     ]);

@@ -3,9 +3,12 @@
 
     var myApp = {
         definitions: {
-            'myApp.core.router': [],
+            'myApp.core.router': [
+                'ngLocalize',
+            ],
             'myApp.features.demo': [],
-            'myApp.shared.components.footer': ['ngLocalize.InstalledLanguages', 'ngLocalize.Events']
+            'myApp.shared.components.navbar': [],
+            'myApp.shared.components.footer': []
         },
         dependencies: [
             'ngRoute',
