@@ -79,21 +79,43 @@ angular.module('ngLocalize')
             return result;
         }
 
+        function isFrozen (obj) {
+            return (Object.isFrozen || function (obj) {
+                return obj && obj.$$frozen;
+            })(obj);
+        }
+
+        function freeze (obj) {
+            return (Object.freeze || function (obj) {
+                if (obj) {
+                    obj.$$frozen = true;
+                }
+            })(obj);
+        }
+
         function loadBundle(token) {
             var path = token ? token.split('.') : '',
                 root = bundles,
-                url = localeConf.basePath + '/' + currentLocale,
+                parent,
+                locale = currentLocale,
+                url = localeConf.basePath + '/' + locale,
+                ref,
                 i;
 
             if (path.length > 1) {
                 for (i = 0; i < path.length - 1; i++) {
-                    if (!root[path[i]]) {
-                        root[path[i]] = {};
+                    ref = path[i];
+                    if (!root[ref]) {
+                        root[ref] = {};
                     }
-                    root = root[path[i]];
-                    url += '/' + path[i];
+                    parent = root;
+                    root = root[ref];
+                    url += '/' + ref;
                 }
 
+                if (isFrozen(root)) {
+                    root = angular.extend({}, root);
+                }
                 if (!root._loading) {
                     root._loading = true;
 
@@ -112,13 +134,19 @@ angular.module('ngLocalize')
 
                             // Mark the bundle as having been "loaded".
                             delete root._loading;
+                            parent[ref] = freeze(root);
+                            root = null;
 
                             // Notify anyone who cares to know about this event.
-                            $rootScope.$broadcast(localeEvents.resourceUpdates);
+                            $rootScope.$broadcast(localeEvents.resourceUpdates, {
+                                locale: locale,
+                                path: path,
+                                bundle: parent[ref]
+                            });
 
                             // If we issued a Promise for this file, resolve it now.
                             if (deferrences[path]) {
-                                deferrences[path].resolve(data);
+                                deferrences[path].resolve(path);
                             }
                         })
                         .error(function (err) {
@@ -152,7 +180,7 @@ angular.module('ngLocalize')
             }
 
             if (bundle && !bundle._loading) {
-                deferrences[path].resolve(bundle);
+                deferrences[path].resolve(path);
             } else {
                 if (!bundle) {
                     loadBundle(token);
@@ -298,7 +326,6 @@ angular.module('ngLocalize')
                 updateHtmlTagLangAttr(lang);
 
                 $rootScope.$broadcast(localeEvents.localeChanges, currentLocale);
-                $rootScope.$broadcast(localeEvents.resourceUpdates);
 
                 if (cookieStore) {
                     cookieStore.put(localeConf.cookieName, lang);
