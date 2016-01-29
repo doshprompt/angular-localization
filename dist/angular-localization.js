@@ -1,5 +1,5 @@
 /*!
- * angular-localization :: v1.4.1 :: 2016-01-28
+ * angular-localization :: v1.4.1 :: 2016-01-29
  * web: http://doshprompt.github.io/angular-localization
  *
  * Copyright (c) 2016 | Rahul Doshi
@@ -261,15 +261,11 @@ angular.module('ngLocalize')
             $html.attr('lang', lang);
         }
 
-        function startsWith(str, target) {
-            return str.indexOf(target) === 0;
-        }
-
         function getLanguageSupported(language) {
+            var foundLanguage = null;
             if (language && language.length) {
-                var foundLanguage = null;
                 localeSupported.forEach(function (languageSuppported) {
-                    if (startsWith(languageSuppported, language)) {
+                    if (languageSuppported.indexOf(language) === 0) {
                         foundLanguage = localeSupported.indexOf(languageSuppported);
                         return;
                     }
@@ -280,14 +276,14 @@ angular.module('ngLocalize')
                       foundLanguage = fallbackLang;
                     }
                 }
-                return foundLanguage ? foundLanguage : localeConf.defaultLocale;
             }
+            return foundLanguage || localeConf.defaultLocale;
         }
 
         function setLocale(value) {
             var lang;
 
-            if (angular.isString(value)) {
+            if (angular.isString(value) && value.length ) {
                 value = value.trim();
                 lang = getLanguageSupported(value);
             } else {
@@ -341,7 +337,9 @@ angular.module('ngLocalize')
         }
 
         function initialSetLocale() {
-            setLocale(cookieStore && cookieStore.get(localeConf.cookieName) ? cookieStore.get(localeConf.cookieName) : getPreferredBrowserLanguage());
+            setLocale(cookieStore && cookieStore.get(localeConf.cookieName) ?
+                cookieStore.get(localeConf.cookieName) :
+                getPreferredBrowserLanguage());
         }
 
         initialSetLocale();
@@ -353,7 +351,8 @@ angular.module('ngLocalize')
             getKey: getKey,
             setLocale: setLocale,
             getLocale: getLocale,
-            getString: getLocalizedString
+            getString: getLocalizedString,
+            getPreferredBrowserLanguage: getPreferredBrowserLanguage
         };
     }]);
 
