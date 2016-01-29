@@ -1,8 +1,8 @@
 /*!
- * angular-localization :: v1.4.1 :: 2015-12-21
+ * angular-localization :: v1.4.1 :: 2016-01-28
  * web: http://doshprompt.github.io/angular-localization
  *
- * Copyright (c) 2015 | Rahul Doshi
+ * Copyright (c) 2016 | Rahul Doshi
  * License: MIT
  */
 ;(function (angular, window, document, undefined) {
@@ -261,19 +261,35 @@ angular.module('ngLocalize')
             $html.attr('lang', lang);
         }
 
+        function startsWith(str, target) {
+            return str.indexOf(target) === 0;
+        }
+
+        function getLanguageSupported(language) {
+            if (language && language.length) {
+                var foundLanguage = null;
+                localeSupported.forEach(function (languageSuppported) {
+                    if (startsWith(languageSuppported, language)) {
+                        foundLanguage = localeSupported.indexOf(languageSuppported);
+                        return;
+                    }
+                });
+                if (!foundLanguage) {
+                    var fallbackLang = localeFallbacks[language.split('-')[0]];
+                    if (!angular.isUndefined(fallbackLang)) {
+                      foundLanguage = fallbackLang;
+                    }
+                }
+                return foundLanguage ? foundLanguage : localeConf.defaultLocale;
+            }
+        }
+
         function setLocale(value) {
             var lang;
 
             if (angular.isString(value)) {
                 value = value.trim();
-                if (localeSupported.indexOf(value) !== -1) {
-                    lang = value;
-                } else {
-                    lang = localeFallbacks[value.split('-')[0]];
-                    if (angular.isUndefined(lang)) {
-                        lang = localeConf.defaultLocale;
-                    }
-                }
+                lang = getLanguageSupported(value);
             } else {
                 lang = localeConf.defaultLocale;
             }
@@ -298,7 +314,37 @@ angular.module('ngLocalize')
             return currentLocale;
         }
 
-        setLocale(cookieStore && cookieStore.get(localeConf.cookieName) ? cookieStore.get(localeConf.cookieName) : $window.navigator.userLanguage || $window.navigator.language);
+        function getPreferredBrowserLanguage() {
+            var nav = $window.navigator,
+                browserLanguagePropertyKeys = ['language', 'browserLanguage', 'systemLanguage', 'userLanguage'],
+                i,
+                language;
+
+            // support for HTML 5.1 "navigator.languages"
+            if (angular.isArray(nav.languages)) {
+                for (i = 0; i < nav.languages.length; i++) {
+                    language = nav.languages[i];
+                    if (language) {
+                        return language;
+                    }
+                }
+            }
+            // support for other well known properties in browsers
+            for (i = 0; i < browserLanguagePropertyKeys.length; i++) {
+                language = nav[browserLanguagePropertyKeys[i]];
+                if (language) {
+                    return language;
+                }
+            }
+
+            return null;
+        }
+
+        function initialSetLocale() {
+            setLocale(cookieStore && cookieStore.get(localeConf.cookieName) ? cookieStore.get(localeConf.cookieName) : getPreferredBrowserLanguage());
+        }
+
+        initialSetLocale();
 
         return {
             ready: ready,

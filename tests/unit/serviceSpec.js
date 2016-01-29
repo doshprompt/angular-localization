@@ -4,7 +4,16 @@ describe('service', function () {
     beforeEach(module('ngLocalize'));
 
     describe('locale', function () {
-        var $rootScope;
+        var $rootScope, mockWindow;
+
+        // Mock $window
+        beforeEach(module(function ($provide) {
+            mockWindow = { navigator : {
+                languages: []
+            }};
+            $provide.value('$window', mockWindow);
+        }));
+
         beforeEach(inject(function (_$rootScope_) {
             $rootScope = _$rootScope_;
         }));
@@ -39,6 +48,29 @@ describe('service', function () {
             expect(locale.getLocale()).toBe('en-US');
             locale.setLocale('  ');
             expect(locale.getLocale()).toBe('en-US');
+        }));
+
+        it('should get preferred browser language', inject(function (locale, $window) {
+            $window.navigator.languages = [];
+            expect(locale.getPreferredBrowserLanguage()).toBe(null);
+
+            $window.navigator.languages = ['sv-SE', 'de-DE'];
+            expect(locale.getPreferredBrowserLanguage()).toBe('sv-SE');
+
+            $window.navigator.languages = ['de-DE', 'sv-SE'];
+            expect(locale.getPreferredBrowserLanguage()).toBe('de-DE');
+
+            $window.navigator = {language: 'ab-CD'};
+            expect(locale.getPreferredBrowserLanguage()).toBe('ab-CD');
+
+            $window.navigator = {browserLanguage: 'ab-CD'};
+            expect(locale.getPreferredBrowserLanguage()).toBe('ab-CD');
+
+            $window.navigator = {systemLanguage: 'ab-CD'};
+            expect(locale.getPreferredBrowserLanguage()).toBe('ab-CD');
+
+            $window.navigator = {userLanguage: 'ab-CD'};
+            expect(locale.getPreferredBrowserLanguage()).toBe('ab-CD');
         }));
 
         it('should validate tokens with whitespace', inject(function (locale) {
