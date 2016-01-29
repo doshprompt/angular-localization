@@ -184,8 +184,16 @@ angular.module('myApp', [
     'ngLocalize.Events'
 ]).controller('myAppControl', ['$scope', 'localeEvents',
     function ($scope, localeEvents) {
-        $scope.$on(localeEvents.resourceUpdates, function () {
-            // do something
+        $scope.$on(localeEvents.resourceUpdates, function (data) {
+            // Example data parameter for fr-FR common.lang.json bundle:
+            // {
+            //     locale: 'fr-FR',
+            //     path: 'common',
+            //     bundle: {
+            //         "yes": "Oui",
+            //         "no": "Aucun"
+            //     }
+            // }
         });
         $scope.$on(localeEvents.localeChanges, function (event, data) {
             console.log('new locale chosen: ' + data);
@@ -325,6 +333,19 @@ angular.module('myApp', ['ngLocalize'])
 ```
 
 As you can see, The `locale` service expects the localization key as the first argument and an optional {Object|Array|String} with user data as the second argument.
+
+The promise returns the object containing the localization keys & values: 
+
+```js
+angular.module('myApp', ['ngLocalize'])
+    .controller('exampleCtrl', ['$scope', 'locale',
+        function ($scope, locale) {
+            locale.ready('common').then(function (res) {
+                //res --> { "helloWorld" : "Hello World!", ... }
+            });
+        }
+    ]);
+```
 
 ### i18n filter
 
