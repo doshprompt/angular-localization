@@ -6,7 +6,12 @@ node_js:
 
 before_script:
   - npm install -g gulp
-script: gulp test
+script:
+-gulp test
+-gulp
+
+
+
 
 cache:
   directories:
