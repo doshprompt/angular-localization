@@ -16,6 +16,3 @@ script:
 cache:
   directories:
     - node_modules
-
-after_success:
-  - ./node_modules/codeclimate-test-reporter/bin/codeclimate.js < coverage/lcov.info
