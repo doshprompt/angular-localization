@@ -273,7 +273,7 @@ angular.module('ngLocalize')
             if (language && language.length) {
                 localeSupported.forEach(function (languageSuppported) {
                     if (languageSuppported.indexOf(language) === 0) {
-                        foundLanguage = localeSupported.indexOf(languageSuppported);
+                        foundLanguage = languageSuppported;
                         return;
                     }
                 });

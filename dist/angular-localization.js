@@ -1,5 +1,5 @@
 /*!
- * angular-localization :: v1.4.1 :: 2016-01-29
+ * angular-localization :: v1.4.1 :: 2016-02-03
  * web: http://doshprompt.github.io/angular-localization
  *
  * Copyright (c) 2016 | Rahul Doshi
@@ -294,7 +294,7 @@ angular.module('ngLocalize')
             if (language && language.length) {
                 localeSupported.forEach(function (languageSuppported) {
                     if (languageSuppported.indexOf(language) === 0) {
-                        foundLanguage = localeSupported.indexOf(languageSuppported);
+                        foundLanguage = languageSuppported;
                         return;
                     }
                 });
