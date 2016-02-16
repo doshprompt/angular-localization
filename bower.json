@@ -40,6 +40,7 @@
     "angular-mocks": ">=1.2 < 2",
     "bootstrap": "~3.3.4",
     "angular-route": ">=1.2 < 2",
-    "bca-flag-sprite": "~1.0.0"
+    "bca-flag-sprite": "~1.0.0",
+    "ngstorage": "~0.3.10"
   }
 }

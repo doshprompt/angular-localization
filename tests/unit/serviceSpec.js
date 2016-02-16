@@ -1,7 +1,13 @@
 describe('service', function () {
     'use strict';
 
-    beforeEach(module('ngLocalize'));
+    angular.module('ngLocalize.InstalledLanguages')
+        .value('localeSupported', [
+            'en-US',
+            'fr-FR',
+        ]);
+
+    beforeEach(module('ngLocalize', 'ngLocalize.InstalledLanguages', 'ngStorage', 'ngCookies'));
 
     describe('locale', function () {
         var $rootScope;
@@ -91,6 +97,51 @@ describe('service', function () {
                 throw "Should not fail";
             });
             $httpBackend.flush();
+        }));
+    });
+
+    describe('persistence', function () {
+        var french = 'fr-FR',
+            english = 'en-US';
+        it('should write to cookie', inject(function ($cookies, $window, locale, localeConf) {
+            locale.setLocale(french);
+            expect($cookies.get(localeConf.storageKey)).toBe(french);
+            locale.setLocale(english);
+            expect($cookies.get(localeConf.storageKey)).toBe(english);
+        }));
+
+        it('should write to session storage', inject(function ($cookies, $window, locale, localeConf, localeStorage) {
+            // overwrite the default storaged
+            localeStorage.module = '$sessionStorage';
+            localeStorage.set = function (key, val) {
+                this[key] = val;
+                this.$apply();
+            };
+            localeStorage.get = function (key, val) {
+                return this[key];
+            };
+            localeConf.storageType = 'session';
+            locale.setLocale(french);
+            expect($window.sessionStorage.getItem('ngStorage-' + localeConf.storageKey)).toMatch(new RegExp(french, 'i'));
+            locale.setLocale(english);
+            expect($window.sessionStorage.getItem('ngStorage-' + localeConf.storageKey)).toMatch(new RegExp(english, 'i'));
+        }));
+
+        it('should write to local storage', inject(function ($cookies, $window, locale, localeConf, localeStorage) {
+            // overwrite the default storage
+            localeStorage.module = '$localStorage';
+            localeStorage.set = function (key, val) {
+                this[key] = val;
+                this.$apply();
+            };
+            localeStorage.get = function (key, val) {
+                return this[key];
+            };
+            localeConf.storageType = 'local';
+            locale.setLocale(french);
+            expect($window.localStorage.getItem('ngStorage-' + localeConf.storageKey)).toMatch(new RegExp(french, 'i'));
+            locale.setLocale(english);
+            expect($window.localStorage.getItem('ngStorage-' + localeConf.storageKey)).toMatch(new RegExp(english, 'i'));
         }));
     });
 });

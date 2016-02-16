@@ -139,8 +139,11 @@ All overridable configuration options are part of `localeConf` within the `ngLoc
 ###### persistSelection @ `true`
 > whether to save the selected language to cookies for retrieval on later uses of the app
 
-###### cookieName @ `COOKIE_LOCALE_LANG`
-> works in conjuntion with `persistSelection` and provides the cookie name for storage
+###### storageType @ `cookie`
+> defines the storage type. If not set as `cookie`, the localeStorage config is used to define custom storage
+
+###### storageKey @ `LOCALE_LANG`
+> works in conjuntion with `persistSelection` and provides the key for storage
 
 ###### observableAttrs @ `\^data-(?!ng-|i18n)\`
 > a regular expression which is used to match which custom data attibutes may be watched by the `i18n` directive for 2-way bindings to replace in a tokenized string
@@ -161,7 +164,8 @@ angular.module('myApp', [
     sharedDictionary: 'common',
     fileExtension: '.lang.json',
     persistSelection: true,
-    cookieName: 'COOKIE_LOCALE_LANG',
+    storageType: 'cookie',
+    storageKey: 'LOCALE_LANG',
     observableAttrs: new RegExp('^data-(?!ng-|i18n)'),
     delimiter: '::',
     validTokens: new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$')
@@ -275,6 +279,28 @@ As mentioned earlier, this plugin is able to handle substitutions of tokens base
 ```
 
 Please take note of the fact that multiple ordered params may also be given to it.
+
+## Custom Storage Type
+
+The localization language is stored in the cookie by default, but the storage is configurable by overriding the get/set methods. The function's context is the module instance.
+
+For example, here we use [gsklee/ngStorage](https://github.com/gsklee/ngStorage) to interact with the storage.
+
+```javascript
+angular.module('app', [])
+    .value('localeStorage', {
+        module: '$localStorage',
+        set: function (key, val) {
+            var storage = this;
+            storage[key] = val;
+            storage.$apply();
+        },
+        get: function (key) {
+            var storage = this;
+            return storage[key];
+        }
+    });
+```
 
 ## Usage Examples
 

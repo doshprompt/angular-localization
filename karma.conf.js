@@ -3,9 +3,14 @@ module.exports = function (config) {
 
     config.set({
         files : [
+            // support for bind in phnatomjs 1.9
+            './node_modules/phantomjs-polyfill/bind-polyfill.js',
+
             'lib/angular/angular.js',
             'lib/angular-cookies/angular-cookies.js',
             'lib/angular-sanitize/angular-sanitize.js',
+            'lib/angular-sanitize/angular-sanitize.js',
+            'lib/ngstorage/ngStorage.js',
 
             'lib/angular-mocks/angular-mocks.js',
 
