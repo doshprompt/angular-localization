@@ -21,7 +21,7 @@ angular.module('ngLocalize')
 
             attrs.$observe('i18n', function (newVal, oldVal) {
                 if (newVal && newVal !== oldVal) {
-                    update(elm, newVal, hasObservers); 
+                    update(elm, newVal, hasObservers);
                 }
             });
 
@@ -45,11 +45,10 @@ angular.module('ngLocalize')
             });
         };
     })
-    .directive('i18nAttr', function (locale, localeEvents) {
-        return function (scope, elem, attrs) {
+    .directive('i18nAttr', function ($rootScope, locale, localeEvents) {
+        function getUpdateText(scope, target, attrs) {
             var lastValues = {};
-
-            function updateText(target, attributes) {
+            return function (attributes) {
                 var values = scope.$eval(attributes),
                     langFiles = [],
                     exp;
@@ -63,28 +62,43 @@ angular.module('ngLocalize')
 
                 locale.ready(langFiles).then(function () {
                     var value = '';
-
                     for(var key in values) {
                         exp = values[key];
                         value = locale.getString(exp);
                         if (lastValues[key] !== value) {
-                            attrs.$set(attrs.$normalize(key), lastValues[key] = value);
+                            lastValues[key] = value;
+                            setAttr(attrs, key, value);
                         }
                     }
                 });
-            }
+            };
+        }
+        function setAttr ($attrs, key, value) {
+            $attrs.$set($attrs.$normalize(key), value);
+        }
+        return {
+            priority: 1000,
+            compile: function (elem, attrs) {
+                angular.forEach($rootScope.$eval(attrs.i18nAttr), function (value, key) {
+                    setAttr(attrs, key, value || '...');
+                });
 
-            attrs.$observe('i18nAttr', function (newVal) {
-                if (newVal) {
-                    updateText(elem, newVal); 
+                return function ($scope, elem, attrs) {
+                    var updateText = getUpdateText($scope, elem, attrs);
+
+                    attrs.$observe('i18nAttr', function (newVal) {
+                        if (newVal) {
+                            updateText(newVal);
+                        }
+                    });
+
+                    $scope.$on(localeEvents.resourceUpdates, function () {
+                        updateText(attrs.i18nAttr);
+                    });
+                    $scope.$on(localeEvents.localeChanges, function () {
+                        updateText(attrs.i18nAttr);
+                    });
                 }
-            });
-
-            scope.$on(localeEvents.resourceUpdates, function () {
-                updateText(elem, attrs.i18nAttr);
-            });
-            scope.$on(localeEvents.localeChanges, function () {
-                updateText(elem, attrs.i18nAttr);
-            });
+            }
         };
     });
