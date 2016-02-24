@@ -45,10 +45,10 @@
     "karma-coverage": "^0.4.2",
     "karma-jasmine": "^0.1.5",
     "karma-junit-reporter": "^0.2.2",
-    "karma-phantomjs-launcher": "^0.1.4",
+    "karma-phantomjs-launcher": "^1.0.0",
     "less-plugin-clean-css": "^1.5.0",
     "moment": "^2.8.3",
-    "phantomjs": "^1.9.7-8",
+    "phantomjs-prebuilt": "^2.1.4",
     "run-sequence": "^1.1.1"
   }
 }
