@@ -46,6 +46,9 @@ angular.module('ngLocalize')
         };
     })
     .directive('i18nAttr', function ($rootScope, locale, localeEvents) {
+        function setAttr ($attrs, key, value) {
+            $attrs.$set($attrs.$normalize(key), value);
+        }
         function getUpdateText(scope, target, attrs) {
             var lastValues = {};
             return function (attributes) {
@@ -73,9 +76,6 @@ angular.module('ngLocalize')
                 });
             };
         }
-        function setAttr ($attrs, key, value) {
-            $attrs.$set($attrs.$normalize(key), value);
-        }
         return {
             priority: 1000,
             compile: function (elem, attrs) {
@@ -98,7 +98,7 @@ angular.module('ngLocalize')
                     $scope.$on(localeEvents.localeChanges, function () {
                         updateText(attrs.i18nAttr);
                     });
-                }
+                };
             }
         };
     });
