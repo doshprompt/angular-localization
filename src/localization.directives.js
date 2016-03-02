@@ -49,10 +49,11 @@ angular.module('ngLocalize')
         function setAttr ($attrs, key, value) {
             $attrs.$set($attrs.$normalize(key), value);
         }
-        function getUpdateText(scope, target, attrs) {
+
+        function getUpdateText ($scope, target, $attrs) {
             var lastValues = {};
             return function (attributes) {
-                var values = scope.$eval(attributes),
+                var values = $scope.$eval(attributes),
                     langFiles = [],
                     exp;
 
@@ -70,33 +71,35 @@ angular.module('ngLocalize')
                         value = locale.getString(exp);
                         if (lastValues[key] !== value) {
                             lastValues[key] = value;
-                            setAttr(attrs, key, value);
+                            setAttr($attrs, key, value);
                         }
                     }
                 });
             };
         }
+
         return {
             priority: 1000,
-            compile: function (elem, attrs) {
-                angular.forEach($rootScope.$eval(attrs.i18nAttr), function (value, key) {
-                    setAttr(attrs, key, value || '...');
+            compile: function ($elem, $attrs) {
+                angular.forEach($rootScope.$eval($attrs.i18nAttr), function (value, key) {
+                    setAttr($attrs, key, value || '...');
                 });
 
-                return function ($scope, elem, attrs) {
-                    var updateText = getUpdateText($scope, elem, attrs);
+                return function ($scope, $elem, $attrs) {
+                    var updateText = getUpdateText($scope, $elem, $attrs);
 
-                    attrs.$observe('i18nAttr', function (newVal) {
+                    $attrs.$observe('i18nAttr', function (newVal) {
                         if (newVal) {
                             updateText(newVal);
                         }
                     });
 
                     $scope.$on(localeEvents.resourceUpdates, function () {
-                        updateText(attrs.i18nAttr);
+                        updateText($attrs.i18nAttr);
                     });
+
                     $scope.$on(localeEvents.localeChanges, function () {
-                        updateText(attrs.i18nAttr);
+                        updateText($attrs.i18nAttr);
                     });
                 };
             }
