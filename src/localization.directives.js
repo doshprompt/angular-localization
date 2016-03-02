@@ -79,9 +79,12 @@ angular.module('ngLocalize')
         }
 
         return {
+            // ensure has higher priority than ngAria
             priority: 1000,
             compile: function ($elem, $attrs) {
                 angular.forEach($rootScope.$eval($attrs.i18nAttr), function (value, key) {
+                    // temporarily populate attribute
+                    // avoid false positive warning about aria-label
                     setAttr($attrs, key, value || '...');
                 });
 
