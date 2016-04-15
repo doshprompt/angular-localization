@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <meta name="description" content="Sample App">
         <meta name="author" content="Rahul Doshi">
 
@@ -20,7 +20,7 @@
 
     <body data-ng-app="myApp">
         <div data-ng-include="'src/shared/components/navbar/_navbar.html'"></div>
-        <div data-ng-view></div>
+        <section data-ng-view></section>
         <div data-ng-include="'src/shared/components/footer/_footer.html'"></div>
 
         <!-- Bootstrap core JavaScript

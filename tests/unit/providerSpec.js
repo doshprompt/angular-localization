@@ -1,7 +1,68 @@
-describe('service', function () {
+describe('provider', function () {
     'use strict';
-
     beforeEach(module('ngLocalize'));
+
+    describe('config', function () {
+        var localeProvider;
+        beforeEach(module(function (_localeProvider_) {
+            localeProvider = _localeProvider_;
+        }));
+
+        it('should contain default properties', inject(function ($injector) {
+            var locale = $injector.invoke(localeProvider.$get),
+                configKeys = Object.keys(locale.getConfig());
+
+                angular.copy(locale.getConfig());
+
+            [
+                'basePath',
+                'defaultLocale',
+                'sharedDictionary',
+                'fileExtension',
+                'persistSelection',
+                'cookieName',
+                'observableAttrs',
+                'delimiter',
+                'events',
+                'supported',
+                'fallbacks',
+            ].forEach(function (prop) {
+                expect(configKeys).toContain(prop);
+            });
+        }));
+
+        it('should be overriden', inject(function ($injector) {
+            var locale,
+                override = {
+                    basePath: 'langs',
+                    defaultLocale: 'en-GB',
+                    sharedDictionary: 'uncommon',
+                    fileExtension: '.json',
+                    persistSelection: false,
+                    cookieName: 'COOKIE_LOCALE_LANG',
+                    observableAttrs: new RegExp('^data-(?!ng-|i18n)'),
+                    delimiter: '**',
+                    events: {
+                        resourceUpdates: 'resourceUpdatesEvent',
+                        localeChanges: 'localeChangesEvent',
+                    },
+                    supported: [
+                        'en-GB'
+                    ],
+                    fallbacks: {
+                        'en': 'en-GB'
+                    }
+                };
+
+            localeProvider.init(override);
+
+            locale = $injector.invoke(localeProvider.$get);
+
+            angular.forEach(locale.getConfig(), function (val, key, config) {
+                expect(config[key]).toEqual(override[key]);
+            });
+        }));
+    });
 
     describe('locale', function () {
         var $rootScope;
@@ -75,12 +136,12 @@ describe('service', function () {
             $httpBackend.flush();
         }));
 
-        it('should freeze bundle', inject(function (locale, localeEvents, $httpBackend) {
+        it('should freeze bundle', inject(function (locale, $httpBackend) {
             $httpBackend.expectGET('languages/en-US/common.lang.json').respond(200, {
                 "yes": "Yes"
             });
 
-            $rootScope.$on(localeEvents.resourceUpdates, function (ev, data) {
+            $rootScope.$on(locale.getConfig('events.resourceUpdates'), function (ev, data) {
                 expect(data.path).toBe('common');
                 expect(data.locale).toBe('en-US');
                 expect(Object.isFrozen(data.bundle)).toBe(true);
