@@ -21,7 +21,7 @@ angular.module('ngLocalize')
 
             attrs.$observe('i18n', function (newVal, oldVal) {
                 if (newVal && newVal !== oldVal) {
-                    update(elm, newVal, hasObservers); 
+                    update(elm, newVal, hasObservers);
                 }
             });
 
@@ -45,12 +45,15 @@ angular.module('ngLocalize')
             });
         };
     })
-    .directive('i18nAttr', function (locale, localeEvents) {
-        return function (scope, elem, attrs) {
-            var lastValues = {};
+    .directive('i18nAttr', function ($rootScope, locale, localeEvents) {
+        function setAttr ($attrs, key, value) {
+            $attrs.$set($attrs.$normalize(key), value);
+        }
 
-            function updateText(target, attributes) {
-                var values = scope.$eval(attributes),
+        function getUpdateText ($scope, target, $attrs) {
+            var lastValues = {};
+            return function (attributes) {
+                var values = $scope.$eval(attributes),
                     langFiles = [],
                     exp;
 
@@ -63,28 +66,45 @@ angular.module('ngLocalize')
 
                 locale.ready(langFiles).then(function () {
                     var value = '';
-
                     for(var key in values) {
                         exp = values[key];
                         value = locale.getString(exp);
                         if (lastValues[key] !== value) {
-                            attrs.$set(attrs.$normalize(key), lastValues[key] = value);
+                            lastValues[key] = value;
+                            setAttr($attrs, key, value);
                         }
                     }
                 });
+            };
+        }
+
+        return {
+            // ensure has higher priority than ngAria
+            priority: 1000,
+            compile: function ($elem, $attrs) {
+                angular.forEach($rootScope.$eval($attrs.i18nAttr), function (value, key) {
+                    // temporarily populate attribute
+                    // avoid false positive warning about aria-label
+                    setAttr($attrs, key, value || '...');
+                });
+
+                return function ($scope, $elem, $attrs) {
+                    var updateText = getUpdateText($scope, $elem, $attrs);
+
+                    $attrs.$observe('i18nAttr', function (newVal) {
+                        if (newVal) {
+                            updateText(newVal);
+                        }
+                    });
+
+                    $scope.$on(localeEvents.resourceUpdates, function () {
+                        updateText($attrs.i18nAttr);
+                    });
+
+                    $scope.$on(localeEvents.localeChanges, function () {
+                        updateText($attrs.i18nAttr);
+                    });
+                };
             }
-
-            attrs.$observe('i18nAttr', function (newVal) {
-                if (newVal) {
-                    updateText(elem, newVal); 
-                }
-            });
-
-            scope.$on(localeEvents.resourceUpdates, function () {
-                updateText(elem, attrs.i18nAttr);
-            });
-            scope.$on(localeEvents.localeChanges, function () {
-                updateText(elem, attrs.i18nAttr);
-            });
         };
     });
