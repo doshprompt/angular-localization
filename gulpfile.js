@@ -101,3 +101,14 @@ gulp.task('lint', function() {
         .pipe($.jshint.reporter('jshint-stylish'))
         .pipe($.jshint.reporter('fail'));
 });
+
+gulp.task('serve', ['clean', 'default'], function() {
+  return gulp.src('.')
+    .pipe($.webserver({
+        directoryListing: {
+            enable:true,
+            path: '.'
+        },
+        open: 'app/index.html'
+    }));
+});
