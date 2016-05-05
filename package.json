@@ -1,6 +1,6 @@
 {
   "name": "angular-localization",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "angularjs localization done right.",
   "main": [
     "dist/angular-localization.js",

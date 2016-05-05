@@ -72,6 +72,11 @@ angular.module('ngLocalize')
             })(obj);
         }
 
+        // http://stackoverflow.com/a/17606289
+        function replaceAll(str, substr, sub) {
+            return str.replace(new RegExp(substr.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), sub);
+        }
+
         function loadBundle(token) {
             var path = token ? token.split('.') : '',
                 root = bundles,
@@ -202,17 +207,17 @@ angular.module('ngLocalize')
             if (subs) {
                 if (angular.isArray(subs)) {
                     angular.forEach(subs, function (sub, i) {
-                        res = res.replace('%' + (i + 1), sub);
-                        res = res.replace('{' + (i + 1) + '}', sub);
+                        res = replaceAll(res, '%' + (i + 1), sub);
+                        res = replaceAll(res, '{' + (i + 1) + '}', sub);
                     });
                 } else {
                     angular.forEach(subs, function (v, k) {
                         ++firstOfKind;
 
-                        res = res.replace('{' + k + '}', v);
-                        res = res.replace('%' + k, v);
-                        res = res.replace('%' + (firstOfKind), v);
-                        res = res.replace('{' + (firstOfKind) + '}', v);
+                        res = replaceAll(res, '{' + k + '}', v);
+                        res = replaceAll(res, '%' + k, v);
+                        res = replaceAll(res, '%' + (firstOfKind), v);
+                        res = replaceAll(res, '{' + (firstOfKind) + '}', v);
                     });
                 }
             }

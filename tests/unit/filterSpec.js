@@ -16,7 +16,8 @@ describe('filter', function () {
                 fullName: 'My name is {firstName} {lastName}',
                 versionAlt: 'v%major.%minor.%patch',
                 fullNameAlt: 'My name is {1} {2}',
-                'key with whitespace': 'valuewithoutwhitespace'
+                'key with whitespace': 'valuewithoutwhitespace',
+                'fullNameDups': 'My full name is {firstName} {lastName} so my "good name" is {firstName}.'
             });
         });
     });
@@ -69,6 +70,13 @@ describe('filter', function () {
 
         it('should allow tokens with whitespace', inject(function (i18nFilter) {
             expect(i18nFilter('common.key with whitespace')).toEqual('valuewithoutwhitespace');
+        }));
+
+        it('should substitute all occourences of a token', inject(function (i18nFilter) {
+            expect(i18nFilter('common.fullNameDups', {
+                firstName: 'John',
+                lastName: 'Smith'
+            })).toEqual('My full name is John Smith so my "good name" is John.');
         }));
     });
 });
