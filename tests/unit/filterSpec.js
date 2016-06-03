@@ -17,7 +17,10 @@ describe('filter', function () {
                 versionAlt: 'v%major.%minor.%patch',
                 fullNameAlt: 'My name is {1} {2}',
                 'key with whitespace': 'valuewithoutwhitespace',
-                'fullNameDups': 'My full name is {firstName} {lastName} so my "good name" is {firstName}.'
+                'fullNameDups': 'My full name is {firstName} {lastName} so my "good name" is {firstName}.',
+                'multiline' : ['line1',
+                               'line2',
+                               'line3']
             });
         });
     });
@@ -77,6 +80,11 @@ describe('filter', function () {
                 firstName: 'John',
                 lastName: 'Smith'
             })).toEqual('My full name is John Smith so my "good name" is John.');
+        }));
+        
+        it('should combine multiple lines in one line',inject(function(i18nFilter){
+            expect(i18nFilter('common.multiline'))
+            .toEqual("line1line2line3");
         }));
     });
 });

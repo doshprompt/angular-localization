@@ -201,7 +201,7 @@ angular.module('ngLocalize')
         }
 
         function applySubstitutions(text, subs) {
-            var res = text,
+            var res = (text instanceof Array ? text.join('') : text),
                 firstOfKind = 0;
 
             if (subs) {
