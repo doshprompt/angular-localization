@@ -26,6 +26,7 @@ ___
     - [Wiring It Up](#wiring-it-up)
     - [Module Setup](#module-setup)
     - [Localization File Formats](#localization-file-formats)
+    - [Nested Json](#nested-json)
 - [Usage Examples](#usage-examples)
     - [i18n directive](#i18n-directive)
         - [Localize Using the i18n attribute](#localize-using-the-i18n-attribute)
@@ -148,8 +149,11 @@ All overridable configuration options are part of `localeConf` within the `ngLoc
 ###### delimiter @ `::`
 > the delimiter to be used when passing params along with the string token to the service, filter etc.
 
-###### validTokens @ `\^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$\`
+###### validTokens @ `\^([\\w-]+\\/)*([\\w-]+\\.)+([\\w\\s-])+\\w(:.*)?$\`
 > a regular expression which is used to match the names of the keys, so that they do not contain invalid characters. If you want to support an extended character set for the key names you need to change this.
+
+###### allowNestedJson @ `false`
+> allows you to use nested json in your languages files. This changes how you must set your i18n tokens. Consult the [Nested Json](#nested-json) section for more details.
 
 ```js
 angular.module('myApp', [
@@ -164,7 +168,8 @@ angular.module('myApp', [
     cookieName: 'COOKIE_LOCALE_LANG',
     observableAttrs: new RegExp('^data-(?!ng-|i18n)'),
     delimiter: '::',
-    validTokens: new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$')
+    validTokens: new RegExp('^([\\w-]+\\/)*([\\w-]+\\.)+([\\w\\s-])+\\w(:.*)?$'),
+    allowNestedJson: false
 });
 ```
 
@@ -304,6 +309,58 @@ The `i18n` directive observes all non-directive `data-*` attributes and passes t
 ```
 
 Whenever `user.name` is updated, it's indicator in the token `helloWorld` is subsitituted for the new value when the translation function gets called with an object, e.g. `{ name: 'Bob' }` as an argument and the element content is then updated accordingly.
+
+### Nested json
+
+If you set the ```allowNestedJson``` option to ```true``` in the ```localeConf```, there are few things that change.
+
+First of all, to navigate files and folders, you need to use forward slashes to delimit instead of dots.
+Dots now traverse potential objects in a json file instead of traversing the file system.
+
+Example:
+
+```html
+<p data-i18n="common.helloWorld" data-name="{{ folder1/folder2/myFile.user.name }}"></p>
+
+```
+
+Will fetch the file `myFile` in the folder1/folder2 directories. Inside that file, it expects to find
+
+```json
+{
+    "user": {
+        "name": "Nom d'usager"
+    }
+}
+```
+
+__Legacy support:__ By default, nested json is disallowed, which means that older project should not encounter any issues. 
+However, if you have a legacy project that you wish to change to nested json, a refactoring __will__ be necessary (mainly replacing the `.` by `/` in the i18n tokens. ie: `common.errors.required` would need to become `common/errors.required`);
+
+__NOTE:__ When constructing its dictionary, it builds an object for each "namespace" (json files). If you have a file structure as such:
+
+```
+-languages
+  |-en-US
+    |-common
+      |-errors.lang.json
+    |-common.lang.json
+  |-en-FR
+    |-...
+```
+
+it will bundle up the keys from common and the sub keys from the common folder files together. This should not cause any issues unless you have conflicting keys. For example, if common.lang.json had this key:
+
+```json
+{
+    "errors": {
+        "required": "Requis",
+        "notFound": "Introuvable"
+    }
+}
+```
+
+then the bundled `common` dictionnary would have conflicting common.errors objects. As a general guideline, avoiding folders and files of the same name at the same level will avoid these issues.
 
 ### i18nAttr directive
 
