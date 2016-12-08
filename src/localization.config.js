@@ -8,5 +8,6 @@ angular.module('ngLocalize.Config', [])
         cookieName: 'COOKIE_LOCALE_LANG',
         observableAttrs: new RegExp('^data-(?!ng-|i18n)'),
         delimiter: '::',
-        validTokens: new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$')
+        validTokens: new RegExp('^([\\w-]+\\/)*([\\w-]+\\.)+([\\w\\s-])+\\w(:.*)?$'),
+        allowNestedJson: false
     });
