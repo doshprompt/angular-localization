@@ -131,7 +131,7 @@ angular.module('ngLocalize')
 
                             // If we issued a Promise for this file, resolve it now.
                             if (deferrences[path]) {
-                                deferrences[path].resolve(path);
+                                deferrences[path].resolve(data);
                             }
                         }, function (err) {
                             var path = getPath(token);
