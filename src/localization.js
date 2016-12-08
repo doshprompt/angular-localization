@@ -106,9 +106,10 @@ angular.module('ngLocalize')
                     url += localeConf.fileExtension;
 
                     $http.get(url)
-                        .success(function (data) {
+                        .then(function (response) {
                             var key,
-                                path = getPath(token);
+                                path = getPath(token),
+                                data = response.data;
                             // Merge the contents of the obtained data into the stored bundle.
                             for (key in data) {
                                 if (data.hasOwnProperty(key)) {
@@ -132,8 +133,7 @@ angular.module('ngLocalize')
                             if (deferrences[path]) {
                                 deferrences[path].resolve(path);
                             }
-                        })
-                        .error(function (err) {
+                        }, function (err) {
                             var path = getPath(token);
 
                             $log.error('[localizationService] Failed to load: ' + url);
@@ -143,7 +143,7 @@ angular.module('ngLocalize')
 
                             // If we issued a Promise for this file, reject it now.
                             if (deferrences[path]) {
-                                deferrences[path].reject(err);
+                                deferrences[path].reject(err.data);
                             }
                         });
                 }
