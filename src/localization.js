@@ -1,5 +1,5 @@
 angular.module('ngLocalize')
-    .service('locale', function ($injector, $http, $q, $log, $rootScope, $window, localeConf, localeEvents, localeSupported, localeFallbacks) {
+    .service('locale', function ($injector, $http, $q, $log, $rootScope, $window, localeConf, localeEvents, localeSupported, localeFallbacks, urlBuilder) {
         var TOKEN_REGEX = localeConf.validTokens || new RegExp('^[\\w\\.-]+\\.[\\w\\s\\.-]+\\w(:.*)?$'),
             $html = angular.element(document.body).parent(),
             currentLocale,
@@ -82,7 +82,6 @@ angular.module('ngLocalize')
                 root = bundles,
                 parent,
                 locale = currentLocale,
-                url = localeConf.basePath + '/' + locale,
                 ref,
                 i;
 
@@ -94,16 +93,16 @@ angular.module('ngLocalize')
                     }
                     parent = root;
                     root = root[ref];
-                    url += '/' + ref;
                 }
 
                 if (isFrozen(root)) {
                     root = angular.extend({}, root);
                 }
+				
                 if (!root._loading) {
                     root._loading = true;
-
-                    url += localeConf.fileExtension;
+					
+					var url = urlBuilder.build(localeConf.basePath, locale, path.slice(0, -1), localeConf.fileExtension);
 
                     $http.get(url)
                         .then(function (response) {
