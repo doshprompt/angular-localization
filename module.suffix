@@ -1,1 +1,1 @@
-}(this.angular, this, this.document));
+}(window.angular, window, window.document));
